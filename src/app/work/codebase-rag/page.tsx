@@ -2,55 +2,66 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Activity, Info } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Activity,
+  Info,
+  GitBranch,
+  Database,
+  Layers,
+  FileCode2,
+  ShieldCheck,
+  Cpu,
+} from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { PROJECTS } from "@/data/portfolioData";
 
 const CODEBASE_STAGES = [
   {
     step: "REPOSITORY",
-    title: "Target Repository",
-    desc: "Cloned or local target codebase scanned via GitPython with path normalization.",
+    title: "Target Repository Scanner",
+    desc: "Scans local or cloned git repositories with GitPython, respecting .gitignore rules and filtering binary blobs, lockfiles, and minified bundles.",
   },
   {
-    step: "SCANNER",
-    title: "Differential Scanner & Hash Cache",
-    desc: "Compares SHA-256 checksums and mtime against database to bypass unchanged source files.",
+    step: "MANIFEST SCANNER",
+    title: "Dual Manifest & Incremental Hashing",
+    desc: "Compares file modification time (mtime) and SHA-256 hashes against PostgreSQL manifest table to skip unchanged files and re-index only mutated source files.",
   },
   {
-    step: "TREE-SITTER",
-    title: "Tree-sitter AST Parser",
-    desc: "Language-aware structural chunking respecting complete functions, classes, and cohesive modules.",
+    step: "TREE-SITTER AST",
+    title: "Language-Aware AST Splitting",
+    desc: "Parses syntax trees across 10 languages (Python, JS, TS, Java, Go, Rust, C++, C, C#, PHP) using 50-line bounds with 10-line overlap to preserve logical code units.",
   },
   {
     step: "CODE CHUNKS",
-    title: "Structured Code Chunks",
-    desc: "Syntactically intact snippets tagged with relative file path, start line, end line, and scope.",
+    title: "Metadata-Enriched Chunks",
+    desc: "Chunks tagged with relative file path, start/end line numbers, syntax scope, and repository identifier for source grounding.",
   },
   {
     step: "FASTEMBED",
-    title: "FastEmbed Local Engine",
-    desc: "High-throughput local dense vector embeddings generated without external API dependencies.",
+    title: "Local FastEmbed Engine",
+    desc: "Generates 384-dimensional dense vector embeddings locally without cloud API rate limits, egress latency, or token expenses.",
   },
   {
-    step: "PGVECTOR",
-    title: "PostgreSQL + pgvector",
-    desc: "Vector similarity storage with HNSW indexing isolated by repository and session contexts.",
+    step: "PGVECTOR (HNSW)",
+    title: "HNSW Drop & Rebuild Optimization",
+    desc: "Drops the HNSW vector index prior to bulk insertion, executes high-throughput batch writes, and reconstructs the HNSW graph post-embedding.",
   },
   {
-    step: "RETRIEVER",
-    title: "Semantic Vector Retriever",
-    desc: "Top-k semantic retrieval enriched with Git history metadata and repository isolation filters.",
+    step: "ISOLATED RETRIEVER",
+    title: "Session & Multi-Repo Isolation",
+    desc: "Enforces metadata-filtered pgvector searches partitioned by repository source key and MD5-hashed session key to prevent cross-tenant code leakage.",
   },
   {
-    step: "LLM",
-    title: "Reasoning Layer (Gemini / Ollama)",
-    desc: "Synthesizes code context with automatic local fallback to Ollama when offline.",
+    step: "HYBRID LLM",
+    title: "Gemini with Local Ollama Fallback",
+    desc: "Synthesizes code context using Gemini API with automatic fallback to local Ollama (llama3.2) for air-gapped or private repositories.",
   },
   {
-    step: "SOURCE-AWARE ANSWER",
-    title: "Grounded Response",
-    desc: "Relevant repository files, function signatures, and line ranges remain visibly cited in the response.",
+    step: "GROUNDED RESPONSE",
+    title: "Source-Attributed Citing",
+    desc: "Emits verified answers directly citing repository file paths, function signatures, and line ranges used in retrieval.",
   },
 ];
 
@@ -115,7 +126,7 @@ export default function CodeBaseRagPage() {
 
           <div className="p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-6">
             <span className="text-cyan-400 font-bold shrink-0">CORE RULE //</span>
-            <span>&quot;AST-aware semantic retrieval grounded in exact repository syntax and file paths.&quot;</span>
+            <span>&quot;AST-aware semantic retrieval grounded in exact repository syntax and verified file paths.&quot;</span>
           </div>
         </header>
 
@@ -123,50 +134,54 @@ export default function CodeBaseRagPage() {
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
           <div>
             <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Parser / Splitter</span>
-            <span className="text-zinc-200 mt-1 block">Tree-sitter AST</span>
+            <span className="text-zinc-200 mt-1 block">Tree-sitter (10 Languages)</span>
           </div>
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Vector Store</span>
-            <span className="text-zinc-200 mt-1 block">pgvector (HNSW)</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Vector Database</span>
+            <span className="text-zinc-200 mt-1 block">pgvector (HNSW Rebuild)</span>
           </div>
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Embeddings</span>
-            <span className="text-zinc-200 mt-1 block">FastEmbed (Local)</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Change Detection</span>
+            <span className="text-zinc-200 mt-1 block">SHA-256 + mtime Manifest</span>
           </div>
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">LLM Routing</span>
-            <span className="text-zinc-200 mt-1 block">Gemini / Ollama</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Reasoning Routing</span>
+            <span className="text-zinc-200 mt-1 block">Gemini + Ollama Fallback</span>
           </div>
         </section>
 
-        {/* 1. Problem Statement */}
+        {/* 1. The Code Retrieval Challenge */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            01 // THE CODE RETRIEVAL CHALLENGE
+            01 // THE CODE INTELLIGENCE CHALLENGE
           </h2>
           <div className="text-sm sm:text-base text-zinc-300 space-y-3 leading-relaxed font-sans">
             <p>
-              Standard document RAG pipelines fail when applied to software repositories. Code has strict
-              syntactical boundaries, nested scope hierarchies, caller/callee relationships, and rapidly mutating files:
+              Standard document RAG pipelines fail when applied to software codebases. Source code is not prose;
+              it possesses strict syntax hierarchies, nested scopes, function signatures, docstrings, and cross-file dependencies:
             </p>
             <ul className="space-y-2 pl-2 sm:pl-4 text-xs sm:text-sm text-zinc-300">
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Naive Character Splitting:</strong> Slicing every 500 characters severs functions mid-statement, separates signatures from docstrings, and breaks syntax trees.</span>
+                <span><strong>Naive Character Splitting Destroys Code:</strong> Arbitrary character slicing splits control flow statements in half, isolates function headers from bodies, and breaks AST comprehension.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Re-Indexing Waste:</strong> Re-calculating embeddings across thousands of repository files upon a minor commit wastes compute and increases indexing latency.</span>
+                <span><strong>Expensive Full-Repository Re-Indexing:</strong> Re-computing dense embeddings across an entire repository on every small git commit wastes compute and slows down continuous iteration.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Unverified References:</strong> Generic models produce fabricated functions when not explicitly grounded in verified relative file paths and line ranges.</span>
+                <span><strong>Vector Index Rebalancing Bottlenecks:</strong> Adding vectors row-by-row into an active HNSW index incurs significant graph rebalancing overhead during bulk ingestion runs.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
+                <span><strong>Multi-Project Context Pollution:</strong> Without strict tenant partitioning, vector similarity searches cross-pollinate files from unrelated codebases.</span>
               </li>
             </ul>
           </div>
         </section>
 
-        {/* 2. Interactive Pipeline Flow */}
+        {/* 2. Interactive Retrieval Architecture */}
         <section className="space-y-5">
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
             <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide">
@@ -179,7 +194,7 @@ export default function CodeBaseRagPage() {
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-            The system implements an AST-aware indexing engine with differential hashing and dense vector search.
+            The indexing and retrieval pipeline separates file tracking from vector storage and respects code syntax boundaries.
             Tap or hover any stage below to inspect its role:
           </p>
 
@@ -250,57 +265,91 @@ export default function CodeBaseRagPage() {
                                     |
                                     v
 +-------------------------------------------------------------------------+
-|  DIFFERENTIAL SCANNER & HASH CACHE                                      |
-|  - Compares SHA-256 checksums & mtime against database                  |
-|  - Filters ignored files (.git, node_modules, binary assets)             |
-|  - Bypasses unchanged source files to avoid redundant embeddings        |
+|  POSTGRESQL MANIFEST TABLE (Incremental Change Detection)               |
+|  - Compares (file_path, sha256_hash, mtime, language, chunk_count)      |
+|  - Bypasses unchanged source files; drops and re-embeds only mutated files |
 +-----------------------------------+-------------------------------------+
                                     |
                                     v
 +-------------------------------------------------------------------------+
-|  TREE-SITTER AST PARSER & CODE SPLITTER                                 |
-|  - Language-aware grammar parsing (Python, TS, JS, Go, etc.)             |
-|  - Segregates complete functions, classes, and cohesive modules         |
-|  - Attaches file_path, start_line, end_line, and scope metadata         |
+|  TREE-SITTER AST CODE SPLITTER (10 Languages Supported)                 |
+|  - Python, JS, TS, Java, Go, Rust, C++, C, C#, PHP                      |
+|  - chunk_lines=50, chunk_lines_overlap=10, max_chars=1500               |
+|  - Fallback: SentenceSplitter(500, 50) for Markdown/configs             |
 +-----------------------------------+-------------------------------------+
                                     |
                                     v
 +-------------------------------------------------------------------------+
-|  EMBEDDING & VECTOR STORAGE                                             |
-|  - High-throughput local dense vectors via FastEmbed                     |
-|  - Ingestion into PostgreSQL with pgvector (HNSW Indexing)              |
-|  - Strictly isolated by repository / session namespaces                 |
+|  FASTEMBED DENSE VECTOR GENERATION (Local 384-dimensional embeddings)   |
 +-----------------------------------+-------------------------------------+
                                     |
                                     v
 +-------------------------------------------------------------------------+
-|  RETRIEVAL & QUERY SYNTHESIS                                            |
-|  - User conversational query -> vector similarity search                |
-|  - Top-k AST chunks + Git history context injected into LLM            |
-|  - Primary: Gemini API | Fallback: Local Ollama instance                |
-|  - Output: Synthesized answer + verified source file & line citations   |
+|  PGVECTOR BULK INGESTION OPTIMIZATION                                   |
+|  - Step 1: drop_hnsw_indexes()                                          |
+|  - Step 2: Batch vector insertion                                       |
+|  - Step 3: create_hnsw_index() post-embedding                           |
++-----------------------------------+-------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|  SESSION & MULTI-REPO ISOLATED RETRIEVAL                                |
+|  - Filtered cosine similarity scoped by source_key and md5(session_key) |
+|  - Hybrid LLM: Gemini API with local Ollama (llama3.2) fallback         |
 +-------------------------------------------------------------------------+`}
             </pre>
           </div>
         </section>
 
-        {/* 3. Deep Engineering Highlights */}
+        {/* 3. Deep Technical Engineering Highlights */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            03 // TECHNICAL IMPLEMENTATION HIGHLIGHTS
+            03 // KEY DATA ENGINEERING DECISIONS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {project.keyFeatures.map((feat, idx) => (
-              <div key={idx} className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-                <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                  {feat.title}
-                </div>
-                <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                  {feat.description}
-                </p>
+            {/* Tree-sitter AST */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <FileCode2 className="w-4 h-4 text-cyan-400" />
+                <span>TREE-SITTER AST CHUNKING (10 LANGUAGES)</span>
               </div>
-            ))}
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Rather than arbitrary character chunking, CodeBase-RAG employs LlamaIndex <code className="text-cyan-300 font-mono">CodeSplitter</code> tuned for 10 languages: Python, JavaScript, TypeScript, Java, Go, Rust, C++, C, C#, and PHP (50-line window, 10-line overlap, 1500 max characters). Documentation files gracefully fall back to sentence-boundary chunking.
+              </p>
+            </div>
+
+            {/* HNSW Bulk Rebuild */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Database className="w-4 h-4 text-cyan-400" />
+                <span>HNSW BULK INGESTION OPTIMIZATION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Inserting vectors row-by-row into an active HNSW graph causes continuous rebalancing. The pipeline executes <code className="text-cyan-300 font-mono">drop_hnsw_indexes()</code> before large ingestion runs, writes dense vectors in batches, and reconstructs the HNSW index once ingestion completes, maximizing database write throughput.
+              </p>
+            </div>
+
+            {/* Incremental Manifest */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <GitBranch className="w-4 h-4 text-cyan-400" />
+                <span>DUAL-STORE INCREMENTAL INDEXING</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Maintains a dedicated PostgreSQL <code className="text-cyan-300 font-mono">manifest</code> table tracking file path, SHA-256 hash, and mtime alongside the <code className="text-cyan-300 font-mono">code_embeddings</code> table. Small git commits only trigger chunking and re-embedding for the exact files modified, skipping unchanged files entirely.
+              </p>
+            </div>
+
+            {/* Multi-Repo Isolation & Fallback */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-cyan-400" />
+                <span>HYBRID SERVING & SESSION ISOLATION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Every node is tagged with a repository <code className="text-cyan-300 font-mono">source_key</code> and MD5-hashed <code className="text-cyan-300 font-mono">session_key</code> to enforce scoped similarity filters. Reasoning runs on Gemini API with automatic fallback to local Ollama (<code className="text-cyan-300 font-mono">llama3.2</code>) when working in offline or air-gapped environments.
+              </p>
+            </div>
           </div>
         </section>
 

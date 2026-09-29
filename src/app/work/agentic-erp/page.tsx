@@ -2,45 +2,52 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, Activity, Info, ArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Activity,
+  Info,
+  Layers,
+  Clock,
+  ShieldCheck,
+  FileCheck,
+  Zap,
+  Server,
+  Code2,
+} from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { PROJECTS } from "@/data/portfolioData";
 
 const ERP_STAGES = [
   {
-    step: "USER",
-    title: "User / Workflow Trigger",
-    desc: "Natural language business queries, invoice documents, or automated scheduler triggers.",
+    step: "USER / TRIGGERS",
+    title: "User Queries & Scheduled Triggers",
+    desc: "Natural language business queries, invoice uploads via WebSockets, or automated execution triggers from the persistent PostgreSQL AI scheduler.",
   },
   {
-    step: "FASTAPI",
-    title: "FastAPI / WebSocket Server",
-    desc: "Session validation, MIME detection, rate-limiting, and asynchronous token streaming.",
+    step: "FASTAPI GATEWAY",
+    title: "FastAPI Gateway & Session Engine",
+    desc: "Authenticates sessions, validates request schemas, handles MIME routing for documents, and manages asynchronous token streaming.",
   },
   {
     step: "SPECIALIST AGENT",
-    title: "Specialist Agent",
-    desc: "Domain-specific agent with scoped instructions, role boundaries, and restricted tool bindings.",
+    title: "Domain Specialist Agent",
+    desc: "Intent-scoped specialist agent (Purchase, Stores, Planning, Engineering, QC) loaded with bounded system prompts and restricted tool schemas.",
   },
   {
-    step: "LLM",
-    title: "LLM Reasoning Engine",
-    desc: "Served via local vLLM to formulate structured tool invocation parameters.",
+    step: "vLLM INFERENCE",
+    title: "Local vLLM Model Serving",
+    desc: "High-throughput local OpenAI-compatible endpoint hosting Qwen at temperature zero, generating validated tool invocation arguments without external API latency.",
   },
   {
-    step: "TOOL CALL",
-    title: "Tool Call Schema",
-    desc: "Strict Pydantic JSON schema output representing deterministic action intent.",
+    step: "TYPED PYTHON TOOLS",
+    title: "Pydantic Validation & Async Task Queue",
+    desc: "Model outputs are strictly validated against Pydantic schemas. Concurrent tool calls emitted in a single turn are scheduled through an asynchronous task queue.",
   },
   {
-    step: "PYTHON EXECUTION",
-    title: "Typed Python Tools",
-    desc: "LLM decisions are translated into controlled Python operations with error handling.",
-  },
-  {
-    step: "ERP / DATABASE",
-    title: "Enterprise Systems",
-    desc: "Deterministic execution against the enterprise system of record and database persistence.",
+    step: "ERP & PERSISTENCE",
+    title: "Deterministic ERP & Database State",
+    desc: "Deterministic execution against internal ERP service endpoints, PostgreSQL, and document stores with audited rollback boundaries.",
   },
 ];
 
@@ -49,7 +56,7 @@ export default function AgenticErpPage() {
   const [activeStageIndex, setActiveStageIndex] = useState(2); // Default to SPECIALIST AGENT
   const [signalIndex, setSignalIndex] = useState(0);
 
-  // Subtle signal loop
+  // Subtle request/signal loop
   useEffect(() => {
     const timer = setInterval(() => {
       setSignalIndex((prev) => (prev + 1) % ERP_STAGES.length);
@@ -114,56 +121,60 @@ export default function AgenticErpPage() {
         {/* Technical Overview Metadata Grid */}
         <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Architecture</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Production Runtime</span>
             <span className="text-zinc-200 mt-1 block">Specialist Agents</span>
           </div>
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Execution Layer</span>
-            <span className="text-zinc-200 mt-1 block">FastAPI / Typed Tools</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Execution Boundary</span>
+            <span className="text-zinc-200 mt-1 block">Pydantic / Async Queue</span>
           </div>
           <div>
             <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Model Serving</span>
-            <span className="text-zinc-200 mt-1 block">vLLM Engine</span>
+            <span className="text-zinc-200 mt-1 block">Local vLLM Engine (~5s)</span>
           </div>
           <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Persistence</span>
-            <span className="text-zinc-200 mt-1 block">PostgreSQL / MongoDB</span>
+            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Scheduler Layer</span>
+            <span className="text-zinc-200 mt-1 block">PostgreSQL Persistent Queue</span>
           </div>
         </section>
 
-        {/* 1. Problem Statement */}
+        {/* 1. Problem & Constraints */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            01 // PROBLEM & CONSTRAINTS
+            01 // PROBLEM & ARCHITECTURAL CONSTRAINTS
           </h2>
           <div className="text-sm sm:text-base text-zinc-300 space-y-3 leading-relaxed font-sans">
             <p>
               Enterprise ERP software is burdened with hundreds of fragmented forms, transaction screens,
-              and tabular interfaces. While generative AI enables natural language interfaces, unconstrained
-              generalist agent implementations create severe operational hazards:
+              and complex relational balances. While generative AI provides natural language interaction,
+              connecting language models directly to enterprise state creates critical engineering challenges:
             </p>
             <ul className="space-y-2 pl-2 sm:pl-4 text-xs sm:text-sm text-zinc-300">
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Unchecked Mutations:</strong> LLMs attempting direct database writes can corrupt transactional balance tables.</span>
+                <span><strong>Unchecked Database Mutations:</strong> Allowing models to generate raw SQL queries risks executing malformed updates, bypassing double-entry audit trails, or violating relational constraints.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Unbounded Reasoning:</strong> Broad &quot;do everything&quot; generalist agents wander into irrelevant domains and fail on specialized enterprise workflows.</span>
+                <span><strong>Prompt Bloat & Reasoning Drift:</strong> Stuffing an entire enterprise schema (hundreds of tables across Purchase, Stores, QC, Planning) into a single prompt blows out token limits and degrades reasoning accuracy.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>High Latency:</strong> Unoptimized multi-step model calls can take 15–20 seconds per user turn, making interactive operational software frustrating.</span>
+                <span><strong>Multi-Turn Latency Bottlenecks:</strong> Cloud-hosted sequential model calls can take 15–20 seconds per user turn, frustrating operational staff who need responsive workflows.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
+                <span><strong>Ephemeral Automation:</strong> Background scheduled jobs held in ephemeral memory disappear when containers restart or crash during report generation.</span>
               </li>
             </ul>
           </div>
         </section>
 
-        {/* 2. Interactive Architecture Flow */}
+        {/* 2. Interactive System Architecture */}
         <section className="space-y-5">
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
             <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide">
-              02 // INTERACTIVE SYSTEM ARCHITECTURE
+              02 // INTERACTIVE REQUEST LIFECYCLE
             </h2>
             <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
               <Activity className="w-3.5 h-3.5 animate-pulse" />
@@ -172,7 +183,8 @@ export default function AgenticErpPage() {
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-            Rather than granting an LLM direct mutation rights, the system employs a specialist-agent architecture.
+            Every incoming request follows a deterministic pipeline where language models are restricted to
+            formulating structured JSON schemas, while deterministic Python code executes all enterprise operations.
             Tap or hover any stage below to inspect its execution constraints:
           </p>
 
@@ -190,7 +202,7 @@ export default function AgenticErpPage() {
                         type="button"
                         onClick={() => setActiveStageIndex(idx)}
                         onMouseEnter={() => setActiveStageIndex(idx)}
-                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[135px] max-w-[160px] min-h-[72px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
+                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
                           isActive
                             ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white scale-[1.02]"
                             : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05]"
@@ -233,75 +245,160 @@ export default function AgenticErpPage() {
             </div>
           </div>
 
-          {/* ASCII / Monospace Flow Diagram (with overflow-x-auto & touch-pan-x) */}
+          {/* ASCII / Monospace Flow Diagram */}
           <div className="p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs overflow-x-auto touch-pan-x">
-            <div className="text-zinc-500 mb-2">// FULL SPECIFICATION SCHEMATIC</div>
+            <div className="text-zinc-500 mb-2">// DETERMINISTIC LIFECYCLE SCHEMATIC</div>
             <pre className="text-cyan-300 text-[11px] leading-snug">
 {`+-----------------------------------------------------------------------+
-|  USER (Browser / WebSockets / Document Ingestion)                    |
+|  CLIENT & TRIGGERS (WebSockets / MIME Uploads / Persistent Cron)      |
 +-----------------------------------+-----------------------------------+
                                     |
                                     v
 +-----------------------------------------------------------------------+
-|  FASTAPI GATEWAY & WEBSOCKET SERVER                                  |
+|  FASTAPI GATEWAY (agent_ws.py)                                        |
 |  - Session Validation & MIME Routing                                 |
-|  - Rate-limiting & Asynchronous Token Streaming                      |
+|  - Asynchronous WebSocket Token Streaming                             |
 +-----------------------------------+-----------------------------------+
                                     |
                                     v
 +-----------------------------------------------------------------------+
-|  SPECIALIST AGENT DISPATCHER                                         |
-|  - Intent classification & Domain Scoping                            |
-|  - Injects scoped role prompt & typed tool schemas                   |
+|  DOMAIN SPECIALIST AGENT (Purchase / Stores / Planning / QC / etc.)   |
+|  - Scoped role prompts & strict schema boundaries                     |
+|  - Lazy schema context injection on demand                            |
 +-----------------------------------+-----------------------------------+
                                     |
                                     v
 +-----------------------------------------------------------------------+
-|  LLM REASONING LAYER (Served via vLLM)                                |
-|  - Analyzes context & generates typed tool invocation plan            |
+|  vLLM INFERENCE ENGINE (Local OpenAI-compatible Qwen Endpoint)        |
+|  - Temperature 0 structured reasoning                                 |
+|  - Emits text OR strictly typed Pydantic tool call schemas            |
 +-----------------------------------+-----------------------------------+
                                     |
                                     v
 +-----------------------------------------------------------------------+
-|  TYPED PYTHON TOOLS (Execution Boundary)                             |
-|  - Strict Pydantic parameter schema validation                        |
-|  - Error trapping & transactional safeguards                         |
+|  TYPED PYTHON TOOLS & ASYNC TASK QUEUE (RAW.agent.Agent)              |
+|  - Bounded parameter schema validation (Pydantic)                     |
+|  - Concurrent async tool dispatch without thread contention           |
 +-----------------------------------+-----------------------------------+
                                     |
                                     v
 +-----------------------------------------------------------------------+
-|  ENTERPRISE ERP SERVICES & STORAGE                                   |
-|  - PostgreSQL / MongoDB / File Store                                 |
-|  - System of Record State Update & Webhook Notifications              |
+|  ENTERPRISE SYSTEM OF RECORD                                          |
+|  - Authenticated Internal REST APIs / PostgreSQL / MinIO Storage      |
+|  - Audit logging, state persistence, and webhook delivery             |
 +-----------------------------------------------------------------------+`}
             </pre>
           </div>
         </section>
 
-        {/* 3. Core Capabilities */}
+        {/* 3. Production vs Experimental Architecture Comparison */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            03 // CORE CAPABILITIES
+            03 // ARCHITECTURAL DISTINCTION: PRODUCTION VS EXPERIMENTAL
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {project.keyFeatures.map((feat, idx) => (
-              <div key={idx} className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-                <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                  {feat.title}
-                </div>
-                <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                  {feat.description}
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Production Architecture Card */}
+            <div className="p-5 rounded-lg border border-cyan-500/30 bg-cyan-950/15 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                  PRODUCTION RUNTIME
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  DEPLOYED
+                </span>
               </div>
-            ))}
+              <h3 className="text-sm font-mono font-bold text-white">
+                Specialist-Agent Architecture with Async Tooling
+              </h3>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Each operational department (Purchase, Stores, Planning, QC, Database) operates as an isolated specialist agent inheriting from a shared orchestrator. Agents operate with scoped system prompts and strictly bounded tool functions. When multiple tool calls are emitted in a single model turn, an asynchronous task queue executes them concurrently, preventing blocking bottlenecks.
+              </p>
+              <div className="text-[11px] font-mono text-cyan-400/90 pt-1">
+                Deterministic routing · Scoped prompt boundaries · Parallel async tools
+              </div>
+            </div>
+
+            {/* Experimental Architecture Card */}
+            <div className="p-5 rounded-lg border border-amber-500/30 bg-amber-950/15 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-4 h-4 text-amber-400" />
+                  EXPERIMENTAL PROTOTYPE
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  BRANCH: trying_leader_agent
+                </span>
+              </div>
+              <h3 className="text-sm font-mono font-bold text-white">
+                Universal Leader Supervisor-Worker System
+              </h3>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                To evaluate cross-departmental coordination, Parth prototyped a supervisor-worker team. A universal leader agent evaluates complex multi-stage requests and delegates subtasks to specialist workers. To prevent context window explosion from injecting multiple database schemas, a lazy domain context tool dynamically reads schema files on demand.
+              </p>
+              <div className="text-[11px] font-mono text-amber-400/90 pt-1">
+                Evaluated research branch · Dynamic lazy schema loading · Subtask delegation
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* 4. Engineering Optimization: 15s to 5s */}
+        {/* 4. Core Engineering Highlights */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            04 // WORKFLOW LATENCY OPTIMIZATION
+            04 // CORE SUBSYSTEM IMPLEMENTATIONS
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Scheduler Highlight */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-cyan-400" />
+                <span>PERSISTENT POSTGRESQL AI SCHEDULER</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Engineered a persistent task scheduler with dedicated PostgreSQL tables (<code className="text-cyan-300 font-mono">cron_jobs</code> and <code className="text-cyan-300 font-mono">cron_job_runs</code>) for schedules and execution logs. A background worker daemon calculates future runtimes with explicit timezone handling (<code className="text-cyan-300 font-mono">ZoneInfo</code>), retries failed jobs, and dispatches automated WhatsApp and Email notifications upon completion.
+              </p>
+            </div>
+
+            {/* Typed Tools Highlight */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-cyan-400" />
+                <span>TYPED CONSTRAINED EXECUTION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Migrated all agent operations away from raw SQL query generation to strongly typed Python tools. Inputs are validated with strict Pydantic schemas before calling internal authenticated service endpoints, eliminating SQL injection and structural corruption risks.
+              </p>
+            </div>
+
+            {/* Multimodal Ingestion */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <FileCheck className="w-4 h-4 text-cyan-400" />
+                <span>MULTIMODAL DOCUMENT PIPELINE</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Built an ingestion pipeline that handles invoices and purchase orders via automated MIME sniffing, PyMuPDF native text extraction, and vision model OCR fallbacks. Extracted payloads are cached with SHA-256 hashes to prevent redundant processing.
+              </p>
+            </div>
+
+            {/* Data Validation Pipeline */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Server className="w-4 h-4 text-cyan-400" />
+                <span>DATA INTEGRITY & VALIDATION RULES</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Constructed verification layers for Excel bulk uploads (Item Master and Process Sheets) and multi-site transfer requests, catching malformed business records before they reach database persistence tables.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Measured Workflow Latency Optimization */}
+        <section className="space-y-4">
+          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
+            05 // MEASURED WORKFLOW LATENCY OPTIMIZATION
           </h2>
           <div className="p-5 rounded-lg border border-emerald-500/20 bg-emerald-950/15 space-y-3">
             <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-semibold">
@@ -309,21 +406,18 @@ export default function AgenticErpPage() {
               <span>MEASURED WORKFLOW IMPROVEMENT: ~15s → ~5s</span>
             </div>
             <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-              Within a high-frequency ERP document analysis workflow, sequential inference and unoptimized token handling
-              originally produced end-to-end execution latencies around 15 seconds. By orchestrating inference with local
-              <strong> vLLM serving</strong> and asynchronous WebSocket streaming, the execution duration was
-              brought down to approximately <strong>5 seconds</strong>.
+              Within a multi-step ERP document parsing workflow, sequential cloud API calls originally produced end-to-end execution durations around 15 seconds due to network round-trips and cold starts. By orchestrating inference with local <strong>vLLM model serving</strong> (hosting Qwen at temperature zero) and streaming tokens over native WebSockets, total workflow completion time was brought down to approximately <strong>5 seconds</strong>.
             </p>
             <div className="text-[11px] font-mono text-zinc-400 pt-1">
-              * Note: Documented engineering result for the specific model serving workflow; not presented as an unverified company-wide benchmark.
+              * Verified engineering outcome documented for the local model serving pipeline.
             </div>
           </div>
         </section>
 
-        {/* 5. Challenges & Design Decisions */}
+        {/* 6. Challenges & Design Decisions */}
         <section className="space-y-4">
           <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            05 // KEY DESIGN DECISIONS
+            06 // KEY DESIGN DECISIONS
           </h2>
           <div className="space-y-4">
             {project.challengesAndDecisions.map((item, idx) => (

@@ -32,36 +32,36 @@ const SYSTEM_NODES: NodeData[] = [
     id: "user",
     index: 0,
     stage: "01 // INGESTION",
-    title: "USER & WORKFLOWS",
-    subtitle: "WebSockets & Events",
+    title: "USER & TRIGGERS",
+    subtitle: "WebSockets & Schedulers",
     icon: Terminal,
-    metric: "< 2ms socket frame",
-    detail: "Natural language business queries, invoice documents, and repo scan requests entering the system via streaming WebSocket sessions.",
-    tags: ["Streaming", "WebSockets", "MIME Detection"],
+    metric: "Streaming Sockets",
+    detail: "Natural language business queries, invoice documents, or automated PostgreSQL-backed cron scheduler triggers entering through persistent WebSocket connections.",
+    tags: ["Streaming", "WebSockets", "AI Scheduler", "MIME Ingest"],
     role: "Client Trigger & Ingestion",
   },
   {
     id: "ai-system",
     index: 1,
     stage: "02 // GATEWAY",
-    title: "AI SYSTEM LAYER",
-    subtitle: "FastAPI & Auth Router",
+    title: "FASTAPI GATEWAY",
+    subtitle: "Auth, MIME & Streaming",
     icon: Layers,
     metric: "Strict Pydantic",
-    detail: "Validates input schemas, enforces rate-limiting and authorization boundaries, and resolves target domain routing.",
-    tags: ["FastAPI", "Session Isolation", "Schema Auth"],
+    detail: "Validates input schemas, enforces rate-limiting and authorization boundaries, extracts MIME types, and streams model tokens asynchronously back to the client.",
+    tags: ["FastAPI", "Session Isolation", "Async Streaming"],
     role: "Validation & Request Routing",
   },
   {
     id: "agent-rag-ml",
     index: 2,
     stage: "03 // REASONING",
-    title: "AGENT / RAG / ML",
-    subtitle: "Specialist Agents & Search",
+    title: "SPECIALIST AGENT / RAG",
+    subtitle: "vLLM & Dense Retrieval",
     icon: Cpu,
-    metric: "vLLM Serving",
-    detail: "Domain-scoped agents determine intention. Vector search queries pgvector with HNSW indexing; ML models prepare pairwise behavioral tensors.",
-    tags: ["Specialist Prompts", "pgvector HNSW", "vLLM Engine"],
+    metric: "vLLM Serving (~5s)",
+    detail: "Domain-scoped specialist agents formulate structured action plans via local vLLM serving. CodeBase-RAG retrieves AST-parsed syntax chunks from pgvector.",
+    tags: ["Specialist Agents", "vLLM Qwen", "Tree-sitter AST", "HNSW Rebuild"],
     role: "Intent Planning & Retrieval",
   },
   {
@@ -69,23 +69,23 @@ const SYSTEM_NODES: NodeData[] = [
     index: 3,
     stage: "04 // BOUNDARY",
     title: "TYPED PYTHON TOOLS",
-    subtitle: "Deterministic Logic",
+    subtitle: "Deterministic Execution",
     icon: Wrench,
-    metric: "Constrained Execution",
-    detail: "The LLM only outputs validated tool calls. Pure Python executes business operations, ensuring model reasoning cannot corrupt system state.",
-    tags: ["Typed Validation", "AST Splitter", "Task Queue"],
+    metric: "Bounded Tool Access",
+    detail: "The model only outputs validated tool arguments. Python executes operations via an asynchronous task queue, ensuring model outputs cannot directly mutate database tables.",
+    tags: ["Pydantic Validation", "Async Task Queue", "Internal APIs"],
     role: "Deterministic Execution",
   },
   {
     id: "software",
     index: 4,
     stage: "05 // PERSISTENCE",
-    title: "REAL SOFTWARE",
+    title: "REAL SOFTWARE & DB",
     subtitle: "ERP · DB · Storage",
     icon: Database,
     metric: "System of Record",
-    detail: "PostgreSQL, MongoDB, and enterprise services execute transactions and maintain audited business state with rollback mechanisms.",
-    tags: ["Enterprise DB", "Document Store", "Audit Logs"],
+    detail: "PostgreSQL, MongoDB, and enterprise services execute transactions and maintain audited business state with rollback mechanisms and notification delivery.",
+    tags: ["PostgreSQL", "MongoDB", "Enterprise ERP", "Audit State"],
     role: "State Persistence & Systems",
   },
 ];
@@ -150,7 +150,7 @@ export function SystemVisualization() {
             </span>
           </div>
           <span className="hidden sm:flex items-center gap-1 text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 text-[10px]">
-            <ShieldCheck className="w-3 h-3" /> CONSTRAINED
+            <ShieldCheck className="w-3 h-3" /> BOUNDED EXECUTION
           </span>
         </div>
       </div>
@@ -254,57 +254,38 @@ export function SystemVisualization() {
           })}
         </div>
 
-        {/* Selected Stage Deep-Dive Inspection Panel */}
-        <div className="mt-5 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 relative">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-            <div className="space-y-2 max-w-2xl">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-mono font-semibold text-cyan-400 tracking-wider">
-                  NODE INSPECTION // {currentNode.stage}
-                </span>
-                <span className="text-zinc-600 text-xs">·</span>
-                <span className="text-xs font-mono text-zinc-200 font-medium">
-                  {currentNode.title}
-                </span>
-                <span className="text-zinc-600 text-xs hidden sm:inline">·</span>
-                <span className="text-[11px] font-mono text-cyan-300/80 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-500/20">
-                  {currentNode.role}
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-                {currentNode.detail}
-              </p>
+        {/* Selected Node Detailed Architecture Telemetry Drawer */}
+        <div className="mt-5 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-3 border-b border-white/[0.06] gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-cyan-400 font-bold">{currentNode.stage}</span>
+              <span className="text-zinc-500">//</span>
+              <span className="text-zinc-100 font-semibold">{currentNode.title}</span>
+              <span className="text-zinc-400">({currentNode.role})</span>
             </div>
-
-            {/* Tags / Boundary Labels */}
-            <div className="flex flex-col items-start gap-1.5 shrink-0">
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
-                System Boundary
-              </span>
-              <div className="flex flex-wrap gap-1">
-                {currentNode.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] font-mono px-2 py-0.5 rounded border border-white/[0.08] bg-white/[0.03] text-zinc-300"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+            <div className="flex items-center gap-2 text-[11px] text-zinc-400">
+              <Zap className="w-3 h-3 text-cyan-400" />
+              <span>TELEMETRY:</span>
+              <span className="text-cyan-300 font-semibold">{currentNode.metric}</span>
             </div>
           </div>
 
-          {/* Architectural Rule Anchor & Mobile Guidance */}
-          <div className="mt-4 pt-3.5 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-zinc-400">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-              <span className="text-zinc-300">
-                Core Architectural Rule: <span className="text-zinc-100 font-medium">&quot;The LLM plans. Python executes. The ERP remains system of record.&quot;</span>
-              </span>
-            </div>
-            <span className="text-[10px] text-zinc-400">
-              Tap / hover any stage to inspect connected paths
+          <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
+            {currentNode.detail}
+          </p>
+
+          <div className="mt-3.5 flex flex-wrap items-center gap-2">
+            <span className="text-[10px] text-zinc-400 uppercase tracking-wider">
+              Enforced Technologies:
             </span>
+            {currentNode.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-[11px] px-2 py-0.5 rounded border border-cyan-500/20 bg-cyan-950/30 text-cyan-300"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       </div>

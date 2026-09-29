@@ -11,28 +11,32 @@ interface FlowStep {
 
 const CAPABILITY_FLOWS: Record<string, FlowStep[]> = {
   "01": [
-    { label: "LLM", sub: "Reasoning" },
-    { label: "TOOL", sub: "Typed Schema" },
-    { label: "APPLICATION", sub: "State Mutation" },
+    { label: "GATEWAY", sub: "FastAPI & Auth" },
+    { label: "SPECIALIST", sub: "Domain Scoping" },
+    { label: "vLLM ENGINE", sub: "Local Inference" },
+    { label: "TYPED TOOL", sub: "Pydantic Validation" },
+    { label: "APPLICATION", sub: "Deterministic State" },
   ],
   "02": [
-    { label: "CODE", sub: "Source AST" },
-    { label: "CHUNK", sub: "Tree-sitter" },
-    { label: "EMBED", sub: "FastEmbed" },
-    { label: "VECTOR SEARCH", sub: "pgvector" },
-    { label: "CONTEXT", sub: "Source Citing" },
+    { label: "MANIFEST", sub: "SHA-256 + mtime" },
+    { label: "AST PARSER", sub: "Tree-sitter 10L" },
+    { label: "FASTEMBED", sub: "Dense Vectors" },
+    { label: "PGVECTOR", sub: "HNSW Rebuild" },
+    { label: "RETRIEVAL", sub: "Source Isolated" },
   ],
   "03": [
-    { label: "REQUEST", sub: "WebSocket/HTTP" },
-    { label: "FASTAPI", sub: "Validation" },
-    { label: "WORKER", sub: "Task Queue" },
-    { label: "MODEL / DB", sub: "Serving & State" },
+    { label: "TRIGGERS", sub: "Cron / WebSockets" },
+    { label: "SCHEDULER", sub: "PostgreSQL Queue" },
+    { label: "WORKER", sub: "Timezone Daemon" },
+    { label: "vLLM / OCR", sub: "Local Pipelines" },
+    { label: "SERVICES", sub: "Delivery & APIs" },
   ],
   "04": [
-    { label: "DATA", sub: "Leave & Logs" },
-    { label: "FEATURES", sub: "12 Pairwise" },
-    { label: "MODEL", sub: "Random Forest" },
-    { label: "PREDICTION", sub: "30-Day Risk" },
+    { label: "LOGS", sub: "Attendance & Leaves" },
+    { label: "120d WINDOW", sub: "90d Feat / 30d Tgt" },
+    { label: "12 FEATURES", sub: "Dyadic Tensors" },
+    { label: "RANDOM FOREST", sub: "80/20 Stratified" },
+    { label: "CLUSTERS", sub: "Complete-Linkage" },
   ],
 };
 
@@ -53,7 +57,7 @@ export function WhatIBuild() {
             WHAT I BUILD
           </h2>
           <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-            Systems where models are connected to data, tools, workflows and real software.
+            Systems where models are connected to data, tools, workflows, and real software.
           </p>
         </div>
 
@@ -106,7 +110,7 @@ export function WhatIBuild() {
                     {cap.description}
                   </p>
 
-                  {/* Subtle Interactive Micro-Flow Animation */}
+                  {/* Interactive Micro-Flow */}
                   <div className="mt-5 p-3 rounded-lg border border-white/[0.06] bg-black/40">
                     <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
                       <span>Execution Pipeline</span>
