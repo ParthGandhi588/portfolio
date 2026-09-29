@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { PROJECTS } from "@/data/portfolioData";
+import { ProjectNav } from "@/components/ProjectNav";
 
 const CODEBASE_STAGES = [
   {
@@ -53,9 +54,9 @@ const CODEBASE_STAGES = [
   },
   {
     step: "ISOLATED RETRIEVER",
-    title: "Session & Multi-Repo Isolation",
-    shortRole: "Tenant Scoping",
-    desc: "Enforces metadata-filtered pgvector searches partitioned by repository source key and MD5-hashed session key to prevent cross-tenant code leakage.",
+    title: "Repository & Session Isolation",
+    shortRole: "Repository + Session Scoping",
+    desc: "Enforces metadata-filtered pgvector searches partitioned by repository source_key and MD5-hashed session_key to guarantee strict isolation between distinct repositories and user sessions.",
   },
   {
     step: "HYBRID LLM",
@@ -174,6 +175,14 @@ export default function CodeBaseRagPage() {
 
           {/* Interactive Stepper Ribbon */}
           <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
+            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 pb-1">
+              <span>
+                STAGE 0{activeStageIndex + 1} OF 0{CODEBASE_STAGES.length} // TAP TO INSPECT
+              </span>
+              <span className="sm:hidden text-cyan-400 text-[10px]">
+                SWIPE &rarr;
+              </span>
+            </div>
             <div className="overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
               <div className="flex items-center gap-2 min-w-max">
                 {CODEBASE_STAGES.map((stage, idx) => {
@@ -492,6 +501,9 @@ export default function CodeBaseRagPage() {
             ))}
           </div>
         </section>
+
+        {/* Case Study Bottom Navigation */}
+        <ProjectNav currentSlug="codebase-rag" />
       </main>
     </div>
   );

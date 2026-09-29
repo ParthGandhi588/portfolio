@@ -223,7 +223,7 @@ export const PROJECTS: Project[] = [
       "Avoids naive text slicing: uses Tree-sitter AST parsers to keep complete function and class declarations intact.",
       "Bulk ingestion optimization: drops HNSW index during vector inserts and rebuilds post-embedding for superior throughput.",
       "Dual manifest change detection prevents redundant re-embedding of entire repositories upon small git commits.",
-      "Multi-tenant isolation using repository source keys and hashed session tokens within PostgreSQL pgvector tables.",
+      "Repository and session isolation using source_key partitions and hashed session_key tokens within PostgreSQL pgvector tables.",
     ],
     challengesAndDecisions: [
       {
@@ -250,7 +250,7 @@ export const PROJECTS: Project[] = [
     title: "ABSENCE RISK PREDICTION",
     tagline: "An applied ML workflow analyzing leave and attendance data to predict pairwise co-absence risk and discover patterns.",
     description:
-      "An applied machine learning workflow analyzing employee leave and attendance patterns to identify relational co-absence risk and discover natural absence syndicates.",
+      "An applied machine learning workflow analyzing employee leave and attendance patterns to identify relational co-absence risk and discover natural co-absence behavioral clusters.",
     heroPrinciple: "Moving beyond heuristics: engineering pairwise behavioral features into explainable ML predictions.",
     technologies: [
       "Python",

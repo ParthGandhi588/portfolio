@@ -58,9 +58,9 @@ export function TechnologyStack() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/[0.04] text-[10px] font-mono text-zinc-400 flex items-center justify-between">
-                  <span>USAGE: PRODUCTION / DEV</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/60" />
+                <div className="mt-6 pt-4 border-t border-white/[0.04] text-[10px] font-mono text-zinc-500 flex items-center justify-between">
+                  <span>{techGroup.items.length} TECHNOLOGIES</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/40" />
                 </div>
               </div>
             );

@@ -17,6 +17,7 @@ import {
   Terminal,
 } from "lucide-react";
 import { PROJECTS } from "@/data/portfolioData";
+import { ProjectNav } from "@/components/ProjectNav";
 
 const ML_STAGES = [
   {
@@ -171,6 +172,14 @@ export default function AbsenceRiskPage() {
 
           {/* Interactive Stepper Ribbon */}
           <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
+            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 pb-1">
+              <span>
+                STAGE 0{activeStageIndex + 1} OF 0{ML_STAGES.length} // TAP TO INSPECT
+              </span>
+              <span className="sm:hidden text-cyan-400 text-[10px]">
+                SWIPE &rarr;
+              </span>
+            </div>
             <div className="overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
               <div className="flex items-center gap-2 min-w-max">
                 {ML_STAGES.map((stage, idx) => {
@@ -523,6 +532,9 @@ export default function AbsenceRiskPage() {
             ))}
           </div>
         </section>
+
+        {/* Case Study Bottom Navigation */}
+        <ProjectNav currentSlug="absence-risk" />
       </main>
     </div>
   );

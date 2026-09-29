@@ -53,16 +53,16 @@ const SYSTEM_NODES: NodeData[] = [
     role: "Validation & Request Routing",
   },
   {
-    id: "agent-rag-ml",
+    id: "ai-reasoning",
     index: 2,
     stage: "03 // REASONING",
-    title: "SPECIALIST AGENT / RAG",
-    subtitle: "vLLM & Dense Retrieval",
+    title: "AI REASONING LAYER",
+    subtitle: "Specialist Agents & Inference",
     icon: Cpu,
     metric: "vLLM Serving (~5s)",
-    detail: "Domain-scoped specialist agents formulate structured action plans via local vLLM serving. CodeBase-RAG retrieves AST-parsed syntax chunks from pgvector.",
-    tags: ["Specialist Agents", "vLLM Qwen", "Tree-sitter AST", "HNSW Rebuild"],
-    role: "Intent Planning & Retrieval",
+    detail: "Domain-scoped specialist agents formulate structured action plans via local vLLM serving, maintaining explicit boundaries without direct database access.",
+    tags: ["Specialist Agents", "vLLM Qwen", "Structured Plans", "Constrained Prompts"],
+    role: "Intent Planning & Scheduling",
   },
   {
     id: "tools",
@@ -91,7 +91,7 @@ const SYSTEM_NODES: NodeData[] = [
 ];
 
 export function SystemVisualization() {
-  const [selectedNode, setSelectedNode] = useState<string>("agent-rag-ml");
+  const [selectedNode, setSelectedNode] = useState<string>("ai-reasoning");
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [activeSignalIndex, setActiveSignalIndex] = useState<number>(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
