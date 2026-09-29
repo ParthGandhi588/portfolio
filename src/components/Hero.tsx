@@ -37,7 +37,7 @@ export function Hero() {
             {/* Primary CTA */}
             <a
               href="#work"
-              className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-zinc-100 text-zinc-950 font-bold hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
+              className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-zinc-100 text-zinc-950 font-bold hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] active:bg-zinc-200 active:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer"
             >
               <span>VIEW SYSTEMS</span>
               <ArrowDown className="w-3.5 h-3.5" />
@@ -46,7 +46,7 @@ export function Hero() {
             {/* Secondary CTA */}
             <a
               href="#contact"
-              className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/[0.12] bg-white/[0.03] text-zinc-200 hover:bg-white/[0.08] hover:border-cyan-400/40 hover:text-white active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
+              className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-white/[0.12] bg-white/[0.03] text-zinc-200 hover:bg-white/[0.08] hover:border-cyan-400/40 hover:text-white active:bg-white/[0.1] active:border-cyan-400 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer"
             >
               <span>LET&apos;S CONNECT</span>
             </a>

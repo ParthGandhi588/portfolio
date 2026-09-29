@@ -114,6 +114,18 @@ export function SystemVisualization() {
     return () => clearInterval(interval);
   }, [prefersReducedMotion]);
 
+  const handleNodeMouseEnter = (nodeId: string) => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+      setHoveredNode(nodeId);
+    }
+  };
+
+  const handleNodeMouseLeave = () => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+      setHoveredNode(null);
+    }
+  };
+
   const activeNodeId = hoveredNode || selectedNode;
   const currentNode =
     SYSTEM_NODES.find((node) => node.id === activeNodeId) || SYSTEM_NODES[2];
@@ -170,12 +182,15 @@ export function SystemVisualization() {
               <div key={node.id} className="relative group">
                 <button
                   type="button"
-                  onClick={() => setSelectedNode(node.id)}
-                  onMouseEnter={() => setHoveredNode(node.id)}
-                  onMouseLeave={() => setHoveredNode(null)}
-                  className={`w-full text-left p-3.5 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer border flex flex-col justify-between h-full min-h-[110px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                  onClick={() => {
+                    setSelectedNode(node.id);
+                    setHoveredNode(null);
+                  }}
+                  onMouseEnter={() => handleNodeMouseEnter(node.id)}
+                  onMouseLeave={handleNodeMouseLeave}
+                  className={`w-full text-left p-3.5 sm:p-3 rounded-lg transition-all duration-200 cursor-pointer border flex flex-col justify-between h-full min-h-[110px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
                     isDirectActive
-                      ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.2)] ring-1 ring-cyan-400/50 scale-[1.01]"
+                      ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_20px_rgba(6,182,212,0.2)] ring-1 ring-cyan-400/50"
                       : isConnected && (hoveredNode || selectedNode)
                       ? "bg-cyan-950/15 border-cyan-500/30 text-zinc-200"
                       : "bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.05] hover:border-white/[0.18]"

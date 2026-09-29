@@ -171,7 +171,7 @@ export default function AgenticErpPage() {
 
           {/* Interactive Stepper Ribbon (Mobile Touch & Desktop Click) */}
           <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
-            <div className="overflow-x-auto pb-2 scrollbar-none touch-pan-x -mx-1 px-1">
+            <div className="overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
               <div className="flex items-center gap-2 min-w-max">
                 {ERP_STAGES.map((stage, idx) => {
                   const isActive = activeStageIndex === idx;
@@ -182,9 +182,9 @@ export default function AgenticErpPage() {
                       <button
                         type="button"
                         onClick={() => setActiveStageIndex(idx)}
-                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[135px] max-w-[165px] min-h-[68px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:scale-[0.98] ${
+                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[135px] max-w-[165px] min-h-[68px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
                           isActive
-                            ? "bg-cyan-950/50 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-white scale-[1.02]"
+                            ? "bg-cyan-950/50 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-white ring-1 ring-cyan-400/40"
                             : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05]"
                         }`}
                         aria-pressed={isActive}
@@ -380,11 +380,11 @@ export default function AgenticErpPage() {
             {deepDiveOpen && (
               <div className="p-4 sm:p-6 border-t border-white/[0.08] space-y-6 bg-black/40 animate-in fade-in duration-200">
                 {/* Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                   <button
                     type="button"
                     onClick={() => setActiveDeepDiveTab("schematic")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
                       activeDeepDiveTab === "schematic"
                         ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
                         : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
@@ -395,7 +395,7 @@ export default function AgenticErpPage() {
                   <button
                     type="button"
                     onClick={() => setActiveDeepDiveTab("scheduler")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
                       activeDeepDiveTab === "scheduler"
                         ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
                         : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
@@ -406,7 +406,7 @@ export default function AgenticErpPage() {
                   <button
                     type="button"
                     onClick={() => setActiveDeepDiveTab("tools")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
                       activeDeepDiveTab === "tools"
                         ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
                         : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
@@ -417,7 +417,7 @@ export default function AgenticErpPage() {
                   <button
                     type="button"
                     onClick={() => setActiveDeepDiveTab("multimodal")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
                       activeDeepDiveTab === "multimodal"
                         ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
                         : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
@@ -429,7 +429,7 @@ export default function AgenticErpPage() {
 
                 {/* Tab 1: Monospace Flow Diagram */}
                 {activeDeepDiveTab === "schematic" && (
-                  <div className="p-4 rounded-lg border border-white/[0.08] bg-black/80 font-mono text-xs overflow-x-auto touch-pan-x">
+                  <div className="p-4 rounded-lg border border-white/[0.08] bg-black/80 font-mono text-xs overflow-x-auto">
                     <div className="text-zinc-500 mb-2">// SPECIFICATION SCHEMATIC</div>
                     <pre className="text-cyan-300 text-[11px] leading-snug">
 {`+-----------------------------------------------------------------------+

@@ -6,6 +6,8 @@ import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
+import { useRouter, usePathname } from "next/navigation";
+
 interface NavbarProps {
   onOpenCommandPalette: () => void;
 }
@@ -21,6 +23,8 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,17 +63,25 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    setMobileMenuOpen(false);
-    // Smooth scroll if anchor
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("/#")) {
       const id = href.replace("/#", "");
-      const target = document.getElementById(id);
-      if (target) {
+      if (pathname === "/") {
+        const target = document.getElementById(id);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
         e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth" });
+        router.push(href);
       }
     }
+  };
+
+  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileMenuOpen(false);
+    handleNavClick(e, href);
   };
 
   return (
@@ -106,6 +118,7 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
               <a
                 key={item.id}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={`px-3.5 py-2 rounded-md transition-all duration-150 min-h-[40px] inline-flex items-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
                   isActive
                     ? "text-cyan-300 font-semibold bg-cyan-950/40 border border-cyan-500/25"

@@ -47,10 +47,14 @@ export function Philosophy() {
                   key={item.number}
                   type="button"
                   onClick={() => setActiveStage(idx)}
-                  onMouseEnter={() => setActiveStage(idx)}
-                  className={`p-3 sm:p-3.5 rounded-lg text-left transition-all duration-200 border cursor-pointer min-h-[58px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 ${
+                  onMouseEnter={() => {
+                    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+                      setActiveStage(idx);
+                    }
+                  }}
+                  className={`p-3 sm:p-3.5 rounded-lg text-left transition-all duration-200 border cursor-pointer min-h-[58px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
                     isActive
-                      ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-white scale-[1.02]"
+                      ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-white ring-1 ring-cyan-400/40"
                       : isPast
                       ? "bg-white/[0.03] border-cyan-500/20 text-zinc-300 hover:bg-white/[0.06]"
                       : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
