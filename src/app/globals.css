@@ -133,6 +133,7 @@ textarea,
 [role="button"] {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 /* Scrollbar-none utility for touch ribbons with native momentum scrolling */

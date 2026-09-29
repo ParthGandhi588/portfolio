@@ -70,6 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth dark`}
     >
       <body className="min-h-screen bg-[#090a0e] text-[#f3f4f6] font-sans antialiased selection:bg-cyan-500/20 selection:text-white">

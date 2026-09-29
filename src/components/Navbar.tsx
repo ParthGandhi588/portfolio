@@ -6,7 +6,7 @@ import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   onOpenCommandPalette: () => void;
@@ -23,7 +23,6 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -64,17 +63,13 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("/#")) {
+    if (href.startsWith("/#") && pathname === "/") {
       const id = href.replace("/#", "");
-      if (pathname === "/") {
-        const target = document.getElementById(id);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      } else {
+      const target = document.getElementById(id);
+      if (target) {
         e.preventDefault();
-        router.push(href);
+        target.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
       }
     }
   };
@@ -173,21 +168,25 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
         {/* Mobile Menu & Command Toggle with min 44px touch targets */}
         <div className="flex md:hidden items-center gap-2">
           <button
-            onClick={onOpenCommandPalette}
+            onClick={() => onOpenCommandPalette()}
             type="button"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
             aria-label="Open Search Command Palette"
           >
-            <Search className="w-4 h-4 text-cyan-400" />
+            <Search className="w-4 h-4 text-cyan-400 pointer-events-none" />
           </button>
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
             type="button"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-cyan-400" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 text-cyan-400 pointer-events-none" />
+            ) : (
+              <Menu className="w-5 h-5 pointer-events-none" />
+            )}
           </button>
         </div>
       </div>

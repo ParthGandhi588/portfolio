@@ -101,7 +101,7 @@ export function Experience() {
               {EDUCATION.map((edu, idx) => (
                 <div
                   key={idx}
-                  className="p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2"
+                  className="p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2 hover:border-cyan-500/30 transition-colors"
                 >
                   <h4 className="text-sm font-mono font-semibold text-white">
                     {edu.institution}
@@ -109,9 +109,9 @@ export function Experience() {
                   <div className="text-xs text-zinc-300 font-sans">
                     {edu.degree}
                   </div>
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-400 pt-1">
-                    <span>{edu.period}</span>
-                    <span className="text-cyan-400/90">{edu.grade}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-mono text-zinc-400 pt-1">
+                    <span>{edu.period}{edu.location ? ` · ${edu.location}` : ""}</span>
+                    <span className="text-cyan-400 font-medium">{edu.grade}</span>
                   </div>
                 </div>
               ))}

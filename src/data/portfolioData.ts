@@ -389,6 +389,13 @@ export const EDUCATION = [
     location: "Anand, Gujarat",
     grade: "CPI: 7.14",
   },
+  {
+    institution: "Riverdale Academy",
+    degree: "Higher Secondary (Class XII) · Science Stream (GSEB)",
+    period: "2019 — 2021",
+    location: "Surat, Gujarat",
+    grade: "Percentile: 93.71",
+  },
 ];
 
 export const CERTIFICATIONS = [

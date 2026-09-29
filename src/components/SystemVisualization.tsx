@@ -250,6 +250,29 @@ export function SystemVisualization() {
                       </span>
                     )}
                   </div>
+
+                  {/* Mobile Inline Telemetry Details (Instant tactile feedback on tap) */}
+                  {isDirectActive && (
+                    <div className="sm:hidden mt-3 pt-2.5 border-t border-cyan-500/25 space-y-2 animate-in fade-in duration-150">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-cyan-300">
+                        <span className="font-semibold">{node.role}</span>
+                        <span className="text-zinc-400">{node.metric}</span>
+                      </div>
+                      <p className="text-xs text-zinc-300 font-sans leading-relaxed">
+                        {node.detail}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {node.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-[10px] px-2 py-0.5 rounded border border-cyan-500/20 bg-cyan-950/40 text-cyan-300 font-mono"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </button>
 
                 {/* Desktop Connecting Arrow with Dynamic Path Highlighting */}
@@ -269,8 +292,8 @@ export function SystemVisualization() {
           })}
         </div>
 
-        {/* Selected Node Detailed Architecture Telemetry Drawer */}
-        <div className="mt-5 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs">
+        {/* Selected Node Detailed Architecture Telemetry Drawer (Desktop) */}
+        <div className="hidden sm:block mt-5 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-3 border-b border-white/[0.06] gap-2">
             <div className="flex items-center gap-2">
               <span className="text-cyan-400 font-bold">{currentNode.stage}</span>

@@ -82,10 +82,10 @@ export function FlagshipProjects() {
 
                     <Link
                       href={`/work/${project.slug}`}
-                      className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-semibold bg-cyan-950/70 border border-cyan-500/40 text-cyan-200 hover:bg-cyan-900/60 hover:text-white hover:border-cyan-400 transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
+                      className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-semibold bg-cyan-950/70 border border-cyan-500/40 text-cyan-200 hover:bg-cyan-900/60 hover:text-white hover:border-cyan-400 transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
                     >
                       <span>Explore System</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5 pointer-events-none" />
                     </Link>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export function FlagshipProjects() {
                             <button
                               type="button"
                               onClick={() => handleSelectNode(project.slug, nodeIdx)}
-                              className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
+                              className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation select-none border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
                                 isNodeActive
                                   ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white ring-1 ring-cyan-400/40"
                                   : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05] hover:border-white/[0.18]"
@@ -139,7 +139,7 @@ export function FlagshipProjects() {
                                   0{nodeIdx + 1} //
                                 </span>
                                 {isNodeActive && (
-                                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse pointer-events-none" />
                                 )}
                               </div>
                               <span className="text-xs font-mono font-semibold truncate block">
