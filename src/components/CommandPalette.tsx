@@ -9,6 +9,7 @@ import {
   LineChart,
   Briefcase,
   FileText,
+  Mail,
   X,
   ArrowRight,
 } from "lucide-react";
@@ -38,7 +39,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const commands: CommandItem[] = [
     {
       id: "agentic-erp",
-      label: "View Agentic ERP (Case Study)",
+      label: "Agentic ERP (Case Study)",
       category: "Systems",
       icon: Terminal,
       action: () => {
@@ -48,7 +49,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     },
     {
       id: "codebase-rag",
-      label: "View CodeBase RAG (Case Study)",
+      label: "CodeBase RAG (Case Study)",
       category: "Systems",
       icon: FileCode2,
       action: () => {
@@ -58,7 +59,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     },
     {
       id: "absence-risk",
-      label: "View Absence Risk (Case Study)",
+      label: "Absence Risk Prediction (Case Study)",
       category: "Systems",
       icon: LineChart,
       action: () => {
@@ -72,7 +73,21 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       category: "Navigation",
       icon: Briefcase,
       action: () => {
-        router.push("/#experience");
+        const el = document.getElementById("experience");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#experience");
+        onClose();
+      },
+    },
+    {
+      id: "contact",
+      label: "Get in Touch / Contact",
+      category: "Navigation",
+      icon: Mail,
+      action: () => {
+        const el = document.getElementById("contact");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#contact");
         onClose();
       },
     },
@@ -167,7 +182,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-28 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 touch-manipulation"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -189,14 +204,14 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            placeholder="Type a command or search systems..."
+            placeholder="Type a command or search portfolio..."
             className="w-full bg-transparent text-sm font-mono text-zinc-100 placeholder-zinc-500 focus:outline-none"
             aria-label="Search command palette"
           />
           <button
             type="button"
             onClick={onClose}
-            className="p-1 text-zinc-500 hover:text-zinc-300 rounded"
+            className="min-w-[40px] min-h-[40px] flex items-center justify-center p-1.5 text-zinc-400 hover:text-zinc-200 rounded-lg hover:bg-white/[0.05] transition-colors cursor-pointer"
             aria-label="Close"
           >
             <X className="w-4 h-4" />
@@ -220,10 +235,10 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                   type="button"
                   onClick={cmd.action}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  className={`w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-colors font-mono text-xs cursor-pointer ${
+                  className={`w-full text-left px-3.5 py-3 rounded-lg flex items-center justify-between transition-colors font-mono text-xs cursor-pointer min-h-[48px] touch-manipulation border ${
                     isSelected
-                      ? "bg-cyan-950/40 text-cyan-200 border border-cyan-500/30"
-                      : "text-zinc-300 hover:bg-white/[0.03] border border-transparent"
+                      ? "bg-cyan-950/40 text-cyan-200 border-cyan-500/30"
+                      : "text-zinc-300 hover:bg-white/[0.03] border-transparent"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -234,13 +249,13 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                           : "bg-white/[0.04] text-zinc-400"
                       }`}
                     >
-                      <Icon className="w-3.5 h-3.5" />
+                      <Icon className="w-4 h-4" />
                     </div>
-                    <span>{cmd.label}</span>
+                    <span className="font-medium">{cmd.label}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider hidden sm:inline">
                       {cmd.category}
                     </span>
                     {isSelected && (
@@ -254,7 +269,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         </div>
 
         {/* Footer info bar */}
-        <div className="px-4 py-2 border-t border-white/[0.06] bg-black/40 flex items-center justify-between text-[11px] font-mono text-zinc-500">
+        <div className="px-4 py-2.5 border-t border-white/[0.06] bg-black/40 flex items-center justify-between text-[11px] font-mono text-zinc-500">
           <div className="flex items-center gap-3">
             <span>↑↓ Navigate</span>
             <span>↵ Select</span>

@@ -46,7 +46,7 @@ export const CAPABILITIES = [
       "AI systems that combine LLM reasoning with constrained tools and deterministic application logic.",
     details: [
       "Specialist agent architecture with scoped role prompts",
-      "Typed Python tools preventing unconstrained hallucinations",
+      "Typed Python tools ensuring bounded tool access and schema validation",
       "Deterministic routing between reasoning and transaction layers",
     ],
   },
@@ -150,7 +150,7 @@ export const PROJECTS: Project[] = [
       {
         challenge: "High inference latency (>15s) in complex multi-step reasoning workflows.",
         decision:
-          "Integrated vLLM for high-throughput model serving, batching, and KV cache management, bringing relevant workflow execution times down to ~5s.",
+          "Integrated vLLM for high-throughput model serving and optimized inference, bringing relevant workflow execution times from ~15s down to ~5s.",
       },
     ],
   },
@@ -399,14 +399,14 @@ export const PHILOSOPHY = [
     principle: "RETRIEVE",
     statement: "Give models relevant context instead of expecting them to know everything.",
     description:
-      "Context engineering, AST-aware code chunking, and deterministic vector search outperform brute-force context stuffing and eliminate hallucinations.",
+      "Context engineering, AST-aware code chunking, and deterministic vector search outperform brute-force context stuffing and reduce uncontrolled model actions.",
   },
   {
     number: "03",
     principle: "ORCHESTRATE",
     statement: "Connect reasoning to controlled tools and deterministic application logic.",
     description:
-      "The LLM plans. Code executes. Systems of record require guaranteed validation, typed interfaces, and explicit rollback capabilities.",
+      "The LLM plans. Code executes. Systems of record require strict validation, typed interfaces, and deterministic execution boundaries.",
   },
   {
     number: "04",
@@ -420,7 +420,7 @@ export const PHILOSOPHY = [
     principle: "SHIP",
     statement: "A model running locally is not the same thing as a usable system.",
     description:
-      "True delivery involves background worker queues, WebSocket streaming, Docker containerization, and sub-second inference serving.",
+      "True delivery involves background worker queues, WebSocket streaming, Docker containerization, and optimized model inference serving.",
   },
 ];
 

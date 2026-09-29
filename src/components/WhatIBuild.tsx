@@ -1,10 +1,46 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { CAPABILITIES } from "@/data/portfolioData";
 import { Bot, FileCode2, Server, LineChart, ArrowRight } from "lucide-react";
+
+interface FlowStep {
+  label: string;
+  sub: string;
+}
+
+const CAPABILITY_FLOWS: Record<string, FlowStep[]> = {
+  "01": [
+    { label: "LLM", sub: "Reasoning" },
+    { label: "TOOL", sub: "Typed Schema" },
+    { label: "APPLICATION", sub: "State Mutation" },
+  ],
+  "02": [
+    { label: "CODE", sub: "Source AST" },
+    { label: "CHUNK", sub: "Tree-sitter" },
+    { label: "EMBED", sub: "FastEmbed" },
+    { label: "VECTOR SEARCH", sub: "pgvector" },
+    { label: "CONTEXT", sub: "Source Citing" },
+  ],
+  "03": [
+    { label: "REQUEST", sub: "WebSocket/HTTP" },
+    { label: "FASTAPI", sub: "Validation" },
+    { label: "WORKER", sub: "Task Queue" },
+    { label: "MODEL / DB", sub: "Serving & State" },
+  ],
+  "04": [
+    { label: "DATA", sub: "Leave & Logs" },
+    { label: "FEATURES", sub: "12 Pairwise" },
+    { label: "MODEL", sub: "Random Forest" },
+    { label: "PREDICTION", sub: "30-Day Risk" },
+  ],
+};
 
 const CAPABILITY_ICONS = [Bot, FileCode2, Server, LineChart];
 
 export function WhatIBuild() {
+  const [activeCard, setActiveCard] = useState<string>("01");
+
   return (
     <section id="capabilities" className="py-20 sm:py-28 border-t border-white/[0.08] relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -25,10 +61,19 @@ export function WhatIBuild() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           {CAPABILITIES.map((cap, idx) => {
             const Icon = CAPABILITY_ICONS[idx];
+            const flow = CAPABILITY_FLOWS[cap.number] || [];
+            const isActive = activeCard === cap.number;
+
             return (
               <div
                 key={cap.number}
-                className="group relative p-6 sm:p-7 rounded-lg border border-white/[0.08] bg-[#0d0f17]/60 hover:bg-[#0d0f17]/90 hover:border-cyan-500/30 transition-all duration-300 flex flex-col justify-between"
+                onMouseEnter={() => setActiveCard(cap.number)}
+                onClick={() => setActiveCard(cap.number)}
+                className={`group relative p-6 sm:p-7 rounded-xl border transition-all duration-300 flex flex-col justify-between cursor-pointer ${
+                  isActive
+                    ? "bg-[#0d101a] border-cyan-500/40 shadow-lg shadow-cyan-950/20 ring-1 ring-cyan-500/20"
+                    : "bg-[#0d0f17]/70 border-white/[0.08] hover:bg-[#0d0f17]/95 hover:border-white/[0.18]"
+                }`}
               >
                 <div>
                   {/* Top Bar: Number + Icon */}
@@ -36,13 +81,23 @@ export function WhatIBuild() {
                     <span className="font-mono text-xs font-bold text-zinc-400 tracking-wider">
                       {cap.number}
                     </span>
-                    <div className="p-2 rounded border border-white/[0.06] bg-white/[0.02] text-zinc-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors">
+                    <div
+                      className={`p-2 rounded border transition-colors ${
+                        isActive
+                          ? "border-cyan-500/40 bg-cyan-950/40 text-cyan-400"
+                          : "border-white/[0.06] bg-white/[0.02] text-zinc-400 group-hover:text-zinc-200"
+                      }`}
+                    >
                       <Icon className="w-4 h-4" />
                     </div>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-mono font-semibold tracking-tight text-white group-hover:text-cyan-300 transition-colors">
+                  <h3
+                    className={`text-lg font-mono font-semibold tracking-tight transition-colors ${
+                      isActive ? "text-cyan-200" : "text-white group-hover:text-zinc-100"
+                    }`}
+                  >
                     {cap.title}
                   </h3>
 
@@ -50,6 +105,45 @@ export function WhatIBuild() {
                   <p className="mt-2.5 text-sm text-zinc-300 leading-relaxed font-sans">
                     {cap.description}
                   </p>
+
+                  {/* Subtle Interactive Micro-Flow Animation */}
+                  <div className="mt-5 p-3 rounded-lg border border-white/[0.06] bg-black/40">
+                    <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
+                      <span>Execution Pipeline</span>
+                      <span className="text-cyan-400/80">Deterministic Flow</span>
+                    </div>
+
+                    <div className="overflow-x-auto pb-1 scrollbar-none">
+                      <div className="flex items-center gap-1.5 min-w-max">
+                        {flow.map((step, sIdx) => (
+                          <React.Fragment key={sIdx}>
+                            <div
+                              className={`px-2 py-1 rounded text-center transition-all duration-200 border ${
+                                isActive
+                                  ? "border-cyan-500/30 bg-cyan-950/30 text-cyan-200"
+                                  : "border-white/[0.06] bg-white/[0.02] text-zinc-400"
+                              }`}
+                            >
+                              <div className="text-[10px] font-mono font-semibold tracking-wide">
+                                {step.label}
+                              </div>
+                              <div className="text-[8px] text-zinc-400 font-mono mt-0.5">
+                                {step.sub}
+                              </div>
+                            </div>
+
+                            {sIdx < flow.length - 1 && (
+                              <ArrowRight
+                                className={`w-3 h-3 transition-colors ${
+                                  isActive ? "text-cyan-400" : "text-zinc-600"
+                                }`}
+                              />
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Technical Bullet Details */}
