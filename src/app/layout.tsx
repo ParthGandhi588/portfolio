@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://parthgandhi.dev"),
+  metadataBase: new URL("https://parthgandhi-portfolio.vercel.app"),
   title: "Parth Gandhi — AI/ML Developer | Generative AI & AI Systems",
   description:
     "AI/ML Developer building Generative AI, agent-based systems, RAG pipelines, applied ML, and AI backend systems. Focused on connecting models to real software.",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://parthgandhi.dev",
+    url: "https://parthgandhi-portfolio.vercel.app",
     title: "Parth Gandhi — AI/ML Developer | Generative AI & AI Systems",
     description:
       "I build AI systems that turn complex workflows into intelligent software. Generative AI, agent-based systems, RAG, and production backend engineering.",
