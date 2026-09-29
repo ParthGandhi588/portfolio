@@ -34,7 +34,7 @@ const CAPABILITY_FLOWS: Record<string, FlowStep[]> = {
   "04": [
     { label: "LOGS", sub: "Attendance & Leaves" },
     { label: "120d WINDOW", sub: "90d Feat / 30d Tgt" },
-    { label: "12 FEATURES", sub: "Dyadic Tensors" },
+    { label: "12 FEATURES", sub: "Dyadic Signals" },
     { label: "RANDOM FOREST", sub: "80/20 Stratified" },
     { label: "CLUSTERS", sub: "Complete-Linkage" },
   ],

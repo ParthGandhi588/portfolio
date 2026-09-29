@@ -54,8 +54,8 @@ const CODEBASE_STAGES = [
   },
   {
     step: "ISOLATED RETRIEVER",
-    title: "Repository & Session Isolation",
-    shortRole: "Repository + Session Scoping",
+    title: "Repository + Session Isolation",
+    shortRole: "Repository + Session Isolation",
     desc: "Enforces metadata-filtered pgvector searches partitioned by repository source_key and MD5-hashed session_key to guarantee strict isolation between distinct repositories and user sessions.",
   },
   {

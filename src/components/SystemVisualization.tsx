@@ -57,12 +57,12 @@ const SYSTEM_NODES: NodeData[] = [
     index: 2,
     stage: "03 // REASONING",
     title: "AI REASONING LAYER",
-    subtitle: "Specialist Agents & Inference",
+    subtitle: "Specialist Agent + vLLM",
     icon: Cpu,
     metric: "vLLM Serving (~5s)",
-    detail: "Domain-scoped specialist agents formulate structured action plans via local vLLM serving, maintaining explicit boundaries without direct database access.",
+    detail: "Domain-scoped specialist agents formulate structured action plans via local vLLM serving, maintaining explicit execution boundaries without direct database access.",
     tags: ["Specialist Agents", "vLLM Qwen", "Structured Plans", "Constrained Prompts"],
-    role: "Intent Planning & Scheduling",
+    role: "Intent Planning",
   },
   {
     id: "tools",
@@ -298,7 +298,7 @@ export function SystemVisualization() {
             <div className="flex items-center gap-2">
               <span className="text-cyan-400 font-bold">{currentNode.stage}</span>
               <span className="text-zinc-500">//</span>
-              <span className="text-zinc-100 font-semibold">{currentNode.title}</span>
+              <span className="text-zinc-100 font-semibold">{currentNode.id === "ai-reasoning" ? "SPECIALIST AGENT" : currentNode.title}</span>
               <span className="text-zinc-400">({currentNode.role})</span>
             </div>
             <div className="flex items-center gap-2 text-[11px] text-zinc-400">

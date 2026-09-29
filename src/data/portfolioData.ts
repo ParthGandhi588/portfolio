@@ -76,7 +76,7 @@ export const CAPABILITIES = [
     number: "04",
     title: "APPLIED ML",
     description:
-      "Production machine-learning pipelines for risk prediction, behavioral analysis, hierarchical clustering, and explainability.",
+      "Applied machine-learning workflows for risk prediction, behavioral analysis, hierarchical clustering, and explainability.",
     details: [
       "120-day observation structure (90-day feature window + 30-day target window)",
       "12 engineered pairwise temporal and behavioral interaction features",
@@ -250,7 +250,7 @@ export const PROJECTS: Project[] = [
     title: "ABSENCE RISK PREDICTION",
     tagline: "An applied ML workflow analyzing leave and attendance data to predict pairwise co-absence risk and discover patterns.",
     description:
-      "An applied machine learning workflow analyzing employee leave and attendance patterns to identify relational co-absence risk and discover natural co-absence behavioral clusters.",
+      "An applied machine learning workflow analyzing employee leave and attendance patterns to identify relational co-absence risk and discover behavioral clusters.",
     heroPrinciple: "Moving beyond heuristics: engineering pairwise behavioral features into explainable ML predictions.",
     technologies: [
       "Python",
