@@ -117,7 +117,7 @@ export function FlagshipProjects() {
                   </div>
 
                   {/* Flow Steps List (Horizontal scroll on narrow mobile) */}
-                  <div className="overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none">
+                  <div className="overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none touch-pan-x">
                     <div className="flex items-center gap-2 min-w-max">
                       {project.architectureFlow.map((node, nodeIdx) => {
                         const isNodeActive = activeNodeIndex === nodeIdx;
@@ -126,8 +126,7 @@ export function FlagshipProjects() {
                             <button
                               type="button"
                               onClick={() => handleSelectNode(project.slug, nodeIdx)}
-                              onMouseEnter={() => handleSelectNode(project.slug, nodeIdx)}
-                              className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
+                              className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:scale-[0.98] ${
                                 isNodeActive
                                   ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white scale-[1.02]"
                                   : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05] hover:border-white/[0.18]"

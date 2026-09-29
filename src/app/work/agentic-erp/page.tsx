@@ -14,6 +14,9 @@ import {
   Zap,
   Server,
   Code2,
+  ChevronDown,
+  ChevronUp,
+  Terminal,
 } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { PROJECTS } from "@/data/portfolioData";
@@ -21,32 +24,38 @@ import { PROJECTS } from "@/data/portfolioData";
 const ERP_STAGES = [
   {
     step: "USER / TRIGGERS",
-    title: "User Queries & Scheduled Triggers",
+    title: "User Queries & Schedulers",
+    shortRole: "Ingestion Trigger",
     desc: "Natural language business queries, invoice uploads via WebSockets, or automated execution triggers from the persistent PostgreSQL AI scheduler.",
   },
   {
     step: "FASTAPI GATEWAY",
     title: "FastAPI Gateway & Session Engine",
+    shortRole: "Validation & Streaming",
     desc: "Authenticates sessions, validates request schemas, handles MIME routing for documents, and manages asynchronous token streaming.",
   },
   {
     step: "SPECIALIST AGENT",
     title: "Domain Specialist Agent",
+    shortRole: "Scoped Intent Planning",
     desc: "Intent-scoped specialist agent (Purchase, Stores, Planning, Engineering, QC) loaded with bounded system prompts and restricted tool schemas.",
   },
   {
     step: "vLLM INFERENCE",
     title: "Local vLLM Model Serving",
+    shortRole: "High-Throughput Reasoning",
     desc: "High-throughput local OpenAI-compatible endpoint hosting Qwen at temperature zero, generating validated tool invocation arguments without external API latency.",
   },
   {
     step: "TYPED PYTHON TOOLS",
-    title: "Pydantic Validation & Async Task Queue",
+    title: "Pydantic Validation & Task Queue",
+    shortRole: "Deterministic Execution",
     desc: "Model outputs are strictly validated against Pydantic schemas. Concurrent tool calls emitted in a single turn are scheduled through an asynchronous task queue.",
   },
   {
     step: "ERP & PERSISTENCE",
-    title: "Deterministic ERP & Database State",
+    title: "Deterministic State & APIs",
+    shortRole: "System of Record",
     desc: "Deterministic execution against internal ERP service endpoints, PostgreSQL, and document stores with audited rollback boundaries.",
   },
 ];
@@ -55,12 +64,14 @@ export default function AgenticErpPage() {
   const project = PROJECTS.find((p) => p.slug === "agentic-erp")!;
   const [activeStageIndex, setActiveStageIndex] = useState(2); // Default to SPECIALIST AGENT
   const [signalIndex, setSignalIndex] = useState(0);
+  const [deepDiveOpen, setDeepDiveOpen] = useState(false);
+  const [activeDeepDiveTab, setActiveDeepDiveTab] = useState<"schematic" | "scheduler" | "tools" | "multimodal">("schematic");
 
   // Subtle request/signal loop
   useEffect(() => {
     const timer = setInterval(() => {
       setSignalIndex((prev) => (prev + 1) % ERP_STAGES.length);
-    }, 2200);
+    }, 2400);
     return () => clearInterval(timer);
   }, []);
 
@@ -96,8 +107,10 @@ export default function AgenticErpPage() {
       </nav>
 
       {/* Case Study Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
-        {/* Header Block */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-10 sm:space-y-14">
+        {/* ========================================================================= */}
+        {/* LEVEL 1: 10-SECOND UNDERSTANDING (What is Agentic ERP?)                    */}
+        {/* ========================================================================= */}
         <header className="space-y-4">
           <div className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 font-semibold tracking-wider uppercase">
             <span>{project.category}</span>
@@ -107,90 +120,58 @@ export default function AgenticErpPage() {
             {project.title}
           </h1>
 
-          <p className="text-base sm:text-xl text-zinc-300 leading-relaxed font-sans">
-            {project.description}
+          <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans">
+            An enterprise AI layer connecting business workflows through specialist agents, typed Python tools, and persistent scheduling.
           </p>
 
           {/* Architectural Rule Callout */}
-          <div className="p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-6">
+          <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-4">
             <span className="text-cyan-400 font-bold shrink-0">CORE RULE //</span>
             <span>&quot;The LLM plans. Python executes. The ERP remains the system of record.&quot;</span>
           </div>
+
+          {/* Executive Quick-Metric Chips */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">Runtime</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">Specialist Agents</span>
+            </div>
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">Execution</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">Typed Pydantic Tools</span>
+            </div>
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">Inference</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">Local vLLM Engine</span>
+            </div>
+            <div className="p-3 rounded-lg border border-emerald-500/25 bg-emerald-950/20 font-mono text-xs">
+              <span className="text-emerald-400 block text-[10px] uppercase">Measured Latency</span>
+              <span className="text-emerald-200 font-semibold mt-0.5 block">~15s → ~5s</span>
+            </div>
+          </div>
         </header>
 
-        {/* Technical Overview Metadata Grid */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Production Runtime</span>
-            <span className="text-zinc-200 mt-1 block">Specialist Agents</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Execution Boundary</span>
-            <span className="text-zinc-200 mt-1 block">Pydantic / Async Queue</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Model Serving</span>
-            <span className="text-zinc-200 mt-1 block">Local vLLM Engine (~5s)</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Scheduler Layer</span>
-            <span className="text-zinc-200 mt-1 block">PostgreSQL Persistent Queue</span>
-          </div>
-        </section>
-
-        {/* 1. Problem & Constraints */}
+        {/* ========================================================================= */}
+        {/* LEVEL 2: 30-SECOND UNDERSTANDING (What makes the architecture interesting?) */}
+        {/* ========================================================================= */}
         <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            01 // PROBLEM & ARCHITECTURAL CONSTRAINTS
-          </h2>
-          <div className="text-sm sm:text-base text-zinc-300 space-y-3 leading-relaxed font-sans">
-            <p>
-              Enterprise ERP software is burdened with hundreds of fragmented forms, transaction screens,
-              and complex relational balances. While generative AI provides natural language interaction,
-              connecting language models directly to enterprise state creates critical engineering challenges:
-            </p>
-            <ul className="space-y-2 pl-2 sm:pl-4 text-xs sm:text-sm text-zinc-300">
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Unchecked Database Mutations:</strong> Allowing models to generate raw SQL queries risks executing malformed updates, bypassing double-entry audit trails, or violating relational constraints.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Prompt Bloat & Reasoning Drift:</strong> Stuffing an entire enterprise schema (hundreds of tables across Purchase, Stores, QC, Planning) into a single prompt blows out token limits and degrades reasoning accuracy.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Multi-Turn Latency Bottlenecks:</strong> Cloud-hosted sequential model calls can take 15–20 seconds per user turn, frustrating operational staff who need responsive workflows.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Ephemeral Automation:</strong> Background scheduled jobs held in ephemeral memory disappear when containers restart or crash during report generation.</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        {/* 2. Interactive System Architecture */}
-        <section className="space-y-5">
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
-            <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide">
-              02 // INTERACTIVE REQUEST LIFECYCLE
+            <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide">
+              REQUEST LIFECYCLE & EXECUTION BOUNDARY
             </h2>
             <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
               <Activity className="w-3.5 h-3.5 animate-pulse" />
-              <span className="text-[11px] hidden sm:inline">LIVE SIGNAL PROGRESSION</span>
+              <span className="text-[11px] hidden sm:inline">LIVE SIGNAL</span>
             </div>
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-            Every incoming request follows a deterministic pipeline where language models are restricted to
-            formulating structured JSON schemas, while deterministic Python code executes all enterprise operations.
-            Tap or hover any stage below to inspect its execution constraints:
+            The model is never granted direct mutation rights. Reasoning plans are validated into strongly typed function calls, executed asynchronously in pure Python. Tap any stage to inspect:
           </p>
 
-          {/* Interactive Flow Stepper Ribbon */}
-          <div className="p-4 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-4">
-            <div className="overflow-x-auto pb-2 scrollbar-none">
+          {/* Interactive Stepper Ribbon (Mobile Touch & Desktop Click) */}
+          <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
+            <div className="overflow-x-auto pb-2 scrollbar-none touch-pan-x -mx-1 px-1">
               <div className="flex items-center gap-2 min-w-max">
                 {ERP_STAGES.map((stage, idx) => {
                   const isActive = activeStageIndex === idx;
@@ -201,10 +182,9 @@ export default function AgenticErpPage() {
                       <button
                         type="button"
                         onClick={() => setActiveStageIndex(idx)}
-                        onMouseEnter={() => setActiveStageIndex(idx)}
-                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
+                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[135px] max-w-[165px] min-h-[68px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:scale-[0.98] ${
                           isActive
-                            ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white scale-[1.02]"
+                            ? "bg-cyan-950/50 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-white scale-[1.02]"
                             : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05]"
                         }`}
                         aria-pressed={isActive}
@@ -220,6 +200,9 @@ export default function AgenticErpPage() {
                         <span className="text-xs font-mono font-semibold truncate block">
                           {stage.step}
                         </span>
+                        <span className="text-[10px] text-zinc-400 font-sans truncate block mt-0.5">
+                          {stage.shortRole}
+                        </span>
                       </button>
 
                       {idx < ERP_STAGES.length - 1 && (
@@ -231,8 +214,8 @@ export default function AgenticErpPage() {
               </div>
             </div>
 
-            {/* Explanation box */}
-            <div className="p-4 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
+            {/* Stage Detail Drawer */}
+            <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
               <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
               <div className="space-y-1">
                 <div className="text-xs font-mono font-bold text-cyan-300 uppercase">
@@ -244,11 +227,211 @@ export default function AgenticErpPage() {
               </div>
             </div>
           </div>
+        </section>
 
-          {/* ASCII / Monospace Flow Diagram */}
-          <div className="p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs overflow-x-auto touch-pan-x">
-            <div className="text-zinc-500 mb-2">// DETERMINISTIC LIFECYCLE SCHEMATIC</div>
-            <pre className="text-cyan-300 text-[11px] leading-snug">
+        {/* ========================================================================= */}
+        {/* ARCHITECTURAL DISTINCTION: PRODUCTION VS EXPERIMENTAL (High Signal)       */}
+        {/* ========================================================================= */}
+        <section className="space-y-3.5">
+          <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
+            ARCHITECTURAL REALITY: PRODUCTION VS EXPERIMENTAL
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Production Architecture Card */}
+            <div className="p-4 sm:p-5 rounded-lg border border-cyan-500/30 bg-cyan-950/15 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                  PRODUCTION RUNTIME
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                  DEPLOYED
+                </span>
+              </div>
+              <h3 className="text-sm font-mono font-semibold text-white">
+                Specialist-Agent Architecture with Async Queue
+              </h3>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Each domain (Purchase, Stores, Planning, QC, Database) operates as an isolated specialist agent. Agents utilize scoped system prompts and bounded tools. Multiple tool calls emitted in a single turn are dispatched concurrently via an asynchronous task queue.
+              </p>
+            </div>
+
+            {/* Experimental Architecture Card */}
+            <div className="p-4 sm:p-5 rounded-lg border border-amber-500/30 bg-amber-950/15 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Layers className="w-4 h-4 text-amber-400" />
+                  EVALUATED PROTOTYPE
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  RESEARCH PROTOTYPE
+                </span>
+              </div>
+              <h3 className="text-sm font-mono font-semibold text-white">
+                Universal Leader Supervisor-Worker Team
+              </h3>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Evaluated a supervisor-worker team for cross-departmental coordination. A leader agent breaks down complex requests and delegates subtasks to specialist workers. Employs lazy schema context loading to avoid prompt token explosion.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* LEVEL 3: 60-90 SECOND UNDERSTANDING (What was engineered & measured result) */}
+        {/* ========================================================================= */}
+        <section className="space-y-4">
+          <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
+            CORE SUBSYSTEMS & MEASURED OUTCOMES
+          </h2>
+
+          {/* Latency Result Callout */}
+          <div className="p-4 sm:p-5 rounded-lg border border-emerald-500/20 bg-emerald-950/15 space-y-2">
+            <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-semibold">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>MEASURED WORKFLOW OPTIMIZATION: ~15s → ~5s</span>
+            </div>
+            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
+              Within a multi-step ERP document parsing workflow, sequential cloud API calls originally produced latencies around 15 seconds due to network hops and cold starts. By configuring local <strong>vLLM model serving</strong> (hosting Qwen at temperature zero) and token streaming over native WebSockets, total workflow completion time was reduced to approximately <strong>5 seconds</strong>.
+            </p>
+          </div>
+
+          {/* 4 Crisp Subsystems */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Clock className="w-4 h-4 text-cyan-400" />
+                <span>PERSISTENT AI SCHEDULER</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Relational PostgreSQL backing for AI task schedules with background worker daemon, timezone handling, failure retry states, and automated WhatsApp/email alert delivery.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Code2 className="w-4 h-4 text-cyan-400" />
+                <span>TYPED CONSTRAINED EXECUTION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Model decisions translate into validated Pydantic tool schemas before invoking internal authenticated ERP services. Eliminates raw SQL generation and mutation risks.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <FileCheck className="w-4 h-4 text-cyan-400" />
+                <span>MULTIMODAL DOCUMENT PROCESSING</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Automated MIME detection, PyMuPDF text extraction, and vision OCR fallbacks for operational documents, with SHA-256 payload caching to skip redundant processing.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Server className="w-4 h-4 text-cyan-400" />
+                <span>DATA INTEGRITY SAFEGUARDS</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Validation pipelines for Item Master sheets, process sheets, and intersite transfer notes, catching malformed business records before database commitment.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* LEVEL 4: EXPANDABLE TECHNICAL DEEP DIVE (Progressive Disclosure)          */}
+        {/* ========================================================================= */}
+        <section className="pt-2 border-t border-white/[0.08]">
+          <div className="rounded-xl border border-white/[0.1] bg-[#0c0e15]/95 overflow-hidden">
+            {/* Accordion Header */}
+            <button
+              type="button"
+              onClick={() => setDeepDiveOpen(!deepDiveOpen)}
+              className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+              aria-expanded={deepDiveOpen}
+            >
+              <div className="flex items-center gap-2.5">
+                <Terminal className="w-4 h-4 text-cyan-400 shrink-0" />
+                <div>
+                  <span className="text-xs font-mono font-bold text-white tracking-wider uppercase block">
+                    TECHNICAL DEEP DIVE // IMPLEMENTATION SCHEMATICS & PROTOCOLS
+                  </span>
+                  <span className="text-[11px] text-zinc-400 font-sans block mt-0.5">
+                    {deepDiveOpen ? "Click to collapse detailed specs" : "Click to expand architecture schematic, scheduler tables, and async queues"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-[11px] font-mono text-cyan-400 hidden sm:inline">
+                  {deepDiveOpen ? "COLLAPSE" : "EXPAND"}
+                </span>
+                {deepDiveOpen ? (
+                  <ChevronUp className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-cyan-400" />
+                )}
+              </div>
+            </button>
+
+            {/* Expandable Body */}
+            {deepDiveOpen && (
+              <div className="p-4 sm:p-6 border-t border-white/[0.08] space-y-6 bg-black/40 animate-in fade-in duration-200">
+                {/* Tabs */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("schematic")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "schematic"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Full Schematic
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("scheduler")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "scheduler"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Scheduler Architecture
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("tools")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "tools"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Tool Queue & Schemas
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("multimodal")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "multimodal"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Multimodal Pipeline
+                  </button>
+                </div>
+
+                {/* Tab 1: Monospace Flow Diagram */}
+                {activeDeepDiveTab === "schematic" && (
+                  <div className="p-4 rounded-lg border border-white/[0.08] bg-black/80 font-mono text-xs overflow-x-auto touch-pan-x">
+                    <div className="text-zinc-500 mb-2">// SPECIFICATION SCHEMATIC</div>
+                    <pre className="text-cyan-300 text-[11px] leading-snug">
 {`+-----------------------------------------------------------------------+
 |  CLIENT & TRIGGERS (WebSockets / MIME Uploads / Persistent Cron)      |
 +-----------------------------------+-----------------------------------+
@@ -287,160 +470,68 @@ export default function AgenticErpPage() {
 |  - Authenticated Internal REST APIs / PostgreSQL / MinIO Storage      |
 |  - Audit logging, state persistence, and webhook delivery             |
 +-----------------------------------------------------------------------+`}
-            </pre>
-          </div>
-        </section>
+                    </pre>
+                  </div>
+                )}
 
-        {/* 3. Production vs Experimental Architecture Comparison */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            03 // ARCHITECTURAL DISTINCTION: PRODUCTION VS EXPERIMENTAL
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Production Architecture Card */}
-            <div className="p-5 rounded-lg border border-cyan-500/30 bg-cyan-950/15 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-cyan-400" />
-                  PRODUCTION RUNTIME
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  DEPLOYED
-                </span>
-              </div>
-              <h3 className="text-sm font-mono font-bold text-white">
-                Specialist-Agent Architecture with Async Tooling
-              </h3>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Each operational department (Purchase, Stores, Planning, QC, Database) operates as an isolated specialist agent inheriting from a shared orchestrator. Agents operate with scoped system prompts and strictly bounded tool functions. When multiple tool calls are emitted in a single model turn, an asynchronous task queue executes them concurrently, preventing blocking bottlenecks.
-              </p>
-              <div className="text-[11px] font-mono text-cyan-400/90 pt-1">
-                Deterministic routing · Scoped prompt boundaries · Parallel async tools
-              </div>
-            </div>
+                {/* Tab 2: Scheduler Internals */}
+                {activeDeepDiveTab === "scheduler" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      Persistent PostgreSQL Job Queue & Worker Daemon
+                    </h3>
+                    <p>
+                      The scheduler replaces in-memory timers with persistent relational tables tracking job definitions, schedules, next execution timestamps, and execution runs.
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>Schema design:</strong> Relational tables separate job configuration (cron expressions, payload, timezone) from run instances (status, started_at, completed_at, error_log).</li>
+                      <li><strong>Worker loop:</strong> Asynchronous worker polls for due jobs, calculates next execution times using Python <code className="text-cyan-300 font-mono">ZoneInfo</code>, and sets status to running atomically.</li>
+                      <li><strong>Fault tolerance:</strong> Unfinished jobs caused by server crashes are detected and rescheduled with retry increments.</li>
+                      <li><strong>Natural language tool interface:</strong> Agents are provided typed CRUD tools (<code className="text-cyan-300 font-mono">add_cron_job</code>, <code className="text-cyan-300 font-mono">list_cron_jobs</code>, <code className="text-cyan-300 font-mono">remove_cron_job</code>) to automate report schedules directly from conversation.</li>
+                    </ul>
+                  </div>
+                )}
 
-            {/* Experimental Architecture Card */}
-            <div className="p-5 rounded-lg border border-amber-500/30 bg-amber-950/15 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Layers className="w-4 h-4 text-amber-400" />
-                  EXPERIMENTAL PROTOTYPE
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  BRANCH: trying_leader_agent
-                </span>
-              </div>
-              <h3 className="text-sm font-mono font-bold text-white">
-                Universal Leader Supervisor-Worker System
-              </h3>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                To evaluate cross-departmental coordination, Parth prototyped a supervisor-worker team. A universal leader agent evaluates complex multi-stage requests and delegates subtasks to specialist workers. To prevent context window explosion from injecting multiple database schemas, a lazy domain context tool dynamically reads schema files on demand.
-              </p>
-              <div className="text-[11px] font-mono text-amber-400/90 pt-1">
-                Evaluated research branch · Dynamic lazy schema loading · Subtask delegation
-              </div>
-            </div>
-          </div>
-        </section>
+                {/* Tab 3: Tool Queue & Schemas */}
+                {activeDeepDiveTab === "tools" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      Asynchronous Task Queue & Schema Validation
+                    </h3>
+                    <p>
+                      Language models often emit multiple independent tool calls in a single response turn. Rather than executing them serially, the runtime employs an asynchronous task queue.
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>Concurrent async execution:</strong> Validated tool calls are bundled as asynchronous tasks executed concurrently via <code className="text-cyan-300 font-mono">asyncio.gather</code>, reducing tool turnaround latency.</li>
+                      <li><strong>Pydantic validation layer:</strong> Tool arguments are parsed through strict Pydantic schemas. If validation fails, errors are returned back to the model for self-correction without touching backend services.</li>
+                      <li><strong>Service separation:</strong> Tools call internal authenticated API services rather than executing direct SQL, keeping database transactions isolated.</li>
+                    </ul>
+                  </div>
+                )}
 
-        {/* 4. Core Engineering Highlights */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            04 // CORE SUBSYSTEM IMPLEMENTATIONS
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Scheduler Highlight */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-cyan-400" />
-                <span>PERSISTENT POSTGRESQL AI SCHEDULER</span>
+                {/* Tab 4: Multimodal Pipeline */}
+                {activeDeepDiveTab === "multimodal" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      MIME Detection, Extraction Fallback & Result Caching
+                    </h3>
+                    <p>
+                      Operational ERP documents (invoices, purchase orders, mill test certificates) arrive in heterogeneous formats.
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>MIME sniffing:</strong> Files are routed based on content signatures rather than file extensions.</li>
+                      <li><strong>Hybrid text extraction:</strong> Native digital PDFs are extracted using PyMuPDF for sub-second parsing; scanned documents fall back to local vision models for OCR.</li>
+                      <li><strong>Payload caching:</strong> Document hashes (SHA-256) are matched against processed records to bypass re-OCR on identical files.</li>
+                    </ul>
+                  </div>
+                )}
               </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Engineered a persistent task scheduler with dedicated PostgreSQL tables (<code className="text-cyan-300 font-mono">cron_jobs</code> and <code className="text-cyan-300 font-mono">cron_job_runs</code>) for schedules and execution logs. A background worker daemon calculates future runtimes with explicit timezone handling (<code className="text-cyan-300 font-mono">ZoneInfo</code>), retries failed jobs, and dispatches automated WhatsApp and Email notifications upon completion.
-              </p>
-            </div>
-
-            {/* Typed Tools Highlight */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Code2 className="w-4 h-4 text-cyan-400" />
-                <span>TYPED CONSTRAINED EXECUTION</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Migrated all agent operations away from raw SQL query generation to strongly typed Python tools. Inputs are validated with strict Pydantic schemas before calling internal authenticated service endpoints, eliminating SQL injection and structural corruption risks.
-              </p>
-            </div>
-
-            {/* Multimodal Ingestion */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-cyan-400" />
-                <span>MULTIMODAL DOCUMENT PIPELINE</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Built an ingestion pipeline that handles invoices and purchase orders via automated MIME sniffing, PyMuPDF native text extraction, and vision model OCR fallbacks. Extracted payloads are cached with SHA-256 hashes to prevent redundant processing.
-              </p>
-            </div>
-
-            {/* Data Validation Pipeline */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Server className="w-4 h-4 text-cyan-400" />
-                <span>DATA INTEGRITY & VALIDATION RULES</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Constructed verification layers for Excel bulk uploads (Item Master and Process Sheets) and multi-site transfer requests, catching malformed business records before they reach database persistence tables.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Measured Workflow Latency Optimization */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            05 // MEASURED WORKFLOW LATENCY OPTIMIZATION
-          </h2>
-          <div className="p-5 rounded-lg border border-emerald-500/20 bg-emerald-950/15 space-y-3">
-            <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-semibold">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>MEASURED WORKFLOW IMPROVEMENT: ~15s → ~5s</span>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-              Within a multi-step ERP document parsing workflow, sequential cloud API calls originally produced end-to-end execution durations around 15 seconds due to network round-trips and cold starts. By orchestrating inference with local <strong>vLLM model serving</strong> (hosting Qwen at temperature zero) and streaming tokens over native WebSockets, total workflow completion time was brought down to approximately <strong>5 seconds</strong>.
-            </p>
-            <div className="text-[11px] font-mono text-zinc-400 pt-1">
-              * Verified engineering outcome documented for the local model serving pipeline.
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Challenges & Design Decisions */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            06 // KEY DESIGN DECISIONS
-          </h2>
-          <div className="space-y-4">
-            {project.challengesAndDecisions.map((item, idx) => (
-              <div key={idx} className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-                <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
-                  Challenge #{idx + 1}
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                  {item.challenge}
-                </p>
-                <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider pt-2">
-                  Engineering Resolution
-                </div>
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-                  {item.decision}
-                </p>
-              </div>
-            ))}
+            )}
           </div>
         </section>
 
         {/* Technologies Grid */}
-        <section className="space-y-4 pt-4 border-t border-white/[0.08]">
+        <section className="space-y-3 pt-2">
           <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
             SYSTEM TECHNOLOGIES
           </h2>

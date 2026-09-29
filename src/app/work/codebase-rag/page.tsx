@@ -13,6 +13,9 @@ import {
   FileCode2,
   ShieldCheck,
   Cpu,
+  ChevronDown,
+  ChevronUp,
+  Terminal,
 } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { PROJECTS } from "@/data/portfolioData";
@@ -21,47 +24,44 @@ const CODEBASE_STAGES = [
   {
     step: "REPOSITORY",
     title: "Target Repository Scanner",
+    shortRole: "Path Discovery",
     desc: "Scans local or cloned git repositories with GitPython, respecting .gitignore rules and filtering binary blobs, lockfiles, and minified bundles.",
   },
   {
     step: "MANIFEST SCANNER",
-    title: "Dual Manifest & Incremental Hashing",
+    title: "Dual Manifest & Change Detection",
+    shortRole: "Incremental Hashing",
     desc: "Compares file modification time (mtime) and SHA-256 hashes against PostgreSQL manifest table to skip unchanged files and re-index only mutated source files.",
   },
   {
     step: "TREE-SITTER AST",
     title: "Language-Aware AST Splitting",
+    shortRole: "Syntax Boundary Chunking",
     desc: "Parses syntax trees across 10 languages (Python, JS, TS, Java, Go, Rust, C++, C, C#, PHP) using 50-line bounds with 10-line overlap to preserve logical code units.",
-  },
-  {
-    step: "CODE CHUNKS",
-    title: "Metadata-Enriched Chunks",
-    desc: "Chunks tagged with relative file path, start/end line numbers, syntax scope, and repository identifier for source grounding.",
   },
   {
     step: "FASTEMBED",
     title: "Local FastEmbed Engine",
+    shortRole: "Dense Embeddings",
     desc: "Generates 384-dimensional dense vector embeddings locally without cloud API rate limits, egress latency, or token expenses.",
   },
   {
     step: "PGVECTOR (HNSW)",
     title: "HNSW Drop & Rebuild Optimization",
+    shortRole: "Bulk Index Optimization",
     desc: "Drops the HNSW vector index prior to bulk insertion, executes high-throughput batch writes, and reconstructs the HNSW graph post-embedding.",
   },
   {
     step: "ISOLATED RETRIEVER",
     title: "Session & Multi-Repo Isolation",
+    shortRole: "Tenant Scoping",
     desc: "Enforces metadata-filtered pgvector searches partitioned by repository source key and MD5-hashed session key to prevent cross-tenant code leakage.",
   },
   {
     step: "HYBRID LLM",
     title: "Gemini with Local Ollama Fallback",
+    shortRole: "Context Synthesis",
     desc: "Synthesizes code context using Gemini API with automatic fallback to local Ollama (llama3.2) for air-gapped or private repositories.",
-  },
-  {
-    step: "GROUNDED RESPONSE",
-    title: "Source-Attributed Citing",
-    desc: "Emits verified answers directly citing repository file paths, function signatures, and line ranges used in retrieval.",
   },
 ];
 
@@ -69,11 +69,13 @@ export default function CodeBaseRagPage() {
   const project = PROJECTS.find((p) => p.slug === "codebase-rag")!;
   const [activeStageIndex, setActiveStageIndex] = useState(2); // Default to Tree-sitter
   const [signalIndex, setSignalIndex] = useState(0);
+  const [deepDiveOpen, setDeepDiveOpen] = useState(false);
+  const [activeDeepDiveTab, setActiveDeepDiveTab] = useState<"schematic" | "treesitter" | "hnsw" | "manifest">("schematic");
 
   useEffect(() => {
     const timer = setInterval(() => {
       setSignalIndex((prev) => (prev + 1) % CODEBASE_STAGES.length);
-    }, 2200);
+    }, 2400);
     return () => clearInterval(timer);
   }, []);
 
@@ -109,8 +111,10 @@ export default function CodeBaseRagPage() {
       </nav>
 
       {/* Case Study Main */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-12 sm:space-y-16">
-        {/* Header Block */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-10 sm:space-y-14">
+        {/* ========================================================================= */}
+        {/* LEVEL 1: 10-SECOND UNDERSTANDING (What is CodeBase RAG?)                  */}
+        {/* ========================================================================= */}
         <header className="space-y-4">
           <div className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 font-semibold tracking-wider uppercase">
             <span>{project.category}</span>
@@ -120,87 +124,57 @@ export default function CodeBaseRagPage() {
             {project.title}
           </h1>
 
-          <p className="text-base sm:text-xl text-zinc-300 leading-relaxed font-sans">
-            {project.description}
+          <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans">
+            Repository-aware code intelligence with Tree-sitter AST chunking, incremental indexing, and pgvector HNSW search.
           </p>
 
-          <div className="p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-6">
+          <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-4">
             <span className="text-cyan-400 font-bold shrink-0">CORE RULE //</span>
             <span>&quot;AST-aware semantic retrieval grounded in exact repository syntax and verified file paths.&quot;</span>
           </div>
+
+          {/* Executive Quick-Metric Chips */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">AST Chunking</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">10 Languages</span>
+            </div>
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">Vector Engine</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">pgvector (HNSW)</span>
+            </div>
+            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
+              <span className="text-zinc-500 block text-[10px] uppercase">Change Detection</span>
+              <span className="text-zinc-200 font-semibold mt-0.5 block">SHA-256 + mtime</span>
+            </div>
+            <div className="p-3 rounded-lg border border-emerald-500/25 bg-emerald-950/20 font-mono text-xs">
+              <span className="text-emerald-400 block text-[10px] uppercase">Model Fallback</span>
+              <span className="text-emerald-200 font-semibold mt-0.5 block">Gemini + Ollama</span>
+            </div>
+          </div>
         </header>
 
-        {/* Technical Overview Metadata Grid */}
-        <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Parser / Splitter</span>
-            <span className="text-zinc-200 mt-1 block">Tree-sitter (10 Languages)</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Vector Database</span>
-            <span className="text-zinc-200 mt-1 block">pgvector (HNSW Rebuild)</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Change Detection</span>
-            <span className="text-zinc-200 mt-1 block">SHA-256 + mtime Manifest</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 uppercase tracking-wider block text-[10px]">Reasoning Routing</span>
-            <span className="text-zinc-200 mt-1 block">Gemini + Ollama Fallback</span>
-          </div>
-        </section>
-
-        {/* 1. The Code Retrieval Challenge */}
+        {/* ========================================================================= */}
+        {/* LEVEL 2: 30-SECOND UNDERSTANDING (What makes the architecture interesting?) */}
+        {/* ========================================================================= */}
         <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            01 // THE CODE INTELLIGENCE CHALLENGE
-          </h2>
-          <div className="text-sm sm:text-base text-zinc-300 space-y-3 leading-relaxed font-sans">
-            <p>
-              Standard document RAG pipelines fail when applied to software codebases. Source code is not prose;
-              it possesses strict syntax hierarchies, nested scopes, function signatures, docstrings, and cross-file dependencies:
-            </p>
-            <ul className="space-y-2 pl-2 sm:pl-4 text-xs sm:text-sm text-zinc-300">
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Naive Character Splitting Destroys Code:</strong> Arbitrary character slicing splits control flow statements in half, isolates function headers from bodies, and breaks AST comprehension.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Expensive Full-Repository Re-Indexing:</strong> Re-computing dense embeddings across an entire repository on every small git commit wastes compute and slows down continuous iteration.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Vector Index Rebalancing Bottlenecks:</strong> Adding vectors row-by-row into an active HNSW index incurs significant graph rebalancing overhead during bulk ingestion runs.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-cyan-400 font-mono text-xs mt-0.5">▹</span>
-                <span><strong>Multi-Project Context Pollution:</strong> Without strict tenant partitioning, vector similarity searches cross-pollinate files from unrelated codebases.</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        {/* 2. Interactive Retrieval Architecture */}
-        <section className="space-y-5">
           <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
-            <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide">
-              02 // INTERACTIVE RETRIEVAL ARCHITECTURE
+            <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide">
+              INTERACTIVE RETRIEVAL ARCHITECTURE
             </h2>
             <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
               <Activity className="w-3.5 h-3.5 animate-pulse" />
-              <span className="text-[11px] hidden sm:inline">LIVE SIGNAL PROGRESSION</span>
+              <span className="text-[11px] hidden sm:inline">LIVE SIGNAL</span>
             </div>
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-            The indexing and retrieval pipeline separates file tracking from vector storage and respects code syntax boundaries.
-            Tap or hover any stage below to inspect its role:
+            The pipeline decouples file tracking from vector storage and respects code syntax boundaries. Tap any stage to inspect its role:
           </p>
 
           {/* Interactive Stepper Ribbon */}
-          <div className="p-4 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-4">
-            <div className="overflow-x-auto pb-2 scrollbar-none">
+          <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
+            <div className="overflow-x-auto pb-2 scrollbar-none touch-pan-x -mx-1 px-1">
               <div className="flex items-center gap-2 min-w-max">
                 {CODEBASE_STAGES.map((stage, idx) => {
                   const isActive = activeStageIndex === idx;
@@ -211,10 +185,9 @@ export default function CodeBaseRagPage() {
                       <button
                         type="button"
                         onClick={() => setActiveStageIndex(idx)}
-                        onMouseEnter={() => setActiveStageIndex(idx)}
-                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
+                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[140px] max-w-[170px] min-h-[68px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:scale-[0.98] ${
                           isActive
-                            ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white scale-[1.02]"
+                            ? "bg-cyan-950/50 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-white scale-[1.02]"
                             : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05]"
                         }`}
                         aria-pressed={isActive}
@@ -230,6 +203,9 @@ export default function CodeBaseRagPage() {
                         <span className="text-xs font-mono font-semibold truncate block">
                           {stage.step}
                         </span>
+                        <span className="text-[10px] text-zinc-400 font-sans truncate block mt-0.5">
+                          {stage.shortRole}
+                        </span>
                       </button>
 
                       {idx < CODEBASE_STAGES.length - 1 && (
@@ -241,8 +217,8 @@ export default function CodeBaseRagPage() {
               </div>
             </div>
 
-            {/* Explanation box */}
-            <div className="p-4 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
+            {/* Stage Detail Drawer */}
+            <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
               <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
               <div className="space-y-1">
                 <div className="text-xs font-mono font-bold text-cyan-300 uppercase">
@@ -254,11 +230,155 @@ export default function CodeBaseRagPage() {
               </div>
             </div>
           </div>
+        </section>
 
-          {/* ASCII Architecture Flow */}
-          <div className="p-4 sm:p-5 rounded-lg border border-white/[0.08] bg-black/60 font-mono text-xs overflow-x-auto touch-pan-x">
-            <div className="text-zinc-500 mb-2">// REPOSITORY PIPELINE FLOW</div>
-            <pre className="text-cyan-300 text-[11px] leading-snug">
+        {/* ========================================================================= */}
+        {/* LEVEL 3: 60-90 SECOND UNDERSTANDING (What was engineered & measured result) */}
+        {/* ========================================================================= */}
+        <section className="space-y-4">
+          <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
+            KEY DATA ENGINEERING DECISIONS
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* Tree-sitter AST */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <FileCode2 className="w-4 h-4 text-cyan-400" />
+                <span>TREE-SITTER AST CHUNKING (10 LANGUAGES)</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                LlamaIndex <code className="text-cyan-300 font-mono">CodeSplitter</code> tuned for 10 languages (Python, JS, TS, Java, Go, Rust, C++, C, C#, PHP) with 50-line bounds and 10-line overlap, keeping class and function declarations intact.
+              </p>
+            </div>
+
+            {/* HNSW Bulk Rebuild */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Database className="w-4 h-4 text-cyan-400" />
+                <span>HNSW BULK INGESTION OPTIMIZATION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Drops HNSW vector indexes prior to large ingestion runs, writes dense vectors in high-throughput batches, and reconstructs the HNSW graph post-embedding to avoid per-row graph rebalances.
+              </p>
+            </div>
+
+            {/* Incremental Manifest */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <GitBranch className="w-4 h-4 text-cyan-400" />
+                <span>DUAL-STORE INCREMENTAL INDEXING</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                PostgreSQL manifest table tracks file path, SHA-256 hash, and mtime. Small git commits only trigger chunking and embedding for modified files, skipping unchanged files entirely.
+              </p>
+            </div>
+
+            {/* Multi-Repo Isolation & Fallback */}
+            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
+              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-cyan-400" />
+                <span>HYBRID SERVING & SESSION ISOLATION</span>
+              </div>
+              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
+                Vectors are tagged with repository source keys and MD5-hashed session IDs. Reasoning runs on Gemini API with automatic fallback to local Ollama (<code className="text-cyan-300 font-mono">llama3.2</code>) for offline codebases.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* LEVEL 4: EXPANDABLE TECHNICAL DEEP DIVE (Progressive Disclosure)          */}
+        {/* ========================================================================= */}
+        <section className="pt-2 border-t border-white/[0.08]">
+          <div className="rounded-xl border border-white/[0.1] bg-[#0c0e15]/95 overflow-hidden">
+            {/* Accordion Header */}
+            <button
+              type="button"
+              onClick={() => setDeepDiveOpen(!deepDiveOpen)}
+              className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+              aria-expanded={deepDiveOpen}
+            >
+              <div className="flex items-center gap-2.5">
+                <Terminal className="w-4 h-4 text-cyan-400 shrink-0" />
+                <div>
+                  <span className="text-xs font-mono font-bold text-white tracking-wider uppercase block">
+                    TECHNICAL DEEP DIVE // SPECIFICATIONS & SCHEMATICS
+                  </span>
+                  <span className="text-[11px] text-zinc-400 font-sans block mt-0.5">
+                    {deepDiveOpen ? "Click to collapse detailed specs" : "Click to expand pipeline schematic, AST parameters, and HNSW lifecycle"}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-[11px] font-mono text-cyan-400 hidden sm:inline">
+                  {deepDiveOpen ? "COLLAPSE" : "EXPAND"}
+                </span>
+                {deepDiveOpen ? (
+                  <ChevronUp className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-cyan-400" />
+                )}
+              </div>
+            </button>
+
+            {/* Expandable Body */}
+            {deepDiveOpen && (
+              <div className="p-4 sm:p-6 border-t border-white/[0.08] space-y-6 bg-black/40 animate-in fade-in duration-200">
+                {/* Tabs */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("schematic")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "schematic"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Pipeline Schematic
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("treesitter")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "treesitter"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Tree-sitter Specs
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("hnsw")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "hnsw"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    HNSW Optimization
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveDeepDiveTab("manifest")}
+                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation ${
+                      activeDeepDiveTab === "manifest"
+                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
+                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Manifest Hashing
+                  </button>
+                </div>
+
+                {/* Tab 1: Monospace Flow Diagram */}
+                {activeDeepDiveTab === "schematic" && (
+                  <div className="p-4 rounded-lg border border-white/[0.08] bg-black/80 font-mono text-xs overflow-x-auto touch-pan-x">
+                    <div className="text-zinc-500 mb-2">// REPOSITORY PIPELINE FLOW</div>
+                    <pre className="text-cyan-300 text-[11px] leading-snug">
 {`+-------------------------------------------------------------------------+
 |  TARGET REPOSITORY (Cloned or local path via GitPython)                 |
 +-----------------------------------+-------------------------------------+
@@ -297,89 +417,67 @@ export default function CodeBaseRagPage() {
 |  - Filtered cosine similarity scoped by source_key and md5(session_key) |
 |  - Hybrid LLM: Gemini API with local Ollama (llama3.2) fallback         |
 +-------------------------------------------------------------------------+`}
-            </pre>
-          </div>
-        </section>
+                    </pre>
+                  </div>
+                )}
 
-        {/* 3. Deep Technical Engineering Highlights */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            03 // KEY DATA ENGINEERING DECISIONS
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Tree-sitter AST */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <FileCode2 className="w-4 h-4 text-cyan-400" />
-                <span>TREE-SITTER AST CHUNKING (10 LANGUAGES)</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Rather than arbitrary character chunking, CodeBase-RAG employs LlamaIndex <code className="text-cyan-300 font-mono">CodeSplitter</code> tuned for 10 languages: Python, JavaScript, TypeScript, Java, Go, Rust, C++, C, C#, and PHP (50-line window, 10-line overlap, 1500 max characters). Documentation files gracefully fall back to sentence-boundary chunking.
-              </p>
-            </div>
+                {/* Tab 2: Tree-sitter Specs */}
+                {activeDeepDiveTab === "treesitter" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      AST-Aware Syntax Chunking Across 10 Languages
+                    </h3>
+                    <p>
+                      Standard character or line chunkers cut through class declarations and loop bodies. CodeBase-RAG uses language grammars to extract syntax trees:
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>Supported Languages:</strong> Python, JavaScript, TypeScript, Java, Go, Rust, C++, C, C#, and PHP.</li>
+                      <li><strong>Tuning Parameters:</strong> <code className="text-cyan-300 font-mono">chunk_lines=50</code>, <code className="text-cyan-300 font-mono">chunk_lines_overlap=10</code>, <code className="text-cyan-300 font-mono">max_chars=1500</code>.</li>
+                      <li><strong>Documentation Fallback:</strong> Non-code files (Markdown, JSON, YAML, configs) fall back to sentence boundary chunking (<code className="text-cyan-300 font-mono">chunk_size=500</code>, <code className="text-cyan-300 font-mono">chunk_overlap=50</code>).</li>
+                    </ul>
+                  </div>
+                )}
 
-            {/* HNSW Bulk Rebuild */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Database className="w-4 h-4 text-cyan-400" />
-                <span>HNSW BULK INGESTION OPTIMIZATION</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Inserting vectors row-by-row into an active HNSW graph causes continuous rebalancing. The pipeline executes <code className="text-cyan-300 font-mono">drop_hnsw_indexes()</code> before large ingestion runs, writes dense vectors in batches, and reconstructs the HNSW index once ingestion completes, maximizing database write throughput.
-              </p>
-            </div>
+                {/* Tab 3: HNSW Optimization */}
+                {activeDeepDiveTab === "hnsw" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      HNSW Graph Drop and Post-Ingestion Reconstruction
+                    </h3>
+                    <p>
+                      Hierarchical Navigable Small World (HNSW) indexes provide sub-millisecond approximate nearest neighbor lookups, but continuous graph updates during inserts cause heavy IO thrashing.
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>Index drop:</strong> Prior to bulk embedding writes, <code className="text-cyan-300 font-mono">drop_hnsw_indexes()</code> executes on the PostgreSQL vector table.</li>
+                      <li><strong>Batch insert:</strong> 384-dimensional FastEmbed vectors are bulk-inserted directly into heap storage without index overhead.</li>
+                      <li><strong>Post-embedding build:</strong> <code className="text-cyan-300 font-mono">create_hnsw_index()</code> executes with cosine similarity distance metric, creating the full navigation graph in a single pass.</li>
+                    </ul>
+                  </div>
+                )}
 
-            {/* Incremental Manifest */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <GitBranch className="w-4 h-4 text-cyan-400" />
-                <span>DUAL-STORE INCREMENTAL INDEXING</span>
+                {/* Tab 4: Manifest Hashing */}
+                {activeDeepDiveTab === "manifest" && (
+                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
+                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
+                      Dual-Store Manifest State & Change Detection
+                    </h3>
+                    <p>
+                      Code repositories undergo frequent small edits. The ingestion scanner prevents full-repo embedding recalculations:
+                    </p>
+                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
+                      <li><strong>Fast filter:</strong> First compares disk modification time (<code className="text-cyan-300 font-mono">mtime</code>); if unchanged, the file is skipped instantly.</li>
+                      <li><strong>Checksum verification:</strong> If mtime changed, computes SHA-256 hash. If content matches, manifest timestamp updates without re-embedding.</li>
+                      <li><strong>Surgical re-indexing:</strong> If content mutated, deletes old chunks for that specific file and inserts newly split vectors.</li>
+                    </ul>
+                  </div>
+                )}
               </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Maintains a dedicated PostgreSQL <code className="text-cyan-300 font-mono">manifest</code> table tracking file path, SHA-256 hash, and mtime alongside the <code className="text-cyan-300 font-mono">code_embeddings</code> table. Small git commits only trigger chunking and re-embedding for the exact files modified, skipping unchanged files entirely.
-              </p>
-            </div>
-
-            {/* Multi-Repo Isolation & Fallback */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2.5">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-cyan-400" />
-                <span>HYBRID SERVING & SESSION ISOLATION</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Every node is tagged with a repository <code className="text-cyan-300 font-mono">source_key</code> and MD5-hashed <code className="text-cyan-300 font-mono">session_key</code> to enforce scoped similarity filters. Reasoning runs on Gemini API with automatic fallback to local Ollama (<code className="text-cyan-300 font-mono">llama3.2</code>) when working in offline or air-gapped environments.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Challenges & Design Decisions */}
-        <section className="space-y-4">
-          <h2 className="text-lg sm:text-xl font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            04 // KEY DESIGN DECISIONS
-          </h2>
-          <div className="space-y-4">
-            {project.challengesAndDecisions.map((item, idx) => (
-              <div key={idx} className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-                <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
-                  Challenge #{idx + 1}
-                </div>
-                <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                  {item.challenge}
-                </p>
-                <div className="text-xs font-mono text-cyan-400 uppercase tracking-wider pt-2">
-                  Engineering Resolution
-                </div>
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-                  {item.decision}
-                </p>
-              </div>
-            ))}
+            )}
           </div>
         </section>
 
         {/* Technologies Grid */}
-        <section className="space-y-4 pt-4 border-t border-white/[0.08]">
+        <section className="space-y-3 pt-2">
           <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
             SYSTEM TECHNOLOGIES
           </h2>

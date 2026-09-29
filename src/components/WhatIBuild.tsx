@@ -73,7 +73,7 @@ export function WhatIBuild() {
                 key={cap.number}
                 onMouseEnter={() => setActiveCard(cap.number)}
                 onClick={() => setActiveCard(cap.number)}
-                className={`group relative p-6 sm:p-7 rounded-xl border transition-all duration-300 flex flex-col justify-between cursor-pointer ${
+                className={`group relative p-5 sm:p-7 rounded-xl border transition-all duration-300 flex flex-col justify-between cursor-pointer touch-manipulation active:scale-[0.99] ${
                   isActive
                     ? "bg-[#0d101a] border-cyan-500/40 shadow-lg shadow-cyan-950/20 ring-1 ring-cyan-500/20"
                     : "bg-[#0d0f17]/70 border-white/[0.08] hover:bg-[#0d0f17]/95 hover:border-white/[0.18]"
@@ -117,7 +117,7 @@ export function WhatIBuild() {
                       <span className="text-cyan-400/80">Deterministic Flow</span>
                     </div>
 
-                    <div className="overflow-x-auto pb-1 scrollbar-none">
+                    <div className="overflow-x-auto pb-1 scrollbar-none touch-pan-x">
                       <div className="flex items-center gap-1.5 min-w-max">
                         {flow.map((step, sIdx) => (
                           <React.Fragment key={sIdx}>
