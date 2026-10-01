@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -35,6 +35,8 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const commands: CommandItem[] = [
     {
@@ -131,59 +133,116 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     cmd.category.toLowerCase().includes(query.toLowerCase())
   );
 
+  const handleClose = useCallback(() => {
+    setQuery("");
+    setSelectedIndex(0);
+    onClose();
+  }, [onClose]);
+
   // Focus input on open
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+        if (listRef.current) {
+          listRef.current.scrollTop = 0;
+        }
+      }, 50);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
-  // Global keyboard listener for Cmd+K and Ctrl+K
+  // Keep itemRefs trimmed to current filtered commands count
+  useEffect(() => {
+    itemRefs.current = itemRefs.current.slice(0, filteredCommands.length);
+  }, [filteredCommands.length]);
+
+  // Auto-scroll selected item into view whenever selectedIndex changes
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const container = listRef.current;
+    const selectedItem = itemRefs.current[selectedIndex];
+
+    if (!container || !selectedItem) return;
+
+    // Fast bounds reset for edge selection
+    if (selectedIndex === 0) {
+      container.scrollTop = 0;
+      return;
+    }
+
+    if (selectedIndex === filteredCommands.length - 1) {
+      container.scrollTop = container.scrollHeight;
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const itemRect = selectedItem.getBoundingClientRect();
+    const padding = 8; // p-2 padding offset
+
+    if (itemRect.bottom > containerRect.bottom - padding) {
+      container.scrollTop += itemRect.bottom - (containerRect.bottom - padding);
+    } else if (itemRect.top < containerRect.top + padding) {
+      container.scrollTop -= (containerRect.top + padding - itemRect.top);
+    }
+  }, [selectedIndex, isOpen, filteredCommands.length]);
+
+  // Global keyboard listener for navigation, action, and dismiss
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         if (isOpen) {
-          onClose();
+          handleClose();
         }
+        return;
       }
-      if (e.key === "Escape" && isOpen) {
-        onClose();
+
+      if (!isOpen) return;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose();
+        return;
+      }
+
+      if (filteredCommands.length === 0) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((prev) =>
+          prev < filteredCommands.length - 1 ? prev + 1 : 0
+        );
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((prev) =>
+          prev > 0 ? prev - 1 : filteredCommands.length - 1
+        );
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (filteredCommands[selectedIndex]) {
+          filteredCommands[selectedIndex].action();
+        }
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setSelectedIndex(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        setSelectedIndex(filteredCommands.length - 1);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
-  // Handle arrow navigation and Enter inside dialog
-  const handleDialogKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setSelectedIndex((prev) =>
-        prev < filteredCommands.length - 1 ? prev + 1 : 0
-      );
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((prev) =>
-        prev > 0 ? prev - 1 : filteredCommands.length - 1
-      );
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (filteredCommands[selectedIndex]) {
-        filteredCommands[selectedIndex].action();
-      }
-    }
-  };
+  }, [isOpen, handleClose, filteredCommands, selectedIndex]);
 
   if (!isOpen) return null;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-28 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 touch-manipulation"
-      onClick={onClose}
+      onClick={handleClose}
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"
@@ -191,7 +250,6 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       <div
         className="w-full max-w-xl rounded-xl border border-white/[0.12] bg-[#0c0e15] shadow-2xl shadow-black overflow-hidden"
         onClick={(e) => e.stopPropagation()}
-        onKeyDown={handleDialogKeyDown}
       >
         {/* Search Input Bar */}
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08] bg-white/[0.02]">
@@ -203,6 +261,9 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             onChange={(e) => {
               setQuery(e.target.value);
               setSelectedIndex(0);
+              if (listRef.current) {
+                listRef.current.scrollTop = 0;
+              }
             }}
             placeholder="Type a command or search portfolio..."
             className="w-full bg-transparent text-sm font-mono text-zinc-100 placeholder-zinc-500 focus:outline-none"
@@ -210,7 +271,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
           />
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             className="min-w-[40px] min-h-[40px] flex items-center justify-center p-1.5 text-zinc-400 hover:text-zinc-200 rounded-lg hover:bg-white/[0.05] transition-colors cursor-pointer"
             aria-label="Close"
           >
@@ -219,7 +280,12 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+        <div
+          ref={listRef}
+          role="listbox"
+          aria-label="Commands"
+          className="max-h-80 overflow-y-auto p-2 space-y-1"
+        >
           {filteredCommands.length === 0 ? (
             <div className="p-4 text-center text-xs font-mono text-zinc-500">
               No matching commands found.
@@ -232,9 +298,18 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
               return (
                 <button
                   key={cmd.id}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
                   type="button"
+                  role="option"
+                  aria-selected={isSelected}
                   onClick={cmd.action}
-                  onMouseEnter={() => setSelectedIndex(index)}
+                  onMouseMove={() => {
+                    if (selectedIndex !== index) {
+                      setSelectedIndex(index);
+                    }
+                  }}
                   className={`w-full text-left px-3.5 py-3 rounded-lg flex items-center justify-between transition-colors font-mono text-xs cursor-pointer min-h-[48px] touch-manipulation border ${
                     isSelected
                       ? "bg-cyan-950/40 text-cyan-200 border-cyan-500/30"

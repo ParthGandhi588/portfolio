@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { PROJECTS, Project } from "@/data/portfolioData";
+import { PROJECTS } from "@/data/portfolioData";
 import { ArrowRight, CheckCircle2, Info, ArrowUpRight, Activity } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 
@@ -14,8 +14,24 @@ export function FlagshipProjects() {
     "absence-risk": 3, // Default to pairwise features
   });
 
+  // Track hovered node for each project by slug (null when not hovering)
+  const [hoveredNodes, setHoveredNodes] = useState<Record<string, number | null>>({});
+
   const handleSelectNode = (projectSlug: string, index: number) => {
     setSelectedNodes((prev) => ({ ...prev, [projectSlug]: index }));
+    setHoveredNodes((prev) => ({ ...prev, [projectSlug]: null }));
+  };
+
+  const handleNodeMouseEnter = (projectSlug: string, index: number) => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+      setHoveredNodes((prev) => ({ ...prev, [projectSlug]: index }));
+    }
+  };
+
+  const handleNodeMouseLeave = (projectSlug: string) => {
+    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
+      setHoveredNodes((prev) => ({ ...prev, [projectSlug]: null }));
+    }
   };
 
   return (
@@ -24,7 +40,7 @@ export function FlagshipProjects() {
         {/* Section Header */}
         <div className="max-w-2xl mb-12 sm:mb-16">
           <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 tracking-wider mb-2 uppercase">
-            <span>// FLAGSHIP SYSTEMS</span>
+            <span>{"// FLAGSHIP SYSTEMS"}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
             SYSTEMS I&apos;VE BUILT
@@ -37,7 +53,9 @@ export function FlagshipProjects() {
         {/* Flagship Projects List */}
         <div className="space-y-12 sm:space-y-16">
           {PROJECTS.map((project, pIdx) => {
-            const activeNodeIndex = selectedNodes[project.slug] ?? 0;
+            const selectedIndex = selectedNodes[project.slug] ?? 0;
+            const hoveredIndex = hoveredNodes[project.slug];
+            const activeNodeIndex = hoveredIndex !== null && hoveredIndex !== undefined ? hoveredIndex : selectedIndex;
             const activeStep = project.architectureFlow[activeNodeIndex] || project.architectureFlow[0];
 
             return (
@@ -117,26 +135,32 @@ export function FlagshipProjects() {
                   </div>
 
                   {/* Flow Steps List (Horizontal scroll on narrow mobile) */}
-                  <div className="overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none">
+                  <div
+                    className="overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none"
+                    onMouseLeave={() => handleNodeMouseLeave(project.slug)}
+                  >
                     <div className="flex items-center gap-2 min-w-max">
                       {project.architectureFlow.map((node, nodeIdx) => {
                         const isNodeActive = activeNodeIndex === nodeIdx;
+                        const isNodeSelected = selectedIndex === nodeIdx;
                         return (
                           <React.Fragment key={nodeIdx}>
                             <button
                               type="button"
                               onClick={() => handleSelectNode(project.slug, nodeIdx)}
+                              onMouseEnter={() => handleNodeMouseEnter(project.slug, nodeIdx)}
+                              onMouseLeave={() => handleNodeMouseLeave(project.slug)}
                               className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation select-none border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
                                 isNodeActive
                                   ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white ring-1 ring-cyan-400/40"
                                   : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05] hover:border-white/[0.18]"
                               }`}
-                              aria-pressed={isNodeActive}
+                              aria-pressed={isNodeSelected}
                               aria-label={`Inspect ${node.step}`}
                             >
                               <div className="flex items-center justify-between text-[9px] font-mono mb-1">
                                 <span className={isNodeActive ? "text-cyan-300 font-bold" : "text-zinc-400"}>
-                                  0{nodeIdx + 1} //
+                                  0{nodeIdx + 1} {"//"}
                                 </span>
                                 {isNodeActive && (
                                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse pointer-events-none" />
