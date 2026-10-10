@@ -12,6 +12,11 @@ import {
   Mail,
   X,
   ArrowRight,
+  Bot,
+  Layers,
+  Compass,
+  Cpu,
+  User,
 } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolioData";
@@ -22,7 +27,6 @@ interface CommandItem {
   category: string;
   icon: React.ElementType;
   action: () => void;
-  shortcut?: string;
 }
 
 interface CommandPaletteProps {
@@ -41,7 +45,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const commands: CommandItem[] = [
     {
       id: "agentic-erp",
-      label: "Agentic ERP (Case Study)",
+      label: "Agentic ERP (Enterprise AI Case Study)",
       category: "Systems",
       icon: Terminal,
       action: () => {
@@ -51,7 +55,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     },
     {
       id: "codebase-rag",
-      label: "CodeBase RAG (Case Study)",
+      label: "CodeBase RAG (Tree-sitter AST Case Study)",
       category: "Systems",
       icon: FileCode2,
       action: () => {
@@ -61,7 +65,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     },
     {
       id: "absence-risk",
-      label: "Absence Risk Prediction (Case Study)",
+      label: "Absence Risk Prediction (Applied ML Case Study)",
       category: "Systems",
       icon: LineChart,
       action: () => {
@@ -70,26 +74,111 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       },
     },
     {
-      id: "experience",
-      label: "View Experience",
+      id: "systems",
+      label: "Selected Systems & Works",
+      category: "Navigation",
+      icon: Layers,
+      action: () => {
+        const el = document.getElementById("systems");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#systems");
+        onClose();
+      },
+    },
+    {
+      id: "architecture",
+      label: "Four Engineering Pillars",
+      category: "Navigation",
+      icon: Cpu,
+      action: () => {
+        const el = document.getElementById("architecture");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#architecture");
+        onClose();
+      },
+    },
+    {
+      id: "inquiry",
+      label: "Evaluate System Reasoning (Interactive Codex)",
+      category: "Interactive",
+      icon: Bot,
+      action: () => {
+        const el = document.getElementById("inquiry");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#inquiry");
+        onClose();
+      },
+    },
+    {
+      id: "inventory",
+      label: "Production Technical Inventory",
+      category: "Navigation",
+      icon: Cpu,
+      action: () => {
+        const el = document.getElementById("inventory");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#inventory");
+        onClose();
+      },
+    },
+    {
+      id: "doctrine",
+      label: "System Doctrine & Philosophy",
+      category: "Navigation",
+      icon: Compass,
+      action: () => {
+        const el = document.getElementById("doctrine");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#doctrine");
+        onClose();
+      },
+    },
+    {
+      id: "chronology",
+      label: "Career Chronology & Education",
       category: "Navigation",
       icon: Briefcase,
       action: () => {
-        const el = document.getElementById("experience");
+        const el = document.getElementById("chronology");
         if (el) el.scrollIntoView({ behavior: "smooth" });
-        else router.push("/#experience");
+        else router.push("/#chronology");
+        onClose();
+      },
+    },
+    {
+      id: "about",
+      label: "About Parth Gandhi & Laboratory Focus",
+      category: "Navigation",
+      icon: User,
+      action: () => {
+        const el = document.getElementById("about");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+        else router.push("/#about");
         onClose();
       },
     },
     {
       id: "contact",
-      label: "Get in Touch / Contact",
+      label: "Direct Dispatch & Contact",
       category: "Navigation",
       icon: Mail,
       action: () => {
         const el = document.getElementById("contact");
         if (el) el.scrollIntoView({ behavior: "smooth" });
         else router.push("/#contact");
+        onClose();
+      },
+    },
+    {
+      id: "resume",
+      label: "Download Technical Resume (PDF)",
+      category: "Actions",
+      icon: FileText,
+      action: () => {
+        const link = document.createElement("a");
+        link.href = PERSONAL_INFO.resumePdf;
+        link.download = "ParthGandhi_Resume.pdf";
+        link.click();
         onClose();
       },
     },
@@ -113,24 +202,12 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         onClose();
       },
     },
-    {
-      id: "resume",
-      label: "Download Resume (PDF)",
-      category: "Actions",
-      icon: FileText,
-      action: () => {
-        const link = document.createElement("a");
-        link.href = PERSONAL_INFO.resumePdf;
-        link.download = "ParthGandhi_Resume.pdf";
-        link.click();
-        onClose();
-      },
-    },
   ];
 
-  const filteredCommands = commands.filter((cmd) =>
-    cmd.label.toLowerCase().includes(query.toLowerCase()) ||
-    cmd.category.toLowerCase().includes(query.toLowerCase())
+  const filteredCommands = commands.filter(
+    (cmd) =>
+      cmd.label.toLowerCase().includes(query.toLowerCase()) ||
+      cmd.category.toLowerCase().includes(query.toLowerCase())
   );
 
   const handleClose = useCallback(() => {
@@ -139,63 +216,38 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     onClose();
   }, [onClose]);
 
-  // Focus input on open
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
   useEffect(() => {
     if (isOpen) {
-      const timer = setTimeout(() => {
-        inputRef.current?.focus();
-        if (listRef.current) {
-          listRef.current.scrollTop = 0;
-        }
-      }, 50);
-      return () => clearTimeout(timer);
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
 
-  // Keep itemRefs trimmed to current filtered commands count
   useEffect(() => {
-    itemRefs.current = itemRefs.current.slice(0, filteredCommands.length);
-  }, [filteredCommands.length]);
-
-  // Auto-scroll selected item into view whenever selectedIndex changes
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const container = listRef.current;
+    if (!isOpen || !listRef.current) return;
     const selectedItem = itemRefs.current[selectedIndex];
-
-    if (!container || !selectedItem) return;
-
-    // Fast bounds reset for edge selection
-    if (selectedIndex === 0) {
-      container.scrollTop = 0;
-      return;
-    }
-
-    if (selectedIndex === filteredCommands.length - 1) {
-      container.scrollTop = container.scrollHeight;
-      return;
-    }
+    const container = listRef.current;
+    if (!selectedItem) return;
 
     const containerRect = container.getBoundingClientRect();
     const itemRect = selectedItem.getBoundingClientRect();
-    const padding = 8; // p-2 padding offset
+    const padding = 8;
 
     if (itemRect.bottom > containerRect.bottom - padding) {
       container.scrollTop += itemRect.bottom - (containerRect.bottom - padding);
     } else if (itemRect.top < containerRect.top + padding) {
-      container.scrollTop -= (containerRect.top + padding - itemRect.top);
+      container.scrollTop -= containerRect.top + padding - itemRect.top;
     }
   }, [selectedIndex, isOpen, filteredCommands.length]);
 
-  // Global keyboard listener for navigation, action, and dismiss
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        if (isOpen) {
-          handleClose();
-        }
+        if (isOpen) handleClose();
         return;
       }
 
@@ -224,12 +276,6 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         if (filteredCommands[selectedIndex]) {
           filteredCommands[selectedIndex].action();
         }
-      } else if (e.key === "Home") {
-        e.preventDefault();
-        setSelectedIndex(0);
-      } else if (e.key === "End") {
-        e.preventDefault();
-        setSelectedIndex(filteredCommands.length - 1);
       }
     };
 
@@ -241,101 +287,73 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-28 px-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150 touch-manipulation"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-900/25 dark:bg-black/80 backdrop-blur-md animate-in fade-in duration-150"
       onClick={handleClose}
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"
     >
       <div
-        className="w-full max-w-xl rounded-xl border border-white/[0.12] bg-[#0c0e15] shadow-2xl shadow-black overflow-hidden"
+        className="w-full max-w-xl rounded-2xl border border-zinc-200/90 dark:border-white/[0.12] bg-white dark:bg-[#0c0d10] shadow-[0_20px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.9)] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08] bg-white/[0.02]">
-          <Search className="w-4 h-4 text-cyan-400 shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-zinc-100 dark:border-white/[0.08]">
+          <Search className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setSelectedIndex(0);
-              if (listRef.current) {
-                listRef.current.scrollTop = 0;
-              }
-            }}
-            placeholder="Type a command or search portfolio..."
-            className="w-full bg-transparent text-sm font-mono text-zinc-100 placeholder-zinc-500 focus:outline-none"
-            aria-label="Search command palette"
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search systems, chapters, or actions..."
+            className="w-full bg-transparent text-sm font-sans text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none"
           />
           <button
             type="button"
             onClick={handleClose}
-            className="min-w-[40px] min-h-[40px] flex items-center justify-center p-1.5 text-zinc-400 hover:text-zinc-200 rounded-lg hover:bg-white/[0.05] transition-colors cursor-pointer"
-            aria-label="Close"
+            className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-white/[0.08] dark:hover:text-white transition-colors cursor-pointer"
+            aria-label="Close command palette"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Results List */}
         <div
           ref={listRef}
-          role="listbox"
-          aria-label="Commands"
-          className="max-h-80 overflow-y-auto p-2 space-y-1"
+          className="max-h-[380px] overflow-y-auto p-2 space-y-0.5 text-xs font-sans scrollbar-none"
         >
           {filteredCommands.length === 0 ? (
-            <div className="p-4 text-center text-xs font-mono text-zinc-500">
-              No matching commands found.
+            <div className="py-8 text-center text-zinc-500 font-sans">
+              No matching records found.
             </div>
           ) : (
-            filteredCommands.map((cmd, index) => {
+            filteredCommands.map((cmd, idx) => {
+              const isSelected = selectedIndex === idx;
               const Icon = cmd.icon;
-              const isSelected = index === selectedIndex;
 
               return (
                 <button
                   key={cmd.id}
                   ref={(el) => {
-                    itemRefs.current[index] = el;
+                    itemRefs.current[idx] = el;
                   }}
                   type="button"
-                  role="option"
-                  aria-selected={isSelected}
                   onClick={cmd.action}
-                  onMouseMove={() => {
-                    if (selectedIndex !== index) {
-                      setSelectedIndex(index);
-                    }
-                  }}
-                  className={`w-full text-left px-3.5 py-3 rounded-lg flex items-center justify-between transition-colors font-mono text-xs cursor-pointer min-h-[48px] touch-manipulation border ${
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left transition-colors cursor-pointer ${
                     isSelected
-                      ? "bg-cyan-950/40 text-cyan-200 border-cyan-500/30"
-                      : "text-zinc-300 hover:bg-white/[0.03] border-transparent"
+                      ? "bg-blue-50/90 dark:bg-white/[0.08] text-blue-700 dark:text-white font-medium border border-blue-100 dark:border-transparent"
+                      : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-white/[0.04] hover:text-zinc-950 dark:hover:text-white border border-transparent"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`p-1.5 rounded ${
-                        isSelected
-                          ? "bg-cyan-500/20 text-cyan-300"
-                          : "bg-white/[0.04] text-zinc-400"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="font-medium">{cmd.label}</span>
+                  <div className="flex items-center gap-3 truncate">
+                    <Icon className={`w-4 h-4 shrink-0 ${isSelected ? "text-blue-600 dark:text-white" : "text-zinc-400 dark:text-zinc-500"}`} />
+                    <span className="truncate">{cmd.label}</span>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider hidden sm:inline">
+                  <div className="flex items-center gap-2 text-[10px] font-mono shrink-0">
+                    <span className="uppercase text-[9px] font-mono tracking-wider px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.05] text-zinc-500 dark:text-zinc-400">
                       {cmd.category}
                     </span>
-                    {isSelected && (
-                      <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
-                    )}
+                    {isSelected && <ArrowRight className="w-3.5 h-3.5 text-blue-600 dark:text-white" />}
                   </div>
                 </button>
               );
@@ -343,14 +361,9 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
           )}
         </div>
 
-        {/* Footer info bar */}
-        <div className="px-4 py-2.5 border-t border-white/[0.06] bg-black/40 flex items-center justify-between text-[11px] font-mono text-zinc-500">
-          <div className="flex items-center gap-3">
-            <span>↑↓ Navigate</span>
-            <span>↵ Select</span>
-            <span>ESC Close</span>
-          </div>
-          <span className="text-zinc-600">⌘K to toggle</span>
+        <div className="px-4 py-2.5 border-t border-zinc-100 dark:border-white/[0.06] text-[10px] font-mono text-zinc-500 dark:text-zinc-400 flex items-center justify-between bg-zinc-50/80 dark:bg-zinc-950/40">
+          <span>Navigate with ↑ ↓ · Enter to select</span>
+          <span>ESC to dismiss</span>
         </div>
       </div>
     </div>

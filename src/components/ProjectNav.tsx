@@ -21,19 +21,19 @@ export function ProjectNav({ currentSlug }: ProjectNavProps) {
       aria-label="Case Study Navigation"
       className="pt-10 sm:pt-14 border-t border-white/[0.08]"
     >
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 font-mono text-xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 font-sans text-xs">
         {/* Previous Project Link */}
         <Link
           href={`/work/${prevProject.slug}`}
-          className="min-h-[48px] p-3.5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 hover:bg-white/[0.04] hover:border-cyan-500/40 text-zinc-300 hover:text-white transition-all flex items-center gap-2.5 touch-manipulation cursor-pointer select-none flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+          className="py-3 px-4 rounded border border-white/[0.08] hover:border-white/[0.25] text-zinc-300 hover:text-white transition-all flex items-center gap-3 touch-manipulation cursor-pointer flex-1 group"
           aria-label={`Previous System: ${prevProject.title}`}
         >
-          <ArrowLeft className="w-4 h-4 text-cyan-400 shrink-0 group-hover:-translate-x-0.5 transition-transform" />
+          <ArrowLeft className="w-4 h-4 text-blue-400 shrink-0 group-hover:-translate-x-1 transition-transform" />
           <div className="text-left overflow-hidden">
-            <span className="text-[10px] text-zinc-500 block uppercase tracking-wider">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase tracking-wider">
               PREVIOUS SYSTEM
             </span>
-            <span className="font-semibold text-zinc-200 group-hover:text-cyan-200 truncate block">
+            <span className="font-medium text-white truncate block">
               {prevProject.title}
             </span>
           </div>
@@ -41,31 +41,31 @@ export function ProjectNav({ currentSlug }: ProjectNavProps) {
 
         {/* Center: Back to Systems */}
         <Link
-          href="/#work"
-          className="min-h-[48px] px-4 py-3 rounded-lg border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/[0.2] text-zinc-300 hover:text-white transition-all flex items-center justify-center gap-2 touch-manipulation cursor-pointer select-none shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+          href="/#systems"
+          className="py-3 px-4 rounded border border-white/[0.08] hover:border-white/[0.25] text-zinc-300 hover:text-white transition-all flex items-center justify-center gap-2 touch-manipulation cursor-pointer shrink-0"
           aria-label="Back to All Systems on Homepage"
         >
-          <Grid className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="tracking-wider uppercase text-[11px] font-semibold">
-            ALL SYSTEMS
+          <Grid className="w-3.5 h-3.5 text-blue-400" />
+          <span className="tracking-wider uppercase text-[11px] font-mono font-medium">
+            INDEX
           </span>
         </Link>
 
         {/* Next Project Link */}
         <Link
           href={`/work/${nextProject.slug}`}
-          className="min-h-[48px] p-3.5 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 hover:bg-white/[0.04] hover:border-cyan-500/40 text-zinc-300 hover:text-white transition-all flex items-center justify-between sm:justify-end gap-2.5 touch-manipulation cursor-pointer select-none flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 group"
+          className="py-3 px-4 rounded border border-white/[0.08] hover:border-white/[0.25] text-zinc-300 hover:text-white transition-all flex items-center justify-between sm:justify-end gap-3 touch-manipulation cursor-pointer flex-1 group"
           aria-label={`Next System: ${nextProject.title}`}
         >
           <div className="text-left sm:text-right overflow-hidden">
-            <span className="text-[10px] text-zinc-500 block uppercase tracking-wider">
+            <span className="text-[10px] font-mono text-zinc-400 block uppercase tracking-wider">
               NEXT SYSTEM
             </span>
-            <span className="font-semibold text-zinc-200 group-hover:text-cyan-200 truncate block">
+            <span className="font-medium text-white truncate block">
               {nextProject.title}
             </span>
           </div>
-          <ArrowRight className="w-4 h-4 text-cyan-400 shrink-0 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-4 h-4 text-blue-400 shrink-0 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </nav>

@@ -1,54 +1,75 @@
+"use client";
+
 import React from "react";
-import { ABOUT_TEXT, PERSONAL_INFO } from "@/data/portfolioData";
-import { MapPin, Terminal, CheckCircle2 } from "lucide-react";
+import { ABOUT_TEXT, PERSONAL_INFO, CURRENTLY_EXPLORING } from "@/data/portfolioData";
 
 export function About() {
   const paragraphs = ABOUT_TEXT.split("\n\n");
 
   return (
-    <section id="about" className="py-20 sm:py-28 border-t border-white/[0.08] relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-start">
-          {/* Header Column */}
-          <div className="lg:col-span-4 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 tracking-wider uppercase">
-              <span>// BACKGROUND</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
-              ABOUT
+    <section id="about" className="py-24 sm:py-36 border-t border-white/[0.08] relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10">
+        {/* Editorial Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 border-b border-white/[0.08] gap-6">
+          <div className="space-y-2">
+            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              INDEX 07 // CONTEXT & ACTIVE RESEARCH
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-tight">
+              About & <span className="font-serif italic text-white">Laboratory</span> Focus
             </h2>
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 pt-1">
-              <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Based in {PERSONAL_INFO.location}</span>
+          </div>
+          <p className="text-sm text-zinc-400 font-sans max-w-md leading-relaxed">
+            Personal engineering philosophy and active technical domains currently being benchmarked.
+          </p>
+        </div>
+
+        {/* 2-Column Split: Context & Explorations (Zero Box Cards) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 pt-12 items-start">
+          {/* Left Column: About Narrative (6 cols) */}
+          <div className="lg:col-span-6 space-y-8">
+            <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block pb-4 border-b border-white/[0.08]">
+              ENGINEER DOSSIER // AHMEDABAD, IN
+            </span>
+
+            <div className="space-y-6 text-base sm:text-lg text-zinc-300 font-sans leading-relaxed">
+              {paragraphs.map((p, idx) => (
+                <p key={idx}>{p}</p>
+              ))}
+            </div>
+
+            <div className="pt-6 border-t border-white/[0.08] space-y-2">
+              <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider block">
+                LOCATION & AVAILABILITY
+              </span>
+              <p className="text-sm text-zinc-300 font-sans">
+                Stationed in {PERSONAL_INFO.location}. Open to senior engineering discussions and AI systems roles.
+              </p>
             </div>
           </div>
 
-          {/* Copy Column */}
-          <div className="lg:col-span-8 p-6 sm:p-8 rounded-xl border border-white/[0.08] bg-[#0c0e15]/70 space-y-5">
-            {paragraphs.map((para, idx) => (
-              <p
-                key={idx}
-                className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans"
-              >
-                {para}
-              </p>
-            ))}
+          {/* Right Column: Currently Exploring List (6 cols) */}
+          <div className="lg:col-span-6 space-y-8 border-l border-white/[0.08] pl-0 lg:pl-10">
+            <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block pb-4 border-b border-white/[0.08]">
+              ACTIVE LABORATORY R&D DOMAINS
+            </span>
 
-            <div className="pt-4 border-t border-white/[0.06] flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-400">
-              <div className="flex items-center gap-1.5 text-zinc-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Enterprise Systems Focus</span>
-              </div>
-              <span className="text-zinc-600">·</span>
-              <div className="flex items-center gap-1.5 text-zinc-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Deterministic Tool Execution</span>
-              </div>
-              <span className="text-zinc-600">·</span>
-              <div className="flex items-center gap-1.5 text-zinc-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Production-Oriented Backend</span>
-              </div>
+            <div className="divide-y divide-white/[0.06]">
+              {CURRENTLY_EXPLORING.map((item, idx) => (
+                <div key={item.topic} className="py-4 space-y-1">
+                  <div className="flex items-baseline justify-between">
+                    <h4 className="text-sm font-sans font-medium text-white">
+                      {item.topic}
+                    </h4>
+                    <span className="font-mono text-[10px] text-blue-400">
+                      R&D 0{idx + 1}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

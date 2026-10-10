@@ -2,239 +2,239 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { PROJECTS } from "@/data/portfolioData";
-import { ArrowRight, CheckCircle2, Info, ArrowUpRight, Activity } from "lucide-react";
+import { ArrowUpRight, ArrowRight, ChevronDown, ChevronUp, Layers, Check, GitBranch } from "lucide-react";
+import { PROJECTS, Project } from "@/data/portfolioData";
 import { GithubIcon } from "@/components/icons";
 
 export function FlagshipProjects() {
-  // Track selected node for each project by slug
-  const [selectedNodes, setSelectedNodes] = useState<Record<string, number>>({
-    "agentic-erp": 2, // Default to specialist agent
-    "codebase-rag": 2, // Default to tree-sitter
-    "absence-risk": 3, // Default to pairwise features
-  });
-
-  // Track hovered node for each project by slug (null when not hovering)
-  const [hoveredNodes, setHoveredNodes] = useState<Record<string, number | null>>({});
-
-  const handleSelectNode = (projectSlug: string, index: number) => {
-    setSelectedNodes((prev) => ({ ...prev, [projectSlug]: index }));
-    setHoveredNodes((prev) => ({ ...prev, [projectSlug]: null }));
-  };
-
-  const handleNodeMouseEnter = (projectSlug: string, index: number) => {
-    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
-      setHoveredNodes((prev) => ({ ...prev, [projectSlug]: index }));
-    }
-  };
-
-  const handleNodeMouseLeave = (projectSlug: string) => {
-    if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
-      setHoveredNodes((prev) => ({ ...prev, [projectSlug]: null }));
-    }
-  };
+  const [activeSlug, setActiveSlug] = useState<string>("agentic-erp");
 
   return (
-    <section id="work" className="py-20 sm:py-28 border-t border-white/[0.08] relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="systems" className="py-24 sm:py-36 border-t border-white/[0.08] relative">
+      <div id="work" className="absolute -top-20 pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-6 sm:px-10">
         {/* Section Header */}
-        <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 tracking-wider mb-2 uppercase">
-            <span>{"// FLAGSHIP SYSTEMS"}</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 border-b border-white/[0.08] gap-6">
+          <div className="space-y-2">
+            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              INDEX 01 // FLAGSHIP PRODUCTION ARCHITECTURES
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-tight">
+              Selected <span className="font-serif italic text-white">Systems</span> & Works
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
-            SYSTEMS I&apos;VE BUILT
-          </h2>
-          <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-            Selected systems spanning enterprise AI, code intelligence and applied machine learning.
+          <p className="text-sm text-zinc-400 font-sans max-w-md leading-relaxed">
+            Production systems engineered with deterministic state boundaries, verified context retrieval, and measured performance benchmarks.
           </p>
         </div>
 
-        {/* Flagship Projects List */}
-        <div className="space-y-12 sm:space-y-16">
-          {PROJECTS.map((project, pIdx) => {
-            const selectedIndex = selectedNodes[project.slug] ?? 0;
-            const hoveredIndex = hoveredNodes[project.slug];
-            const activeNodeIndex = hoveredIndex !== null && hoveredIndex !== undefined ? hoveredIndex : selectedIndex;
-            const activeStep = project.architectureFlow[activeNodeIndex] || project.architectureFlow[0];
+        {/* Master Project Rows (Editorial Monograph Index) */}
+        <div className="divide-y divide-white/[0.08]">
+          {PROJECTS.map((project, idx) => {
+            const isOpen = activeSlug === project.slug;
 
             return (
-              <article
-                key={project.slug}
-                className="group/card rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 hover:border-cyan-500/40 transition-all duration-300 p-6 sm:p-8 relative overflow-hidden shadow-xl"
-              >
-                {/* Subtle accent corner glow */}
-                <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none -z-10 group-hover/card:bg-cyan-500/10 transition-colors duration-500" />
-
-                {/* Header: Category + Action Buttons */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs font-semibold text-cyan-400 tracking-wider uppercase">
-                        {project.category}
-                      </span>
-                      <span className="text-[10px] font-mono text-zinc-400 px-2 py-0.5 rounded border border-white/[0.06] bg-white/[0.02]">
-                        SYSTEM 0{pIdx + 1}
-                      </span>
+              <div key={project.slug} className="py-8 sm:py-12 transition-colors">
+                {/* Clickable Row Header */}
+                <button
+                  type="button"
+                  onClick={() => setActiveSlug(isOpen ? "" : project.slug)}
+                  className="w-full text-left flex flex-col md:flex-row md:items-baseline justify-between gap-4 cursor-pointer group focus-visible:outline-none"
+                >
+                  <div className="flex items-baseline gap-4 sm:gap-8">
+                    <span className="font-mono text-sm sm:text-base text-zinc-400 group-hover:text-blue-400 transition-colors">
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <h3 className="text-2xl sm:text-4xl font-sans font-light text-white group-hover:text-blue-400 transition-colors tracking-tight">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm sm:text-base text-zinc-400 font-sans mt-1">
+                        {project.tagline}
+                      </p>
                     </div>
-
-                    <h3 className="text-xl sm:text-2xl font-mono font-bold tracking-tight text-white mt-1 group-hover/card:text-cyan-200 transition-colors">
-                      {project.title}
-                    </h3>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    {project.repoUrl && (
-                      <a
-                        href={project.repoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-mono border border-white/[0.1] bg-white/[0.03] text-zinc-300 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.2] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
-                        aria-label={`${project.title} GitHub Repository`}
-                      >
-                        <GithubIcon className="w-4 h-4" />
-                        <span>Source</span>
-                        <ArrowUpRight className="w-3 h-3 text-zinc-500" />
-                      </a>
-                    )}
-
+                  <div className="flex items-center gap-3 sm:gap-6 text-xs font-mono text-zinc-400 shrink-0">
+                    <span className="hidden sm:inline uppercase text-zinc-400">{project.category}</span>
                     <Link
                       href={`/work/${project.slug}`}
-                      className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-mono font-semibold bg-cyan-950/70 border border-cyan-500/40 text-cyan-200 hover:bg-cyan-900/60 hover:text-white hover:border-cyan-400 transition-all shadow-[0_0_15px_rgba(6,182,212,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
+                      onClick={(e) => e.stopPropagation()}
+                      className="px-3 py-1 rounded-full bg-blue-600/10 hover:bg-blue-600/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 transition-all flex items-center gap-1 cursor-pointer"
                     >
-                      <span>Explore System</span>
-                      <ArrowRight className="w-3.5 h-3.5 pointer-events-none" />
+                      <span>Case Study</span>
+                      <ArrowUpRight className="w-3 h-3" />
                     </Link>
-                  </div>
-                </div>
-
-                {/* Project Description & Principle */}
-                <div className="mt-5 space-y-3">
-                  <p className="text-base text-zinc-300 leading-relaxed font-sans">
-                    {project.description}
-                  </p>
-
-                  {project.heroPrinciple && (
-                    <div className="p-3.5 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs text-cyan-300 flex items-start gap-2.5">
-                      <span className="font-bold text-cyan-400 shrink-0">ARCHITECTURAL RULE //</span>
-                      <span>&quot;{project.heroPrinciple}&quot;</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Interactive Architecture Flow Pipeline */}
-                <div className="mt-7 pt-5 border-t border-white/[0.06]">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-                      <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Interactive Pipeline // Tap/Hover node to inspect role</span>
-                    </span>
-                    <span className="text-[10px] font-mono text-zinc-400 hidden sm:inline">
-                      {project.architectureFlow.length} Pipeline Stages
+                    <span className="px-2.5 py-1 rounded-full border border-zinc-200 dark:border-white/[0.1] group-hover:border-zinc-400 dark:group-hover:border-white/[0.3] text-zinc-700 dark:text-zinc-300 transition-all flex items-center gap-1.5">
+                      <span>{isOpen ? "Collapse" : "Overview"}</span>
+                      {isOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </span>
                   </div>
+                </button>
 
-                  {/* Flow Steps List (Horizontal scroll on narrow mobile) */}
-                  <div
-                    className="overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none"
-                    onMouseLeave={() => handleNodeMouseLeave(project.slug)}
-                  >
-                    <div className="flex items-center gap-2 min-w-max">
-                      {project.architectureFlow.map((node, nodeIdx) => {
-                        const isNodeActive = activeNodeIndex === nodeIdx;
-                        const isNodeSelected = selectedIndex === nodeIdx;
-                        return (
-                          <React.Fragment key={nodeIdx}>
-                            <button
-                              type="button"
-                              onClick={() => handleSelectNode(project.slug, nodeIdx)}
-                              onMouseEnter={() => handleNodeMouseEnter(project.slug, nodeIdx)}
-                              onMouseLeave={() => handleNodeMouseLeave(project.slug)}
-                              className={`flex flex-col p-3 rounded-lg text-left transition-all duration-200 cursor-pointer min-w-[140px] max-w-[170px] min-h-[72px] touch-manipulation select-none border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
-                                isNodeActive
-                                  ? "bg-cyan-950/40 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.2)] text-white ring-1 ring-cyan-400/40"
-                                  : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05] hover:border-white/[0.18]"
-                              }`}
-                              aria-pressed={isNodeSelected}
-                              aria-label={`Inspect ${node.step}`}
+                {/* Expanded Monograph Detail (Zero Box Block Cards) */}
+                {isOpen && (
+                  <div className="mt-10 pt-10 border-t border-white/[0.06] space-y-12 animate-in fade-in duration-300">
+                    {/* Architectural Principle Callout */}
+                    {project.heroPrinciple && (
+                      <div className="py-6 px-8 border-l-2 border-blue-500 bg-white/[0.01]">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 block mb-1">
+                          ARCHITECTURAL RULE & OPERATIONAL DOCTRINE
+                        </span>
+                        <p className="text-xl sm:text-2xl font-serif italic text-white leading-relaxed">
+                          &quot;{project.heroPrinciple}&quot;
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Main Technical Narrative: Problem & Decision */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                      <div className="lg:col-span-5 space-y-4">
+                        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                          SYSTEM OVERVIEW
+                        </span>
+                        <p className="text-base text-zinc-300 font-sans leading-relaxed">
+                          {project.description}
+                        </p>
+
+                        {project.metricsNote && (
+                          <div className="pt-2">
+                            <span className="text-xs font-mono text-blue-400 font-medium">
+                              BENCHMARK:
+                            </span>
+                            <p className="text-sm text-zinc-300 font-sans mt-0.5">
+                              {project.metricsNote}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="pt-4 flex items-center gap-4 text-xs font-sans">
+                          <Link
+                            href={`/work/${project.slug}`}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-zinc-950 font-medium hover:bg-zinc-200 transition-colors"
+                          >
+                            <span>Read Full Case Study</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+
+                          {project.repoUrl && (
+                            <a
+                              href={project.repoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors editorial-link"
                             >
-                              <div className="flex items-center justify-between text-[9px] font-mono mb-1">
-                                <span className={isNodeActive ? "text-cyan-300 font-bold" : "text-zinc-400"}>
-                                  0{nodeIdx + 1} {"//"}
-                                </span>
-                                {isNodeActive && (
-                                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse pointer-events-none" />
-                                )}
-                              </div>
-                              <span className="text-xs font-mono font-semibold truncate block">
-                                {node.step}
+                              <GithubIcon className="w-3.5 h-3.5" />
+                              <span>GitHub Repository</span>
+                              <ArrowUpRight className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Technical Challenges & Decisions */}
+                      <div className="lg:col-span-7 space-y-6">
+                        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                          ENGINEERING DECISIONS & TRADE-OFFS
+                        </span>
+
+                        <div className="space-y-6">
+                          {project.challengesAndDecisions.map((item, cIdx) => (
+                            <div key={cIdx} className="space-y-2 border-l border-white/[0.1] pl-5">
+                              <span className="text-xs font-mono text-zinc-400 block">
+                                CHALLENGE: {item.challenge}
                               </span>
-                            </button>
-
-                            {nodeIdx < project.architectureFlow.length - 1 && (
-                              <span className="text-zinc-600 font-mono text-xs px-0.5">→</span>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Active Node Explanation Panel */}
-                  <div className="mt-3 p-3.5 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
-                    <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                    <div className="space-y-0.5 font-sans">
-                      <div className="text-xs font-mono font-semibold text-cyan-300">
-                        STAGE 0{activeNodeIndex + 1}: {activeStep.step}
+                              <p className="text-sm text-zinc-300 font-sans leading-relaxed">
+                                <strong className="text-white font-medium">Engineered Solution: </strong>
+                                {item.decision}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <p className="text-xs text-zinc-300 leading-relaxed">
-                        {activeStep.description}
-                      </p>
                     </div>
-                  </div>
-                </div>
 
-                {/* Key Features & Metrics */}
-                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {project.keyFeatures.slice(0, 4).map((feature, fIdx) => (
-                    <div
-                      key={fIdx}
-                      className="p-3.5 rounded-lg border border-white/[0.06] bg-white/[0.02]"
-                    >
-                      <div className="text-xs font-mono font-semibold text-zinc-200 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                        {feature.title}
+                    {/* Execution Pipeline Flow */}
+                    <div className="space-y-4 pt-6 border-t border-white/[0.06]">
+                      <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                        REQUEST LIFECYCLE & EXECUTION FLOW
+                      </span>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                        {project.architectureFlow.map((step, sIdx) => (
+                          <div key={sIdx} className="space-y-1.5 border-t border-white/[0.1] pt-3">
+                            <span className="text-[10px] font-mono text-blue-400 block">
+                              STEP 0{sIdx + 1}
+                            </span>
+                            <h4 className="text-sm font-sans font-medium text-white">
+                              {step.step}
+                            </h4>
+                            <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                              {step.description}
+                            </p>
+                          </div>
+                        ))}
                       </div>
-                      <p className="mt-1 text-xs text-zinc-400 leading-relaxed font-sans">
-                        {feature.description}
-                      </p>
                     </div>
-                  ))}
-                </div>
 
-                {/* Metrics Note if applicable */}
-                {project.metricsNote && (
-                  <div className="mt-4 p-3 rounded-lg border border-emerald-500/20 bg-emerald-950/20 text-xs font-mono text-emerald-300 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
-                    <span>{project.metricsNote}</span>
+                    {/* Key Features & Tech Ledger */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pt-6 border-t border-white/[0.06]">
+                      <div className="lg:col-span-8 space-y-4">
+                        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                          PRODUCTION HIGHLIGHTS
+                        </span>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {project.engineeringHighlights.map((hl, hIdx) => (
+                            <li key={hIdx} className="text-xs text-zinc-300 font-sans flex items-start gap-2.5">
+                              <span className="text-blue-400 mt-0.5">―</span>
+                              <span className="leading-relaxed">{hl}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="lg:col-span-4 space-y-4">
+                        <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                          TECHNOLOGY STACK
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologies.map((t) => (
+                            <span
+                              key={t}
+                              className="text-xs font-mono text-zinc-300 py-1 px-2.5 rounded border border-white/[0.08] bg-white/[0.02]"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Full Case Study Action Banner */}
+                    <div className="pt-6 border-t border-zinc-200 dark:border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
+                      <Link
+                        href={`/work/${project.slug}`}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-sans text-xs font-medium transition-all shadow-md hover:shadow-blue-500/20"
+                      >
+                        <span>Inspect Full Technical Monograph & Interactive n8n Pipeline</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                      {project.repoUrl && (
+                        <a
+                          href={project.repoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-xs font-mono text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors"
+                        >
+                          <GithubIcon className="w-3.5 h-3.5" />
+                          <span>GitHub Repository</span>
+                          <ArrowUpRight className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 )}
-
-                {/* Technologies Badges */}
-                <div className="mt-6 pt-5 border-t border-white/[0.06] flex flex-wrap items-center gap-2">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase mr-1 tracking-wider">
-                    Technologies:
-                  </span>
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[11px] font-mono px-2.5 py-1 rounded border border-white/[0.08] bg-white/[0.02] text-zinc-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </article>
+              </div>
             );
           })}
         </div>

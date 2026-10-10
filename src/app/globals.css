@@ -1,30 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090a0e;
-  --foreground: #f3f4f6;
-  --muted: #9ca3af;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(56, 189, 248, 0.3);
-  --card-bg: rgba(17, 20, 29, 0.7);
-  --cyan-accent: #38bdf8;
-  --blue-accent: #2563eb;
-  --violet-accent: #818cf8;
+  --background: #fbfbfa;
+  --foreground: #09090b;
+  --muted: #52525b;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --hairline-active: rgba(0, 0, 0, 0.22);
+  --accent-cobalt: #2563eb;
+  --accent-cobalt-light: #3b82f6;
+  --nav-bg: rgba(251, 251, 250, 0.94);
+  --nav-border: rgba(0, 0, 0, 0.08);
+}
+
+html.dark, :root[class~="dark"] {
+  --background: #070709;
+  --foreground: #f4f4f6;
+  --muted: #a1a1aa;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-active: rgba(255, 255, 255, 0.22);
+  --accent-cobalt: #2563eb;
+  --accent-cobalt-light: #60a5fa;
+  --nav-bg: rgba(7, 7, 9, 0.88);
+  --nav-border: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --color-border-subtle: var(--border);
-  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --color-hairline: var(--hairline);
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), var(--font-geist-mono), monospace;
 }
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
   overflow-x: hidden;
+  background-color: var(--background);
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.light, html:not(.dark) {
+  color-scheme: light;
 }
 
 body {
@@ -34,97 +55,251 @@ body {
   overflow-x: hidden;
   position: relative;
   width: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Ensure fixed navbar doesn't cover section headers on mobile or desktop navigation */
+/* Light Mode Rules for High-Contrast Editorial Monograph Excellence */
+html:not(.dark) .text-white {
+  color: #09090b !important;
+}
+
+html:not(.dark) .text-zinc-100 {
+  color: #18181b !important;
+}
+
+html:not(.dark) .text-zinc-200 {
+  color: #18181b !important;
+}
+
+html:not(.dark) .text-zinc-300 {
+  color: #27272a !important;
+}
+
+html:not(.dark) .text-zinc-400 {
+  color: #52525b !important;
+}
+
+html:not(.dark) .text-zinc-500 {
+  color: #71717a !important;
+}
+
+html:not(.dark) .text-zinc-600 {
+  color: #3f3f46 !important;
+}
+
+html:not(.dark) .text-zinc-700 {
+  color: #27272a !important;
+}
+
+html:not(.dark) .text-zinc-800 {
+  color: #18181b !important;
+}
+
+html:not(.dark) .text-zinc-900,
+html:not(.dark) .text-zinc-950 {
+  color: #09090b !important;
+}
+
+/* Custom Cursor High-Contrast Rules */
+.cursor-ring {
+  border: 1.5px solid rgba(15, 23, 42, 0.75) !important;
+  background-color: rgba(15, 23, 42, 0.05) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+  pointer-events: none !important;
+  user-select: none !important;
+}
+html.dark .cursor-ring {
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+}
+.cursor-ring.cursor-hovered {
+  border: 1.5px solid #2563eb !important;
+  background-color: rgba(37, 99, 235, 0.18) !important;
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.35) !important;
+}
+html.dark .cursor-ring.cursor-hovered {
+  border: 1.5px solid #60a5fa !important;
+  background-color: rgba(96, 165, 250, 0.2) !important;
+  box-shadow: 0 0 18px rgba(96, 165, 250, 0.35) !important;
+}
+
+.cursor-dot {
+  background-color: #09090b !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  pointer-events: none !important;
+  user-select: none !important;
+}
+html.dark .cursor-dot {
+  background-color: #ffffff !important;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+}
+.cursor-dot.cursor-hovered {
+  background-color: #2563eb !important;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8) !important;
+}
+html.dark .cursor-dot.cursor-hovered {
+  background-color: #60a5fa !important;
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.8) !important;
+}
+
+/* Strictly hide and neutralize custom cursor on touch/mobile devices */
+@media (hover: none), (pointer: coarse) {
+  .cursor-ring,
+  .cursor-dot {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+}
+
+/* Explicit Scrolled Header Rules for Bulletproof Contrast */
+header.header-scrolled {
+  background-color: var(--nav-bg) !important;
+  border-bottom: 1px solid var(--nav-border) !important;
+}
+html:not(.dark) header.header-scrolled {
+  background-color: rgba(251, 251, 250, 0.94) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+html.dark header.header-scrolled {
+  background-color: rgba(7, 7, 9, 0.88) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html:not(.dark) [class*="border-white/"] {
+  border-color: rgba(0, 0, 0, 0.09) !important;
+}
+
+html:not(.dark) [class*="bg-white/"] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+html:not(.dark) .bg-\[\#070709\] {
+  background-color: #fbfbfa !important;
+}
+
+html:not(.dark) .bg-\[\#070709\]\/85 {
+  background-color: rgba(251, 251, 250, 0.88) !important;
+}
+
+html:not(.dark) .bg-\[\#06070a\],
+html:not(.dark) .bg-\[\#050608\],
+html:not(.dark) .bg-\[\#0b0d12\],
+html:not(.dark) .bg-\[\#0b0d12\]\/90 {
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) .bg-\[\#040507\],
+html:not(.dark) .bg-\[\#07080c\] {
+  background-color: #f5f5f4 !important;
+}
+
+html:not(.dark) .bg-zinc-950 {
+  background-color: #ffffff !important;
+}
+
+html:not(.dark) .bg-zinc-900 {
+  background-color: #f4f4f5 !important;
+}
+
+html:not(.dark) .bg-zinc-800 {
+  background-color: #e4e4e7 !important;
+}
+
+html:not(.dark) [class*="divide-white/"] {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) .text-blue-400 {
+  color: #2563eb !important;
+}
+
+html:not(.dark) [background-image*="radial-gradient"] {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
+}
+
+/* Precise Section Scroll Margins */
 section[id] {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: 5rem;
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.25);
-  color: #ffffff;
+  background: rgba(37, 99, 235, 0.3);
+  color: #93c5fd;
 }
 
-/* Subtle Technical Grid Background */
-.bg-tech-grid {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+html:not(.dark) ::selection {
+  background: rgba(37, 99, 235, 0.18);
+  color: #1d4ed8;
 }
 
-.bg-tech-dots {
-  background-size: 24px 24px;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
+/* Editorial Minimalist Hairlines */
+.editorial-rule {
+  border-bottom: 1px solid var(--hairline);
 }
 
-/* Subtle radial glows with pointer-events: none */
-.ambient-glow {
-  background: radial-gradient(circle 600px at 50% 10%, rgba(56, 189, 248, 0.06), transparent 70%);
-  pointer-events: none !important;
+.editorial-rule-top {
+  border-top: 1px solid var(--hairline);
 }
 
-.ambient-glow-bottom {
-  background: radial-gradient(circle 500px at 50% 90%, rgba(99, 102, 241, 0.05), transparent 70%);
-  pointer-events: none !important;
+/* Subtle Kinetic Hover for Editorial Links */
+.editorial-link {
+  position: relative;
+  transition: color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Technical Card Hover & Border */
-.tech-card {
-  background: linear-gradient(180deg, rgba(20, 24, 35, 0.75) 0%, rgba(13, 16, 23, 0.75) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.editorial-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.tech-card:hover {
-  border-color: rgba(56, 189, 248, 0.28);
-  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.7), 0 0 15px -3px rgba(56, 189, 248, 0.1);
-  transform: translateY(-2px);
+.editorial-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-/* Monospace tag badge */
-.tech-badge {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  color: #94a3b8;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.tech-badge-cyan {
-  border-color: rgba(56, 189, 248, 0.25);
-  background: rgba(56, 189, 248, 0.06);
-  color: #7dd3fc;
-}
-
-/* Custom subtle scrollbar */
+/* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090a0e;
+  background: #070709;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #fbfbfa;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.28);
 }
 
-/* Mobile touch interaction and responsiveness guarantees */
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Touch Optimization */
 button,
 a,
 input,
@@ -133,20 +308,20 @@ textarea,
 [role="button"] {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
 }
 
-/* Scrollbar-none utility for touch ribbons with native momentum scrolling */
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Hide scrollbar utility */
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
   -webkit-overflow-scrolling: touch;
 }
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
 }
 
-/* Accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

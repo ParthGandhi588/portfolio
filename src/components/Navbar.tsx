@@ -2,59 +2,32 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowUpRight, Search } from "lucide-react";
-import { LinkedinIcon, GithubIcon } from "@/components/icons";
+import { Search, Menu, X, ArrowUpRight, ShieldCheck, Cpu } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
-
-import { usePathname } from "next/navigation";
+import { VisitorCounter } from "@/components/VisitorCounter";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SoundToggle } from "@/components/SoundProvider";
 
 interface NavbarProps {
   onOpenCommandPalette: () => void;
 }
 
-const NAV_ITEMS = [
-  { label: "WORK", href: "/#work", id: "work" },
-  { label: "ABOUT", href: "/#about", id: "about" },
-  { label: "EXPERIENCE", href: "/#experience", id: "experience" },
-  { label: "CONTACT", href: "/#contact", id: "contact" },
-];
-
 export function Navbar({ onOpenCommandPalette }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
-  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      // Section spy
-      const sections = ["work", "about", "experience", "contact"];
-      const scrollPosition = window.scrollY + 120;
-
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
+      setScrolled(window.scrollY > 40);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 640) {
         setMobileMenuOpen(false);
       }
     };
@@ -62,190 +35,242 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("/#") && pathname === "/") {
-      const id = href.replace("/#", "");
-      const target = document.getElementById(id);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth" });
-        window.history.pushState(null, "", href);
-      }
-    }
-  };
-
-  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    setMobileMenuOpen(false);
-    handleNavClick(e, href);
-  };
+  const closeMenu = () => setMobileMenuOpen(false);
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 ${
-        scrolled
-          ? "bg-[#090a0e]/90 backdrop-blur-md border-b border-white/[0.08] py-3 shadow-lg shadow-black/50"
-          : "bg-transparent border-b border-transparent py-4 sm:py-5"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-        {/* Brand / Name */}
-        <Link
-          href="/"
-          className="group flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded py-1"
-        >
-          <div className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform duration-200 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
-          <span className="font-mono text-sm tracking-wider font-semibold text-zinc-100 group-hover:text-white transition-colors">
-            {PERSONAL_INFO.name}
-          </span>
-          <span className="hidden lg:inline-flex items-center text-[10px] font-mono text-zinc-400 px-2 py-0.5 rounded border border-white/[0.06] bg-white/[0.02]">
-            AI/ML DEVELOPER
-          </span>
-        </Link>
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md ${
+          scrolled
+            ? "header-scrolled py-3 shadow-xs"
+            : "header-top bg-transparent py-4 sm:py-5"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-10 flex items-center justify-between gap-4">
+          {/* Left: Name and Title in Refined Editorial Typography */}
+          <Link href="/" className="group flex items-baseline gap-2.5 select-none shrink-0" onClick={closeMenu}>
+            <span className="font-sans font-semibold tracking-tight text-zinc-950 dark:text-white text-base">
+              Parth Gandhi
+            </span>
+            <span className="text-zinc-500 dark:text-zinc-400 font-serif italic text-sm hidden sm:inline">
+              / Systems Engineer
+            </span>
+          </Link>
 
-        {/* Desktop Nav Links with Active Section Indicator */}
-        <nav
-          className="hidden md:flex items-center gap-1 text-xs font-mono tracking-wide"
-          aria-label="Main Navigation"
-        >
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeSection === item.id;
-            return (
-              <a
-                key={item.id}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className={`px-3.5 py-2 rounded-md transition-all duration-150 min-h-[40px] inline-flex items-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
-                  isActive
-                    ? "text-cyan-300 font-semibold bg-cyan-950/40 border border-cyan-500/25"
-                    : "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04] border border-transparent"
-                }`}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
-
-        {/* Right Action Items */}
-        <div className="hidden md:flex items-center gap-2">
-          {/* Command Palette trigger */}
-          <button
-            onClick={onOpenCommandPalette}
-            type="button"
-            className="min-h-[40px] flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-lg border border-white/[0.08] bg-white/[0.03] text-zinc-400 hover:text-zinc-200 hover:border-cyan-500/40 hover:bg-white/[0.06] transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation"
-            aria-label="Open Command Palette"
-          >
-            <Search className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Search</span>
-            <kbd className="text-[10px] text-zinc-400 bg-black/60 px-1.5 py-0.5 rounded border border-white/[0.08]">
-              ⌘K
-            </kbd>
-          </button>
-
-          <div className="h-4 w-px bg-white/[0.08] mx-1" />
-
-          {/* Social Links */}
-          <a
-            href={PERSONAL_INFO.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="min-h-[40px] min-w-[40px] inline-flex items-center justify-center p-2 text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-lg border border-transparent hover:border-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
-            aria-label="GitHub Profile"
-          >
-            <GithubIcon className="w-4 h-4" />
-          </a>
-          <a
-            href={PERSONAL_INFO.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="min-h-[40px] min-w-[40px] inline-flex items-center justify-center p-2 text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-lg border border-transparent hover:border-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
-            aria-label="LinkedIn Profile"
-          >
-            <LinkedinIcon className="w-4 h-4" />
-          </a>
-        </div>
-
-        {/* Mobile Menu & Command Toggle with min 44px touch targets */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={() => onOpenCommandPalette()}
-            type="button"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
-            aria-label="Open Search Command Palette"
-          >
-            <Search className="w-4 h-4 text-cyan-400 pointer-events-none" />
-          </button>
-          <button
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            type="button"
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-zinc-300 hover:text-white rounded-lg border border-white/[0.08] bg-white/[0.03] active:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 touch-manipulation cursor-pointer select-none"
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5 text-cyan-400 pointer-events-none" />
-            ) : (
-              <Menu className="w-5 h-5 pointer-events-none" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Drawer with full tap response and backdrop */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/[0.08] bg-[#090a0e]/98 backdrop-blur-xl px-5 py-5 space-y-4 shadow-2xl animate-in slide-in-from-top duration-200">
-          <nav className="flex flex-col space-y-1 font-mono text-sm tracking-wide">
-            {NAV_ITEMS.map((item, idx) => {
-              const isActive = activeSection === item.id;
-              return (
-                <a
-                  key={item.id}
-                  href={item.href}
-                  onClick={(e) => handleMobileNavClick(e, item.href)}
-                  className={`min-h-[44px] flex items-center px-4 py-2.5 rounded-lg transition-colors touch-manipulation ${
-                    isActive
-                      ? "text-cyan-300 font-bold bg-cyan-950/40 border border-cyan-500/30"
-                      : "text-zinc-300 hover:text-white hover:bg-white/[0.06]"
-                  }`}
-                >
-                  <span className="text-cyan-400 font-semibold mr-2.5 text-xs">
-                    0{idx + 1} //
-                  </span>
-                  <span>{item.label}</span>
-                </a>
-              );
-            })}
-          </nav>
-
-          <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-zinc-400">
+          {/* Center: Live Station with In-Place Scrolled View Counter (Zero Congestion) */}
+          <div className="hidden xl:flex items-center gap-3 text-xs text-zinc-600 dark:text-zinc-400 font-sans">
             <div className="flex items-center gap-2">
-              <a
-                href={PERSONAL_INFO.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-white transition-colors touch-manipulation"
-              >
-                <GithubIcon className="w-4 h-4" /> GITHUB
-              </a>
-              <a
-                href={PERSONAL_INFO.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-white transition-colors touch-manipulation"
-              >
-                <LinkedinIcon className="w-4 h-4" /> LINKEDIN
-              </a>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              <span className="font-medium text-zinc-800 dark:text-zinc-300">Hexylon Analytics</span>
             </div>
+            <span className="text-zinc-300 dark:text-zinc-700">·</span>
+            {scrolled ? (
+              <div className="transition-all duration-200">
+                <VisitorCounter variant="minimal" />
+              </div>
+            ) : (
+              <span className="text-zinc-500 dark:text-zinc-400">{PERSONAL_INFO.location}</span>
+            )}
+          </div>
+
+          {/* Right: Desktop Editorial Index Links, Theme, Sound & Search */}
+          <nav className="flex items-center gap-3 sm:gap-6 text-xs font-sans tracking-wide">
             <a
-              href={PERSONAL_INFO.resumePdf}
-              download
-              className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 text-cyan-400 hover:text-cyan-300 font-semibold touch-manipulation"
+              href="#systems"
+              className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link hidden md:inline"
             >
-              RESUME <ArrowUpRight className="w-3.5 h-3.5" />
+              01 / Systems
             </a>
+            <a
+              href="#architecture"
+              className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link hidden lg:inline"
+            >
+              02 / Architecture
+            </a>
+            <a
+              href="#doctrine"
+              className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link hidden xl:inline"
+            >
+              03 / Doctrine
+            </a>
+            <a
+              href="#contact"
+              className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link hidden sm:inline"
+            >
+              Contact
+            </a>
+
+            {/* Utility Toolbar: Sound FX + 1-Click Theme Toggle + Search */}
+            <div className="flex items-center gap-2 pl-2 border-l border-zinc-200 dark:border-white/[0.1]">
+              {/* Audio Feedback Toggle */}
+              <SoundToggle />
+
+              {/* 1-Click Dark/Light Theme Toggle */}
+              <ThemeToggle />
+
+              {/* Quick Command Palette Search */}
+              <button
+                type="button"
+                onClick={onOpenCommandPalette}
+                className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white px-2.5 py-1.5 rounded-full border border-zinc-200 dark:border-white/[0.1] hover:border-zinc-300 dark:hover:border-white/[0.25] transition-all cursor-pointer bg-black/[0.02] dark:bg-white/[0.02]"
+                aria-label="Open command palette"
+              >
+                <Search className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
+                <kbd className="font-mono text-[10px] text-zinc-500 dark:text-zinc-400">⌘K</kbd>
+              </button>
+
+              {/* Mobile Hamburger Drawer Trigger */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="sm:hidden p-1.5 rounded-full border border-zinc-200 dark:border-white/[0.1] text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors"
+                aria-label="Toggle mobile menu"
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              </button>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Menu (Full Navigation for Touch Phones) */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm sm:hidden animate-in fade-in duration-200"
+          onClick={closeMenu}
+        >
+          <div
+            className="fixed top-16 left-0 right-0 max-h-[85vh] overflow-y-auto bg-[#fbfbfa] dark:bg-[#090a0f] border-b border-zinc-200 dark:border-white/[0.1] shadow-2xl p-6 space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Live Station & Visitor Counter in Mobile Drawer */}
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-white/[0.08] text-xs font-mono">
+              <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                <span>Hexylon Analytics</span>
+              </div>
+              <VisitorCounter variant="minimal" />
+            </div>
+
+            {/* Editorial Page Links */}
+            <div className="space-y-4 font-sans text-sm">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
+                MONOGRAPH SECTIONS
+              </span>
+              <div className="space-y-3">
+                <a
+                  href="#systems"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>01 / Flagship Systems & Architectures</span>
+                  <span className="text-xs text-zinc-400 font-mono">#systems</span>
+                </a>
+                <a
+                  href="#architecture"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>02 / Four Architectural Pillars</span>
+                  <span className="text-xs text-zinc-400 font-mono">#architecture</span>
+                </a>
+                <a
+                  href="#inquiry"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>03 / System Reasoning Console</span>
+                  <span className="text-xs text-zinc-400 font-mono">#inquiry</span>
+                </a>
+                <a
+                  href="#inventory"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>04 / Production Tech Inventory</span>
+                  <span className="text-xs text-zinc-400 font-mono">#inventory</span>
+                </a>
+                <a
+                  href="#doctrine"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>05 / Engineering Doctrine</span>
+                  <span className="text-xs text-zinc-400 font-mono">#doctrine</span>
+                </a>
+                <a
+                  href="#contact"
+                  onClick={closeMenu}
+                  className="flex items-center justify-between text-zinc-900 dark:text-white py-1 font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <span>06 / Direct Dispatch & Contact</span>
+                  <span className="text-xs text-zinc-400 font-mono">#contact</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Direct Case Studies */}
+            <div className="pt-4 border-t border-zinc-200 dark:border-white/[0.08] space-y-3 font-sans">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
+                FULL CASE STUDIES & PIPELINES
+              </span>
+              <div className="grid grid-cols-1 gap-2">
+                <Link
+                  href="/work/agentic-erp"
+                  onClick={closeMenu}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.02] flex items-center justify-between hover:border-blue-500 transition-colors"
+                >
+                  <div>
+                    <div className="text-xs font-semibold text-zinc-900 dark:text-white">Agentic ERP</div>
+                    <div className="text-[11px] text-zinc-500">Autonomous workflow execution graph</div>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+                </Link>
+
+                <Link
+                  href="/work/codebase-rag"
+                  onClick={closeMenu}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.02] flex items-center justify-between hover:border-blue-500 transition-colors"
+                >
+                  <div>
+                    <div className="text-xs font-semibold text-zinc-900 dark:text-white">CodeBase RAG</div>
+                    <div className="text-[11px] text-zinc-500">AST parser & pgvector retrieval graph</div>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+                </Link>
+
+                <Link
+                  href="/work/absence-risk"
+                  onClick={closeMenu}
+                  className="p-3 rounded-lg border border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.02] flex items-center justify-between hover:border-blue-500 transition-colors"
+                >
+                  <div>
+                    <div className="text-xs font-semibold text-zinc-900 dark:text-white">Absence Risk Prediction</div>
+                    <div className="text-[11px] text-zinc-500">Temporal dyadic clustering pipeline</div>
+                  </div>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-zinc-400" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Quick Search Action */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  onOpenCommandPalette();
+                }}
+                className="w-full flex items-center justify-center gap-2 p-2.5 rounded-lg border border-zinc-200 dark:border-white/[0.1] bg-black/[0.02] dark:bg-white/[0.03] text-xs font-mono text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>Search Systems & Actions (Command Palette)</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

@@ -5,8 +5,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   CheckCircle2,
-  Activity,
-  Info,
   LineChart,
   Network,
   Calendar,
@@ -15,9 +13,13 @@ import {
   ChevronDown,
   ChevronUp,
   Terminal,
+  ArrowUpRight,
 } from "lucide-react";
 import { PROJECTS } from "@/data/portfolioData";
 import { ProjectNav } from "@/components/ProjectNav";
+import { N8nFlowCanvas } from "@/components/N8nFlowCanvas";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SoundToggle } from "@/components/SoundProvider";
 
 const ML_STAGES = [
   {
@@ -75,457 +77,357 @@ const FEATURE_IMPORTANCES = [
 
 export default function AbsenceRiskPage() {
   const project = PROJECTS.find((p) => p.slug === "absence-risk")!;
-  const [activeStageIndex, setActiveStageIndex] = useState(2); // Default to 12 PAIRWISE FEATURES
-  const [signalIndex, setSignalIndex] = useState(0);
-  const [deepDiveOpen, setDeepDiveOpen] = useState(false);
+  const [activeStageIndex, setActiveStageIndex] = useState(2);
+  const [deepDiveOpen, setDeepDiveOpen] = useState(true);
   const [activeDeepDiveTab, setActiveDeepDiveTab] = useState<"schematic" | "features" | "clustering" | "rules">("schematic");
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSignalIndex((prev) => (prev + 1) % ML_STAGES.length);
-    }, 2400);
-    return () => clearInterval(timer);
-  }, []);
 
   const activeStage = ML_STAGES[activeStageIndex];
 
   return (
-    <div className="min-h-screen bg-[#090a0e] text-[#f3f4f6]">
-      {/* Top Navigation */}
-      <nav className="border-b border-white/[0.08] bg-[#090a0e]/95 backdrop-blur-md sticky top-0 z-40 py-3">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+      {/* Minimalist Editorial Navigation */}
+      <nav className="header-scrolled backdrop-blur-md sticky top-0 z-40 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 flex items-center justify-between">
           <Link
-            href="/#work"
-            className="min-h-[44px] inline-flex items-center gap-2 text-xs font-mono text-zinc-300 hover:text-white transition-colors touch-manipulation py-2"
+            href="/#systems"
+            className="inline-flex items-center gap-2 text-xs font-sans text-zinc-400 hover:text-white transition-colors editorial-link"
           >
-            <ArrowLeft className="w-4 h-4 text-cyan-400" />
-            <span>BACK TO SYSTEMS</span>
+            <ArrowLeft className="w-3.5 h-3.5 text-blue-400" />
+            <span>01 / Systems Monograph</span>
           </Link>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-            <span>ENTERPRISE ML WORKFLOW</span>
+          <div className="flex items-center gap-3">
+            <SoundToggle />
+            <ThemeToggle />
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+              <span>ENTERPRISE ML WORKFLOW</span>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Case Study Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-10 sm:space-y-14">
+      {/* Main Editorial Monograph Content */}
+      <main className="max-w-6xl mx-auto px-6 sm:px-10 py-16 sm:py-24 space-y-20">
         {/* ========================================================================= */}
-        {/* LEVEL 1: 10-SECOND UNDERSTANDING (What is Absence Risk Prediction?)       */}
+        {/* LEVEL 1: TITLE & PRINCIPLE                                                */}
         {/* ========================================================================= */}
-        <header className="space-y-4">
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 font-semibold tracking-wider uppercase">
-            <span>{project.category}</span>
+        <header className="space-y-8 pb-12 border-b border-white/[0.08]">
+          <div className="space-y-3">
+            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              CASE STUDY 03 // APPLIED MACHINE LEARNING
+            </span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-light tracking-tight text-white leading-tight">
+              Absence Risk <span className="font-serif italic text-white">Prediction</span>
+            </h1>
+            <p className="text-lg sm:text-2xl text-zinc-400 font-sans font-normal leading-relaxed max-w-3xl">
+              An applied machine learning workflow analyzing leave and attendance data to forecast pairwise co-absence risk and cluster patterns.
+            </p>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-mono font-bold tracking-tight text-white">
-            {project.title}
-          </h1>
-
-          <p className="text-base sm:text-lg text-zinc-300 leading-relaxed font-sans">
-            An applied machine learning workflow analyzing leave and attendance data to forecast pairwise co-absence risk and cluster patterns.
-          </p>
-
-          <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/25 bg-cyan-950/20 font-mono text-xs sm:text-sm text-cyan-300 flex items-start gap-3 mt-4">
-            <span className="text-cyan-400 font-bold shrink-0">CORE RULE //</span>
-            <span>&quot;Moving beyond heuristics: engineering pairwise behavioral features into explainable ML predictions.&quot;</span>
+          {/* Architectural Rule Callout */}
+          <div className="py-6 px-8 border-l-2 border-blue-500 bg-white/[0.01]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 block mb-1">
+              CORE ARCHITECTURAL DOCTRINE
+            </span>
+            <p className="text-xl sm:text-2xl font-serif italic text-white leading-relaxed">
+              &quot;Moving beyond heuristics: engineering pairwise behavioral features into explainable ML predictions.&quot;
+            </p>
           </div>
 
-          {/* Executive Quick-Metric Chips */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
-              <span className="text-zinc-500 block text-[10px] uppercase">Observation Structure</span>
-              <span className="text-zinc-200 font-semibold mt-0.5 block">120-Day Total Window</span>
+          {/* Executive Telemetry Ledger (Zero Box Cards) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-4">
+            <div className="space-y-1 border-l border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-400 uppercase">OBSERVATION STRUCTURE</span>
+              <div className="text-base font-sans font-medium text-white">120-Day Total Window</div>
+              <p className="text-xs text-zinc-400 font-sans">Zero temporal data leakage</p>
             </div>
-            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
-              <span className="text-zinc-500 block text-[10px] uppercase">Target Window</span>
-              <span className="text-zinc-200 font-semibold mt-0.5 block">30-Day Forward Risk</span>
+            <div className="space-y-1 border-l border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-400 uppercase">TARGET HORIZON</span>
+              <div className="text-base font-sans font-medium text-white">30-Day Forward Risk</div>
+              <p className="text-xs text-zinc-400 font-sans">Upcoming operational period</p>
             </div>
-            <div className="p-3 rounded-lg border border-white/[0.08] bg-[#0c0e15]/80 font-mono text-xs">
-              <span className="text-zinc-500 block text-[10px] uppercase">Engineered Features</span>
-              <span className="text-zinc-200 font-semibold mt-0.5 block">12 Dyadic Features</span>
+            <div className="space-y-1 border-l border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-400 uppercase">ENGINEERED SIGNALS</span>
+              <div className="text-base font-sans font-medium text-white">12 Dyadic Features</div>
+              <p className="text-xs text-zinc-400 font-sans">Pairwise behavioral signals</p>
             </div>
-            <div className="p-3 rounded-lg border border-emerald-500/25 bg-emerald-950/20 font-mono text-xs">
-              <span className="text-emerald-400 block text-[10px] uppercase">Cluster Guarantee</span>
-              <span className="text-emerald-200 font-semibold mt-0.5 block">Complete Linkage (t=0.75)</span>
+            <div className="space-y-1 border-l border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-blue-400 uppercase">CLUSTERING GUARANTEE</span>
+              <div className="text-base font-sans font-medium text-blue-400">Complete Linkage (t=0.75)</div>
+              <p className="text-xs text-zinc-400 font-sans">&ge;0.25 similarity guarantee</p>
             </div>
           </div>
         </header>
 
         {/* ========================================================================= */}
-        {/* LEVEL 2: 30-SECOND UNDERSTANDING (What makes the architecture interesting?) */}
+        {/* LEVEL 2: REQUEST LIFECYCLE & EXECUTION BOUNDARY                           */}
         {/* ========================================================================= */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
-            <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide">
-              INTERACTIVE APPLIED ML PIPELINE
-            </h2>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-cyan-400">
-              <Activity className="w-3.5 h-3.5 animate-pulse" />
-              <span className="text-[11px] hidden sm:inline">LIVE SIGNAL</span>
+        <section className="space-y-8 pb-16 border-b border-white/[0.08]">
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+            <div className="space-y-1">
+              <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+                MODEL PIPELINE
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-sans font-light text-white">
+                ML Pipeline & Clustering Architecture
+              </h2>
             </div>
+            <span className="text-xs font-mono text-zinc-400">
+              STAGE 0{activeStageIndex + 1} OF 0{ML_STAGES.length}
+            </span>
           </div>
 
-          <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed">
-            The workflow models pairwise dyadic relationships rather than individual leave counts. Tap any stage to inspect its role:
+          <p className="text-sm text-zinc-400 font-sans leading-relaxed max-w-3xl">
+            Individual leave statistics miss critical workforce dependencies. Dyadic modeling captures behavioral synchronization across employee pairs while preventing forward leakage.
           </p>
 
-          {/* Interactive Stepper Ribbon */}
-          <div className="p-3.5 sm:p-5 rounded-xl border border-white/[0.08] bg-[#0c0e15]/90 space-y-3.5">
-            <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 pb-1">
-              <span>
-                STAGE 0{activeStageIndex + 1} OF 0{ML_STAGES.length} // TAP TO INSPECT
-              </span>
-              <span className="sm:hidden text-cyan-400 text-[10px]">
-                SWIPE &rarr;
-              </span>
-            </div>
-            <div className="overflow-x-auto pb-2 scrollbar-none -mx-1 px-1">
-              <div className="flex items-center gap-2 min-w-max">
-                {ML_STAGES.map((stage, idx) => {
-                  const isActive = activeStageIndex === idx;
-                  const isCarryingSignal = signalIndex === idx;
-
-                  return (
-                    <React.Fragment key={stage.step}>
-                      <button
-                        type="button"
-                        onClick={() => setActiveStageIndex(idx)}
-                        className={`p-3 rounded-lg text-left transition-all duration-200 border cursor-pointer min-w-[140px] max-w-[170px] min-h-[68px] touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 active:bg-cyan-900/40 ${
-                          isActive
-                            ? "bg-cyan-950/50 border-cyan-400/80 shadow-[0_0_12px_rgba(6,182,212,0.25)] text-white ring-1 ring-cyan-400/40"
-                            : "bg-black/50 border-white/[0.08] text-zinc-300 hover:bg-white/[0.05]"
-                        }`}
-                        aria-pressed={isActive}
-                      >
-                        <div className="flex items-center justify-between text-[9px] font-mono mb-1">
-                          <span className={isActive ? "text-cyan-300 font-bold" : "text-zinc-500"}>
-                            0{idx + 1} //
-                          </span>
-                          {isCarryingSignal && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                          )}
-                        </div>
-                        <span className="text-xs font-mono font-semibold truncate block">
-                          {stage.step}
-                        </span>
-                        <span className="text-[10px] text-zinc-400 font-sans truncate block mt-0.5">
-                          {stage.shortRole}
-                        </span>
-                      </button>
-
-                      {idx < ML_STAGES.length - 1 && (
-                        <span className="text-zinc-600 font-mono text-xs px-0.5">→</span>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+          {/* Minimalist Horizontal Stage Stepper (Zero Box Cards) */}
+          <div className="space-y-6">
+            <div className="flex flex-wrap gap-4 sm:gap-6 border-b border-white/[0.08] pb-3 text-xs font-mono">
+              {ML_STAGES.map((stage, idx) => {
+                const isActive = activeStageIndex === idx;
+                return (
+                  <button
+                    key={stage.step}
+                    type="button"
+                    onClick={() => setActiveStageIndex(idx)}
+                    className={`pb-3 transition-colors cursor-pointer flex items-baseline gap-2 relative ${
+                      isActive ? "text-white font-medium" : "text-zinc-500 hover:text-zinc-300"
+                    }`}
+                  >
+                    <span className="text-blue-400">0{idx + 1}</span>
+                    <span>{stage.step}</span>
+                    {isActive && (
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Stage Detail Drawer */}
-            <div className="p-3.5 sm:p-4 rounded-lg border border-cyan-500/20 bg-black/60 flex items-start gap-3">
-              <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <div className="text-xs font-mono font-bold text-cyan-300 uppercase">
-                  STAGE 0{activeStageIndex + 1}: {activeStage.title}
-                </div>
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-                  {activeStage.desc}
-                </p>
+            <div className="py-6 px-8 border-l border-white/[0.1] bg-white/[0.01] space-y-2">
+              <div className="text-xs font-mono text-blue-400 uppercase tracking-wider">
+                STAGE 0{activeStageIndex + 1}: {activeStage.title} · {activeStage.shortRole}
               </div>
+              <p className="text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+                {activeStage.desc}
+              </p>
             </div>
           </div>
         </section>
 
         {/* ========================================================================= */}
-        {/* LEVEL 3: 60-90 SECOND UNDERSTANDING (What was engineered & measured result) */}
+        {/* LEVEL 3: FOUR CORE SUBSYSTEMS                                             */}
+        {/* ========================================================================= */}
+        <section className="space-y-10 pb-16 border-b border-white/[0.08]">
+          <div className="space-y-1">
+            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              SUBSYSTEM SPECIFICATIONS
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-sans font-light text-white">
+              Pairwise Feature Engineering & Clustering Rigor
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+            <div className="space-y-2 border-l border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-400 uppercase">
+                01 / DUAL-WINDOW PARTITIONING
+              </div>
+              <h4 className="text-base font-sans font-medium text-white">
+                Temporal Data Leakage Prevention
+              </h4>
+              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+                Aggregates 12 interaction features strictly over Days -120 to -30, evaluating ground-truth predictions over Days -30 to 0. Guarantees zero look-ahead bias in model evaluation.
+              </p>
+            </div>
+
+            <div className="space-y-2 border-l border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-400 uppercase">
+                02 / COMPLETE-LINKAGE CLUSTERING
+              </div>
+              <h4 className="text-base font-sans font-medium text-white">
+                Mathematical Distance Guarantee (t=0.75)
+              </h4>
+              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+                Hierarchical agglomerative clustering on pairwise Jaccard distance with maximum-distance linkage guarantees every pair within a cluster shares at least 25% co-absence overlap.
+              </p>
+            </div>
+
+            <div className="space-y-2 border-l border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-400 uppercase">
+                03 / DYADIC INTERACTION SIGNALS
+              </div>
+              <h4 className="text-base font-sans font-medium text-white">
+                12 Pairwise Temporal & Behavioral Features
+              </h4>
+              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+                Historical interaction dynamics (recency of shared leaves, baseline leave rates, Jaccard overlap, weekend bridge leaves) accounted for &gt;78% of model predictive importance.
+              </p>
+            </div>
+
+            <div className="space-y-2 border-l border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-400 uppercase">
+                04 / RULE-BASED EXPLAINABILITY
+              </div>
+              <h4 className="text-base font-sans font-medium text-white">
+                Operational Risk Driver Translation
+              </h4>
+              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+                Maps ensemble probability scores into operational drivers (frequent weekend bridge pairings, synchronized unplanned absences) for proactive departmental shift planning.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================================= */}
+        {/* LEVEL 4: EXPANDABLE TECHNICAL DEEP DIVE (Zero Box Cards)                   */}
+        {/* ========================================================================= */}
+        <section className="space-y-6 pb-16 border-b border-white/[0.08]">
+          <button
+            type="button"
+            onClick={() => setDeepDiveOpen(!deepDiveOpen)}
+            className="w-full flex items-baseline justify-between text-left group cursor-pointer focus-visible:outline-none"
+          >
+            <div className="space-y-1">
+              <span className="text-xs font-mono text-blue-400 uppercase tracking-wider">
+                DEEP DIVE PROTOCOLS
+              </span>
+              <h3 className="text-xl sm:text-2xl font-sans font-light text-white group-hover:text-blue-400 transition-colors">
+                Feature Importance Rankings & Clustering Schematics
+              </h3>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 shrink-0">
+              <span>{deepDiveOpen ? "Collapse Specs" : "Expand Specs"}</span>
+              {deepDiveOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </button>
+
+          {deepDiveOpen && (
+            <div className="pt-6 space-y-8 animate-in fade-in duration-200">
+              <div className="flex flex-wrap gap-4 border-b border-white/[0.08] pb-3 text-xs font-mono">
+                <button
+                  type="button"
+                  onClick={() => setActiveDeepDiveTab("schematic")}
+                  className={`pb-2 cursor-pointer transition-colors ${
+                    activeDeepDiveTab === "schematic" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  Dual-Window Diagram
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveDeepDiveTab("features")}
+                  className={`pb-2 cursor-pointer transition-colors ${
+                    activeDeepDiveTab === "features" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  Feature Importances
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveDeepDiveTab("clustering")}
+                  className={`pb-2 cursor-pointer transition-colors ${
+                    activeDeepDiveTab === "clustering" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  Clustering Math
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveDeepDiveTab("rules")}
+                  className={`pb-2 cursor-pointer transition-colors ${
+                    activeDeepDiveTab === "rules" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  Explainability Heuristics
+                </button>
+              </div>
+
+              {activeDeepDiveTab === "schematic" && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
+                    <span>// INTERACTIVE 120-DAY DUAL WINDOW ML PIPELINE</span>
+                    <span className="text-blue-400">CLICK ANY NODE TO INSPECT SPECS</span>
+                  </div>
+                  <N8nFlowCanvas systemSlug="absence-risk" />
+                </div>
+              )}
+
+              {activeDeepDiveTab === "features" && (
+                <div className="space-y-4 font-sans text-xs sm:text-sm text-zinc-300">
+                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                    12 Dyadic Interaction Features & Importance Weights
+                  </h4>
+                  <div className="divide-y divide-white/[0.06]">
+                    {FEATURE_IMPORTANCES.map((feat) => (
+                      <div key={feat.name} className="py-2.5 flex items-baseline justify-between gap-4 font-mono text-xs">
+                        <div>
+                          <span className="text-zinc-500 mr-2">#{feat.rank}</span>
+                          <span className="text-white font-medium">{feat.name}</span>
+                          <span className="text-zinc-400 font-sans text-xs ml-3 hidden sm:inline">{feat.desc}</span>
+                        </div>
+                        <span className="text-blue-400 font-semibold shrink-0">{feat.importance}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeDeepDiveTab === "clustering" && (
+                <div className="space-y-4 font-sans text-sm text-zinc-300 leading-relaxed max-w-3xl">
+                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                    Complete-Linkage Clustering Proof & Guarantees
+                  </h4>
+                  <p>
+                    Unlike average-linkage or single-linkage which permits chaining of dissimilar members, complete-linkage calculates cluster distance as the maximum pairwise distance between any pair:
+                  </p>
+                  <p className="font-mono text-xs text-blue-400 bg-white/[0.02] p-3 rounded border border-white/[0.06]">
+                    D(A, B) = max &#123; d(x, y) : x &isin; A, y &isin; B &#125;
+                  </p>
+                  <p>
+                    By cutting the dendrogram at distance threshold <strong>t = 0.75</strong>, the maximum pairwise distance between any two employees in a cluster is guaranteed to be &le; 0.75.
+                    Since Jaccard Distance = 1 - Jaccard Similarity, this mathematically proves:
+                  </p>
+                  <p className="font-mono text-xs text-blue-400 bg-white/[0.02] p-3 rounded border border-white/[0.06]">
+                    Similarity(x, y) = 1 - d(x, y) &ge; 1 - 0.75 = 0.25 (25% co-absence overlap)
+                  </p>
+                </div>
+              )}
+
+              {activeDeepDiveTab === "rules" && (
+                <div className="space-y-4 font-sans text-sm text-zinc-300 leading-relaxed max-w-3xl">
+                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                    Explainability Translation Heuristics
+                  </h4>
+                  <p>
+                    To enable operations teams to act without machine learning expertise, prediction scores are paired with transparent heuristic explanations:
+                  </p>
+                  <ul className="space-y-2 pl-4 text-xs text-zinc-400 list-disc">
+                    <li><strong>Recency Driver:</strong> If co-absence occurred within the last 14 days, flags active high-frequency synchronization.</li>
+                    <li><strong>Bridge Pattern Driver:</strong> If weekend bridge ratio exceeds 40%, flags Friday/Monday extended weekend correlation.</li>
+                    <li><strong>Cluster Impact:</strong> Identifies if both employees belong to one of the 147 workforce clusters, indicating departmental team risk.</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* ========================================================================= */}
+        {/* TECHNOLOGIES & CASE STUDY NAVIGATION                                      */}
         {/* ========================================================================= */}
         <section className="space-y-4">
-          <h2 className="text-base sm:text-lg font-mono font-bold text-white tracking-wide border-b border-white/[0.08] pb-2">
-            CORE METHODOLOGY & EMPIRICAL FINDINGS
-          </h2>
-
-          {/* Empirical Observation Callout */}
-          <div className="p-4 sm:p-5 rounded-lg border border-cyan-500/20 bg-cyan-950/15 space-y-2">
-            <div className="flex items-center gap-2 text-cyan-300 font-mono text-xs font-semibold">
-              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-              <span>EMPIRICAL PATTERN: TEMPORAL INTERACTION OVER ORGANIZATIONAL METADATA</span>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
-              Organizational metadata (<code className="text-cyan-300 font-mono">same_department</code> and <code className="text-cyan-300 font-mono">same_designation</code>) registered 0.00% feature importance. Historical temporal interaction signals (recency, individual baseline rates, and Jaccard overlap) accounted for <strong>over 78% of the total model importance</strong>.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            {/* Temporal Windowing */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-cyan-400" />
-                <span>120-DAY DUAL-WINDOW PARTITION</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Timeline is strictly partitioned into a 90-day feature extraction window (Days -120 to -30) and an observation target window (Days -30 to 0) to eliminate temporal data leakage.
-              </p>
-            </div>
-
-            {/* Complete-linkage guarantee */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Network className="w-4 h-4 text-cyan-400" />
-                <span>COMPLETE-LINKAGE CLUSTERING GUARANTEE</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Agglomerative clustering on Jaccard distance with distance threshold <code className="text-cyan-300 font-mono">t = 0.75</code> mathematically guarantees that every employee pair in a cluster shares at least 25% Jaccard similarity (147 clusters detected).
-              </p>
-            </div>
-
-            {/* 12 Features Breakdown */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-cyan-400" />
-                <span>12 PAIRWISE INTERACTION FEATURES</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Engineered dyadic features capturing recency (26.2%), individual baseline leave rates (17.9% and 17.5%), Jaccard overlap (17.0%), and Monday/Friday weekend bridges (3.2%).
-              </p>
-            </div>
-
-            {/* Operational Explainability */}
-            <div className="p-4 rounded-lg border border-white/[0.08] bg-[#0c0e15]/70 space-y-2">
-              <div className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-cyan-400" />
-                <span>RULE-BASED EXPLAINABILITY HEURISTICS</span>
-              </div>
-              <p className="text-xs text-zinc-300 leading-relaxed font-sans">
-                Decision heuristics translate feature threshold crossings into operational risk drivers (&quot;Frequent Monday/Friday Weekend Bridges&quot;, &quot;High Unplanned Absence Overlap&quot;) without black-box opacity.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================================= */}
-        {/* LEVEL 4: EXPANDABLE TECHNICAL DEEP DIVE (Progressive Disclosure)          */}
-        {/* ========================================================================= */}
-        <section className="pt-2 border-t border-white/[0.08]">
-          <div className="rounded-xl border border-white/[0.1] bg-[#0c0e15]/95 overflow-hidden">
-            {/* Accordion Header */}
-            <button
-              type="button"
-              onClick={() => setDeepDiveOpen(!deepDiveOpen)}
-              className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-              aria-expanded={deepDiveOpen}
-            >
-              <div className="flex items-center gap-2.5">
-                <Terminal className="w-4 h-4 text-cyan-400 shrink-0" />
-                <div>
-                  <span className="text-xs font-mono font-bold text-white tracking-wider uppercase block">
-                    TECHNICAL DEEP DIVE // MATHEMATICAL SPECS & FEATURE IMPORTANCE
-                  </span>
-                  <span className="text-[11px] text-zinc-400 font-sans block mt-0.5">
-                    {deepDiveOpen ? "Click to collapse detailed specs" : "Click to expand exact feature rankings, clustering proofs, and explainability trees"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[11px] font-mono text-cyan-400 hidden sm:inline">
-                  {deepDiveOpen ? "COLLAPSE" : "EXPAND"}
-                </span>
-                {deepDiveOpen ? (
-                  <ChevronUp className="w-4 h-4 text-cyan-400" />
-                ) : (
-                  <ChevronDown className="w-4 h-4 text-cyan-400" />
-                )}
-              </div>
-            </button>
-
-            {/* Expandable Body */}
-            {deepDiveOpen && (
-              <div className="p-4 sm:p-6 border-t border-white/[0.08] space-y-6 bg-black/40 animate-in fade-in duration-200">
-                {/* Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  <button
-                    type="button"
-                    onClick={() => setActiveDeepDiveTab("schematic")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
-                      activeDeepDiveTab === "schematic"
-                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
-                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    Workflow Schematic
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveDeepDiveTab("features")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
-                      activeDeepDiveTab === "features"
-                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
-                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    Feature Table
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveDeepDiveTab("clustering")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
-                      activeDeepDiveTab === "clustering"
-                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
-                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    Clustering Proof
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setActiveDeepDiveTab("rules")}
-                    className={`min-h-[40px] px-3.5 py-1.5 rounded-lg text-xs font-mono transition-colors touch-manipulation cursor-pointer ${
-                      activeDeepDiveTab === "rules"
-                        ? "bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-semibold"
-                        : "bg-white/[0.02] border border-white/[0.06] text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    Decision Heuristics
-                  </button>
-                </div>
-
-                {/* Tab 1: Monospace Flow Diagram */}
-                {activeDeepDiveTab === "schematic" && (
-                  <div className="p-4 rounded-lg border border-white/[0.08] bg-black/80 font-mono text-xs overflow-x-auto">
-                    <div className="text-zinc-500 mb-2">// MATHEMATICAL WORKFLOW SCHEMATIC</div>
-                    <pre className="text-cyan-300 text-[11px] leading-snug">
-{`+-------------------------------------------------------------------------+
-|  ENTERPRISE DATA SOURCES (PostgreSQL / MongoDB)                         |
-|  - Daily attendance punch logs, approved leave slips, shift rosters     |
-+-----------------------------------+-------------------------------------+
-                                    |
-                                    v
-+-------------------------------------------------------------------------+
-|  120-DAY TOTAL OBSERVATION STRUCTURE                                    |
-|  +-------------------------------------+-------------------------------+|
-|  |  90-DAY FEATURE WINDOW              |  30-DAY TARGET WINDOW         ||
-|  |  (Days -120 to -30)                 |  (Days -30 to 0)              ||
-|  |  Aggregates temporal interactions   |  Ground truth co-absence target||
-|  +-------------------------------------+-------------------------------+|
-+-----------------------------------+-------------------------------------+
-                                    |
-                                    v
-+-------------------------------------------------------------------------+
-|  12 PAIRWISE INTERACTION FEATURES (Top 4 account for >78% importance)    |
-|  - Recency (days_since_last_co_leave: 26.2%)                            |
-|  - Individual baseline frequencies (leave_rate_e1: 17.9%, e2: 17.5%)    |
-|  - Jaccard leave similarity (|E1 ∩ E2| / |E1 ∪ E2|: 17.0%)              |
-|  - Personal overlap (5.3%), weekend bridge ratio (4.4%), co-leaves (4.1%)|
-|  - Weekend bridge count (3.2%), medical (2.8%), unplanned (1.7%)        |
-|  - Organizational metadata (dept: 0.0%, desig: 0.0%)                    |
-+-----------------------------------+-------------------------------------+
-                                    |
-                                    v
-+-------------------------------------------------------------------------+
-|  RANDOM FOREST CLASSIFICATION (100 Trees, Stratified 80/20 Split)       |
-|  - Supervised binary classification projecting 30-day forward risk      |
-+-----------------------------------+-------------------------------------+
-                                    |
-                                    v
-+-------------------------------------------------------------------------+
-|  COMPLETE-LINKAGE CLUSTERING & EXPLAINABILITY                           |
-|  - Jaccard Distance D(i, j) = 1.0 - Jaccard Similarity                  |
-|  - Complete Linkage with threshold t=0.75                              |
-|  - Mathematical guarantee: all cluster members share >=0.25 similarity  |
-|  - 147 clusters discovered across enterprise workforce data            |
-+-------------------------------------------------------------------------+`}
-                    </pre>
-                  </div>
-                )}
-
-                {/* Tab 2: Feature Importance Table */}
-                {activeDeepDiveTab === "features" && (
-                  <div className="space-y-3 font-mono text-xs">
-                    <div className="text-zinc-400 font-sans text-xs">
-                      Measured Gini feature importances extracted from the trained 100-estimator Random Forest classifier:
-                    </div>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse border border-white/[0.08] min-w-[500px]">
-                        <thead>
-                          <tr className="bg-white/[0.04] text-cyan-300 text-[11px] border-b border-white/[0.08]">
-                            <th className="p-2.5">#</th>
-                            <th className="p-2.5">Feature Name</th>
-                            <th className="p-2.5">Description</th>
-                            <th className="p-2.5 text-right">Importance</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/[0.05] text-[11px]">
-                          {FEATURE_IMPORTANCES.map((f) => (
-                            <tr key={f.name} className="hover:bg-white/[0.02]">
-                              <td className="p-2.5 text-zinc-500 font-bold">{f.rank}</td>
-                              <td className="p-2.5 text-cyan-300 font-semibold">{f.name}</td>
-                              <td className="p-2.5 text-zinc-300 font-sans">{f.desc}</td>
-                              <td className="p-2.5 text-right font-bold text-white">{f.importance}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tab 3: Clustering Proof */}
-                {activeDeepDiveTab === "clustering" && (
-                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
-                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
-                      Complete-Linkage Agglomerative Distance Guarantee
-                    </h3>
-                    <p>
-                      Rather than heuristic k-means, clustering utilizes complete linkage over pairwise Jaccard distance:
-                    </p>
-                    <div className="p-3 rounded-lg bg-black/60 font-mono text-xs text-cyan-300">
-                      D(i, j) = 1.0 - Jaccard_Similarity(i, j)
-                    </div>
-                    <p>
-                      Because complete linkage defines inter-cluster distance as the <em>maximum</em> pairwise distance between elements:
-                    </p>
-                    <div className="p-3 rounded-lg bg-black/60 font-mono text-xs text-cyan-300">
-                      max(D(x, y)) &le; 0.75  ==&gt;  min(Jaccard_Similarity(x, y)) &ge; 0.25
-                    </div>
-                    <p>
-                      Every pair inside an assigned cluster is mathematically guaranteed to share at least 25% co-absence overlap, eliminating spurious cluster membership.
-                    </p>
-                  </div>
-                )}
-
-                {/* Tab 4: Decision Heuristics */}
-                {activeDeepDiveTab === "rules" && (
-                  <div className="space-y-3 font-sans text-xs sm:text-sm text-zinc-300">
-                    <h3 className="font-mono text-xs font-bold text-white uppercase text-cyan-300">
-                      Operational Rule Mappings for Shift Managers
-                    </h3>
-                    <p>
-                      The explainability module routes Random Forest probability scores and top feature contributions through deterministic heuristic rules:
-                    </p>
-                    <ul className="space-y-1.5 pl-4 text-xs text-zinc-300 list-disc">
-                      <li><strong>Weekend bridge flag:</strong> Triggered when <code className="text-cyan-300 font-mono">weekend_bridge_ratio &gt; 0.40</code> (&quot;High concentration of Monday/Friday synchronized absences&quot;).</li>
-                      <li><strong>Medical co-leave flag:</strong> Triggered when <code className="text-cyan-300 font-mono">medical_leave_overlap &ge; 2</code> (&quot;Recurring overlapping sick leaves&quot;).</li>
-                      <li><strong>Unplanned absence risk:</strong> Triggered when <code className="text-cyan-300 font-mono">unplanned_absence_overlap &ge; 2</code> (&quot;Synchronized unnotified absence pattern&quot;).</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Technologies Grid */}
-        <section className="space-y-3 pt-2">
-          <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-400">
-            SYSTEM TECHNOLOGIES
-          </h2>
+          <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+            DEPLOYED TECHNOLOGIES
+          </span>
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech) => (
               <span
                 key={tech}
-                className="text-xs font-mono px-2.5 py-1 rounded border border-white/[0.1] bg-white/[0.03] text-zinc-200"
+                className="text-xs font-mono px-3 py-1.5 rounded border border-white/[0.08] bg-white/[0.02] text-zinc-300"
               >
                 {tech}
               </span>

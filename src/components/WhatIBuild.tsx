@@ -2,186 +2,111 @@
 
 import React, { useState } from "react";
 import { CAPABILITIES } from "@/data/portfolioData";
-import { Bot, FileCode2, Server, LineChart, ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
-interface FlowStep {
-  label: string;
-  sub: string;
-}
-
-const CAPABILITY_FLOWS: Record<string, FlowStep[]> = {
-  "01": [
-    { label: "GATEWAY", sub: "FastAPI & Auth" },
-    { label: "SPECIALIST", sub: "Domain Scoping" },
-    { label: "vLLM ENGINE", sub: "Local Inference" },
-    { label: "TYPED TOOL", sub: "Pydantic Validation" },
-    { label: "APPLICATION", sub: "Deterministic State" },
-  ],
-  "02": [
-    { label: "MANIFEST", sub: "SHA-256 + mtime" },
-    { label: "AST PARSER", sub: "Tree-sitter 10L" },
-    { label: "FASTEMBED", sub: "Dense Vectors" },
-    { label: "PGVECTOR", sub: "HNSW Rebuild" },
-    { label: "RETRIEVAL", sub: "Source Isolated" },
-  ],
-  "03": [
-    { label: "TRIGGERS", sub: "Cron / WebSockets" },
-    { label: "SCHEDULER", sub: "PostgreSQL Queue" },
-    { label: "WORKER", sub: "Timezone Daemon" },
-    { label: "vLLM / OCR", sub: "Local Pipelines" },
-    { label: "SERVICES", sub: "Delivery & APIs" },
-  ],
-  "04": [
-    { label: "LOGS", sub: "Attendance & Leaves" },
-    { label: "120d WINDOW", sub: "90d Feat / 30d Tgt" },
-    { label: "12 FEATURES", sub: "Dyadic Signals" },
-    { label: "RANDOM FOREST", sub: "80/20 Stratified" },
-    { label: "CLUSTERS", sub: "Complete-Linkage" },
-  ],
+const FLOWS: Record<string, string[]> = {
+  "01": ["FastAPI Gateway", "Specialist Agent", "vLLM Inference", "Typed Pydantic Tools", "ERP State & Database"],
+  "02": ["Git Tree Scan", "SHA-256 Manifest", "Tree-sitter AST (10L)", "FastEmbed Vectors", "pgvector HNSW Rebuild"],
+  "03": ["PostgreSQL Queue", "Timezone Daemon", "Local vLLM / OCR", "PyMuPDF MIME Parser", "WebSockets Token Stream"],
+  "04": ["Attendance Logs", "120-Day Partition", "12 Dyadic Features", "Random Forest (80/20)", "Complete-Linkage Clustering"],
 };
 
-const CAPABILITY_ICONS = [Bot, FileCode2, Server, LineChart];
-
 export function WhatIBuild() {
-  const [activeCard, setActiveCard] = useState<string>("01");
+  const [activeTab, setActiveTab] = useState<string>("01");
+  const currentCap = CAPABILITIES.find((c) => c.number === activeTab) || CAPABILITIES[0];
+  const currentFlow = FLOWS[currentCap.number] || [];
 
   return (
-    <section id="capabilities" className="py-20 sm:py-28 border-t border-white/[0.08] relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-12 sm:mb-16">
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 tracking-wider mb-2 uppercase">
-            <span>// CAPABILITIES & FOCUS</span>
+    <section id="architecture" className="py-24 sm:py-36 border-t border-white/[0.08] relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10">
+        {/* Editorial Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 border-b border-white/[0.08] gap-6">
+          <div className="space-y-2">
+            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              INDEX 02 // ARCHITECTURAL SPECIALIZATION MATRIX
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-sans font-light text-white tracking-tight">
+              Four <span className="font-serif italic text-white">Engineering</span> Pillars
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-white">
-            WHAT I BUILD
-          </h2>
-          <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-            Systems where models are connected to data, tools, workflows, and real software.
+          <p className="text-sm text-zinc-400 font-sans max-w-md leading-relaxed">
+            The core competencies required to connect non-deterministic AI models with enterprise-grade production software.
           </p>
         </div>
 
-        {/* 4 Capability Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          {CAPABILITIES.map((cap, idx) => {
-            const Icon = CAPABILITY_ICONS[idx];
-            const flow = CAPABILITY_FLOWS[cap.number] || [];
-            const isActive = activeCard === cap.number;
-
+        {/* Minimalist Tab Selectors (Zero Cards) */}
+        <div className="pt-8 pb-4 flex flex-wrap gap-6 sm:gap-10 border-b border-white/[0.08] text-sm font-sans">
+          {CAPABILITIES.map((cap) => {
+            const isActive = activeTab === cap.number;
             return (
-              <div
+              <button
                 key={cap.number}
-                role="button"
-                tabIndex={0}
-                onMouseEnter={() => {
-                  if (typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches) {
-                    setActiveCard(cap.number);
-                  }
-                }}
-                onClick={() => setActiveCard(cap.number)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setActiveCard(cap.number);
-                  }
-                }}
-                className={`group relative p-5 sm:p-7 rounded-xl border transition-all duration-200 flex flex-col justify-between cursor-pointer touch-manipulation select-none active:bg-cyan-950/20 ${
-                  isActive
-                    ? "bg-[#0d101a] border-cyan-500/40 shadow-lg shadow-cyan-950/20 ring-1 ring-cyan-500/20"
-                    : "bg-[#0d0f17]/70 border-white/[0.08] hover:bg-[#0d0f17]/95 hover:border-white/[0.18]"
+                type="button"
+                onClick={() => setActiveTab(cap.number)}
+                className={`pb-4 transition-all cursor-pointer flex items-baseline gap-2 relative ${
+                  isActive ? "text-white font-medium" : "text-zinc-500 hover:text-zinc-300"
                 }`}
               >
-                <div>
-                  {/* Top Bar: Number + Icon */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-xs font-bold text-zinc-400 tracking-wider">
-                      {cap.number}
-                    </span>
-                    <div
-                      className={`p-2 rounded border transition-colors ${
-                        isActive
-                          ? "border-cyan-500/40 bg-cyan-950/40 text-cyan-400"
-                          : "border-white/[0.06] bg-white/[0.02] text-zinc-400 group-hover:text-zinc-200"
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className={`text-lg font-mono font-semibold tracking-tight transition-colors ${
-                      isActive ? "text-cyan-200" : "text-white group-hover:text-zinc-100"
-                    }`}
-                  >
-                    {cap.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mt-2.5 text-sm text-zinc-300 leading-relaxed font-sans">
-                    {cap.description}
-                  </p>
-
-                  {/* Interactive Micro-Flow */}
-                  <div className="mt-5 p-3 rounded-lg border border-white/[0.06] bg-black/40">
-                    <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400 uppercase tracking-wider mb-2">
-                      <span>Execution Pipeline</span>
-                      <span className="text-cyan-400/80">Deterministic Flow</span>
-                    </div>
-
-                    <div className="overflow-x-auto pb-1 scrollbar-none">
-                      <div className="flex items-center gap-1.5 min-w-max">
-                        {flow.map((step, sIdx) => (
-                          <React.Fragment key={sIdx}>
-                            <div
-                              className={`px-2 py-1 rounded text-center transition-all duration-200 border ${
-                                isActive
-                                  ? "border-cyan-500/30 bg-cyan-950/30 text-cyan-200"
-                                  : "border-white/[0.06] bg-white/[0.02] text-zinc-400"
-                              }`}
-                            >
-                              <div className="text-[10px] font-mono font-semibold tracking-wide">
-                                {step.label}
-                              </div>
-                              <div className="text-[8px] text-zinc-400 font-mono mt-0.5">
-                                {step.sub}
-                              </div>
-                            </div>
-
-                            {sIdx < flow.length - 1 && (
-                              <ArrowRight
-                                className={`w-3 h-3 transition-colors ${
-                                  isActive ? "text-cyan-400" : "text-zinc-600"
-                                }`}
-                              />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Technical Bullet Details */}
-                <div className="mt-6 pt-5 border-t border-white/[0.06] space-y-2">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
-                    Key Implementations
-                  </span>
-                  <ul className="space-y-1.5">
-                    {cap.details.map((detail, dIdx) => (
-                      <li
-                        key={dIdx}
-                        className="text-xs text-zinc-300 font-sans flex items-start gap-2"
-                      >
-                        <span className="text-cyan-400/80 font-mono text-[10px] mt-0.5">▹</span>
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+                <span className="font-mono text-xs text-blue-400">{cap.number}</span>
+                <span>{cap.title}</span>
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
+                )}
+              </button>
             );
           })}
+        </div>
+
+        {/* Active Pillar Detailed Breakdown */}
+        <div className="py-12 space-y-12 animate-in fade-in duration-200">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            {/* Left Narrative */}
+            <div className="lg:col-span-5 space-y-4">
+              <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                CORE DOCTRINE
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-serif italic text-white leading-snug">
+                {currentCap.description}
+              </h3>
+            </div>
+
+            {/* Right Verified Production Details */}
+            <div className="lg:col-span-7 space-y-4">
+              <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+                PRODUCTION IMPLEMENTATION DELIVERABLES
+              </span>
+              <div className="space-y-4">
+                {currentCap.details.map((detail, dIdx) => (
+                  <div key={dIdx} className="flex items-start gap-4 border-l border-white/[0.1] pl-5 py-1">
+                    <span className="font-mono text-xs text-blue-400 mt-0.5">0{dIdx + 1}</span>
+                    <p className="text-sm sm:text-base text-zinc-300 font-sans leading-relaxed">
+                      {detail}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Linear Execution Timeline (Minimalist Hairlines, No Box Blocks) */}
+          <div className="pt-8 border-t border-white/[0.06] space-y-4">
+            <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+              DETERMINISTIC PIPELINE ROUTING
+            </span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 pt-2">
+              {currentFlow.map((step, idx) => (
+                <div key={idx} className="border-t border-white/[0.1] pt-3 space-y-1">
+                  <span className="text-[10px] font-mono text-blue-400 block">
+                    STAGE 0{idx + 1}
+                  </span>
+                  <span className="text-xs font-sans font-medium text-white block">
+                    {step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
