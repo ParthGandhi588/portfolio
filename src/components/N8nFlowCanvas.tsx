@@ -49,7 +49,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "WebSockets / MIME Uploads / Cron",
         icon: Zap,
         badge: "TRIGGER",
-        badgeColor: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+        badgeColor: "bg-amber-500/10 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
         details: {
           protocol: "WebSocket / HTTP multipart",
           runtime: "agent_ws.py",
@@ -64,7 +64,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "MIME Routing & Auth Validation",
         icon: Server,
         badge: "GATEWAY",
-        badgeColor: "bg-teal-500/15 text-teal-300 border-teal-500/30",
+        badgeColor: "bg-teal-500/10 dark:bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30",
         details: {
           protocol: "FastAPI Async Engine",
           runtime: "PyMuPDF / MIME Sniffer",
@@ -79,7 +79,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Purchase / Stores / Planning / QC",
         icon: Bot,
         badge: "SPECIALIST",
-        badgeColor: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+        badgeColor: "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
         details: {
           protocol: "Bounded System Prompt",
           runtime: "Scoped Tool Schema Context",
@@ -94,7 +94,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Local Qwen Inference Engine",
         icon: Cpu,
         badge: "INFERENCE",
-        badgeColor: "bg-purple-500/15 text-purple-300 border-purple-500/30",
+        badgeColor: "bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
         details: {
           protocol: "OpenAI-compatible vLLM",
           runtime: "Local GPU serving",
@@ -109,7 +109,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Pydantic & Async Task Queue",
         icon: Workflow,
         badge: "VALIDATION",
-        badgeColor: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+        badgeColor: "bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
         details: {
           protocol: "asyncio.gather Execution",
           runtime: "Pydantic V2 Schema Validation",
@@ -124,7 +124,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "PostgreSQL & ERP REST Services",
         icon: Database,
         badge: "DATABASE",
-        badgeColor: "bg-sky-500/15 text-sky-300 border-sky-500/30",
+        badgeColor: "bg-sky-500/10 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30",
         details: {
           protocol: "ACID Transaction & MinIO S3",
           runtime: "Internal Authenticated APIs",
@@ -144,7 +144,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "GitPython .gitignore Scan",
         icon: GitBranch,
         badge: "INGEST",
-        badgeColor: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+        badgeColor: "bg-amber-500/10 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
         details: {
           protocol: "Git Tree Walk",
           runtime: "GitPython filter",
@@ -159,7 +159,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Dual SHA-256 + mtime Hashing",
         icon: Database,
         badge: "CHANGE DETECT",
-        badgeColor: "bg-teal-500/15 text-teal-300 border-teal-500/30",
+        badgeColor: "bg-teal-500/10 dark:bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30",
         details: {
           protocol: "PostgreSQL Manifest Table",
           runtime: "Selective Changed File Filter",
@@ -174,7 +174,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Language-Aware Code Splitting",
         icon: FileCode2,
         badge: "AST 10-LANG",
-        badgeColor: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+        badgeColor: "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
         details: {
           protocol: "AST Grammar Parser",
           runtime: "Python, JS, TS, Go, Rust, C++...",
@@ -189,7 +189,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "384-dimensional Embeddings",
         icon: Cpu,
         badge: "EMBEDDING",
-        badgeColor: "bg-purple-500/15 text-purple-300 border-purple-500/30",
+        badgeColor: "bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
         details: {
           protocol: "ONNX Local Engine",
           runtime: "Zero cloud API rate-limits",
@@ -204,7 +204,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Bulk Drop & Rebuild Optimization",
         icon: Layers,
         badge: "VECTOR STORE",
-        badgeColor: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+        badgeColor: "bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
         details: {
           protocol: "PostgreSQL pgvector extension",
           runtime: "HNSW Cosine Graph Rebuild",
@@ -219,7 +219,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Gemini API + Ollama Fallback",
         icon: Bot,
         badge: "REASONING",
-        badgeColor: "bg-sky-500/15 text-sky-300 border-sky-500/30",
+        badgeColor: "bg-sky-500/10 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30",
         details: {
           protocol: "Dual Model Provider",
           runtime: "Primary Gemini · Fallback llama3.2",
@@ -239,7 +239,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Punch Logs & Shift Rosters",
         icon: Zap,
         badge: "RAW DATA",
-        badgeColor: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+        badgeColor: "bg-amber-500/10 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
         details: {
           protocol: "PostgreSQL & MongoDB Records",
           runtime: "Daily Punch Data Loader",
@@ -254,7 +254,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "90d Feature / 30d Target Window",
         icon: Layers,
         badge: "TEMPORAL LEAKAGE",
-        badgeColor: "bg-teal-500/15 text-teal-300 border-teal-500/30",
+        badgeColor: "bg-teal-500/10 dark:bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30",
         details: {
           protocol: "Strict Dual-Window Windowing",
           runtime: "Feature: [-120 to -30] · Target: [-30 to 0]",
@@ -269,7 +269,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Pairwise Behavioral Signals",
         icon: LineChart,
         badge: "FEATURE ENG",
-        badgeColor: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+        badgeColor: "bg-blue-500/10 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
         details: {
           protocol: "Dyadic Interaction Math",
           runtime: "Recency, baseline rate, Jaccard overlap",
@@ -284,7 +284,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "100 Estimators · Stratified 80/20",
         icon: Cpu,
         badge: "CLASSIFIER",
-        badgeColor: "bg-purple-500/15 text-purple-300 border-purple-500/30",
+        badgeColor: "bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
         details: {
           protocol: "Supervised Tree Ensemble",
           runtime: "Scikit-learn RandomForestClassifier",
@@ -299,7 +299,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Agglomerative Jaccard Distance",
         icon: Workflow,
         badge: "t=0.75 GUARANTEE",
-        badgeColor: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+        badgeColor: "bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
         details: {
           protocol: "Hierarchical Maximum-Distance Linkage",
           runtime: "Cut at threshold t=0.75",
@@ -314,7 +314,7 @@ const FLOW_CONFIGS: Record<string, { title: string; nodes: FlowNode[] }> = {
         subtitle: "Plain-Language Risk Drivers",
         icon: CheckCircle2,
         badge: "EXPLAINABILITY",
-        badgeColor: "bg-sky-500/15 text-sky-300 border-sky-500/30",
+        badgeColor: "bg-sky-500/10 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30",
         details: {
           protocol: "Transparent Heuristic Decision Engine",
           runtime: "Weekend bridge & recency flags",
@@ -333,20 +333,21 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
   const selectedNode = config.nodes.find((n) => n.id === selectedNodeId) || config.nodes[0];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-zinc-400 pb-2 border-b border-white/[0.08]">
+    <div className="space-y-4">
+      {/* Track Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono pb-2 border-b border-zinc-200 dark:border-white/[0.08]">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-          <span className="text-zinc-200 font-semibold">{config.title}</span>
+          <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-500 animate-pulse" />
+          <span className="text-zinc-900 dark:text-zinc-200 font-semibold">{config.title}</span>
         </div>
-        <span className="text-zinc-500">INTERACTIVE GRAPH PIPELINE · CLICK TO INSPECT NODE</span>
+        <span className="text-zinc-500 dark:text-zinc-400">INTERACTIVE GRAPH PIPELINE · CLICK TO INSPECT NODE</span>
       </div>
 
       {/* n8n-style Node Graph Board */}
-      <div className="rounded-2xl border border-zinc-200 dark:border-white/[0.1] bg-white dark:bg-[#06070a] overflow-hidden shadow-xl dark:shadow-2xl">
+      <div className="rounded-2xl border border-zinc-200 dark:border-white/[0.1] bg-white dark:bg-[#06070a] overflow-hidden shadow-md dark:shadow-2xl">
         {/* Upper Track: Horizontal Scrollable Nodes (Scrollbar Strictly Hidden Cross-Browser) */}
         <div
-          className="relative p-6 sm:p-10 overflow-x-auto scrollbar-none no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-[radial-gradient(rgba(0,0,0,0.06)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]"
+          className="relative p-6 sm:p-10 overflow-x-auto scrollbar-none no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-slate-50/70 dark:bg-transparent bg-[radial-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/* Horizontal Node Track */}
@@ -361,20 +362,20 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
                   <button
                     type="button"
                     onClick={() => setSelectedNodeId(node.id)}
-                    className={`relative w-[210px] text-left rounded-xl border p-4 transition-all duration-200 cursor-pointer group shadow-sm ${
+                    className={`relative w-[210px] text-left rounded-xl border p-4 transition-all duration-200 cursor-pointer group ${
                       isSelected
-                        ? "bg-blue-50/70 dark:bg-[#0d121c] border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.25)] ring-1 ring-blue-500"
-                        : "bg-zinc-50/80 dark:bg-[#0b0d13]/90 border-zinc-200 dark:border-white/[0.1] hover:border-zinc-400 dark:hover:border-white/[0.3] hover:bg-white dark:hover:bg-[#0f1118]"
+                        ? "bg-white dark:bg-[#0d121c] border-blue-600 dark:border-blue-500 shadow-[0_4px_16px_rgba(37,99,235,0.15)] dark:shadow-[0_0_20px_rgba(59,130,246,0.25)] ring-2 ring-blue-600/20 dark:ring-blue-500/40"
+                        : "bg-white dark:bg-[#0b0d13]/90 border-zinc-200 dark:border-white/[0.1] hover:border-zinc-300 dark:hover:border-white/[0.3] hover:shadow-md dark:hover:bg-[#0f1118]"
                     }`}
                   >
                     {/* Left Input Port Pin */}
                     {index > 0 && (
-                      <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[#06070a] bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.7)]" />
+                      <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[#06070a] bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
                     )}
 
                     {/* Right Output Port Pin */}
                     {index < config.nodes.length - 1 && (
-                      <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[#06070a] bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.7)]" />
+                      <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[#06070a] bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
                     )}
 
                     {/* Header: Icon + Badge */}
@@ -382,8 +383,8 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
                       <div
                         className={`p-2 rounded-lg border ${
                           isSelected
-                            ? "bg-blue-500/15 border-blue-400 text-blue-600 dark:text-blue-300"
-                            : "bg-black/[0.03] dark:bg-white/[0.04] border-zinc-200 dark:border-white/[0.08] text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white"
+                            ? "bg-blue-50 dark:bg-blue-500/15 border-blue-200 dark:border-blue-400 text-blue-600 dark:text-blue-300"
+                            : "bg-zinc-100 dark:bg-white/[0.04] border-zinc-200 dark:border-white/[0.08] text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-white"
                         }`}
                       >
                         <Icon className="w-4 h-4" />
@@ -400,7 +401,7 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
                     <div className="space-y-0.5">
                       <h5
                         className={`text-xs font-sans font-semibold truncate ${
-                          isSelected ? "text-zinc-900 dark:text-white" : "text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-900 dark:group-hover:text-white"
+                          isSelected ? "text-zinc-950 dark:text-white" : "text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-950 dark:group-hover:text-white"
                         }`}
                       >
                         {node.title}
@@ -411,10 +412,10 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
                     </div>
 
                     {/* Live Status Indicator */}
-                    <div className="mt-3 pt-2.5 border-t border-zinc-200 dark:border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-500 dark:text-zinc-400">
+                    <div className="mt-3 pt-2.5 border-t border-zinc-100 dark:border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-600 dark:text-zinc-400">
                       <span className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping" />
-                        <span>{node.details.status}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-500 animate-ping" />
+                        <span className="font-semibold">{node.details.status}</span>
                       </span>
                       <span className="text-zinc-400 dark:text-zinc-500">STAGE 0{index + 1}</span>
                     </div>
@@ -423,10 +424,10 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
                   {/* Animated n8n Connector Wire */}
                   {index < config.nodes.length - 1 && (
                     <div className="relative flex items-center px-1">
-                      <div className="w-8 h-0.5 bg-gradient-to-r from-blue-500/70 to-blue-400/70 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-blue-300 dark:bg-blue-200 animate-pulse opacity-80" />
+                      <div className="w-8 h-0.5 bg-gradient-to-r from-blue-600/70 to-blue-500/70 dark:from-blue-500/70 dark:to-blue-400/70 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-blue-400 dark:bg-blue-200 animate-pulse opacity-80" />
                       </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 -ml-1 shrink-0" />
+                      <ArrowRight className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 -ml-1 shrink-0" />
                     </div>
                   )}
                 </React.Fragment>
@@ -436,26 +437,26 @@ export function N8nFlowCanvas({ systemSlug }: N8nFlowCanvasProps) {
         </div>
 
         {/* Node Parameter Inspection Drawer (Pinned & Full-Width, Never scrolls horizontally!) */}
-        <div className="p-6 sm:p-8 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#040507] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs font-mono">
+        <div className="p-6 sm:p-8 border-t border-zinc-200/90 dark:border-white/[0.08] bg-zinc-50/90 dark:bg-[#040507] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs font-mono">
           <div className="space-y-1">
-            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block">INSPECTED NODE</span>
-            <div className="text-zinc-900 dark:text-white font-semibold font-sans text-sm">{selectedNode.title}</div>
-            <div className="text-zinc-500 dark:text-zinc-400 text-xs font-sans">{selectedNode.subtitle}</div>
+            <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">INSPECTED NODE</span>
+            <div className="text-zinc-950 dark:text-white font-semibold font-sans text-sm">{selectedNode.title}</div>
+            <div className="text-zinc-600 dark:text-zinc-400 text-xs font-sans">{selectedNode.subtitle}</div>
           </div>
 
           <div className="space-y-1">
-            <span className="text-[10px] text-blue-600 dark:text-blue-400 uppercase tracking-wider block">PROTOCOL / INTERFACE</span>
-            <div className="text-zinc-800 dark:text-zinc-200">{selectedNode.details.protocol}</div>
+            <span className="text-[10px] text-blue-600 dark:text-blue-400 uppercase tracking-wider block font-semibold">PROTOCOL / INTERFACE</span>
+            <div className="text-zinc-900 dark:text-zinc-200 font-medium">{selectedNode.details.protocol}</div>
           </div>
 
           <div className="space-y-1">
             <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">RUNTIME / MODULE</span>
-            <div className="text-zinc-800 dark:text-zinc-200">{selectedNode.details.runtime}</div>
+            <div className="text-zinc-900 dark:text-zinc-200 font-medium">{selectedNode.details.runtime}</div>
           </div>
 
           <div className="space-y-1">
             <span className="text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">ACTIVE PARAMETERS</span>
-            <div className="text-zinc-700 dark:text-zinc-300 break-words" title={selectedNode.details.parameters}>
+            <div className="text-zinc-800 dark:text-zinc-300 break-words font-medium" title={selectedNode.details.parameters}>
               {selectedNode.details.parameters}
             </div>
           </div>

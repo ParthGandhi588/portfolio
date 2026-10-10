@@ -90,16 +90,16 @@ export default function AbsenceRiskPage() {
         <div className="max-w-6xl mx-auto px-6 sm:px-10 flex items-center justify-between">
           <Link
             href="/#systems"
-            className="inline-flex items-center gap-2 text-xs font-sans text-zinc-400 hover:text-white transition-colors editorial-link"
+            className="inline-flex items-center gap-2 text-xs font-sans text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link"
           >
-            <ArrowLeft className="w-3.5 h-3.5 text-blue-400" />
+            <ArrowLeft className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>01 / Systems Monograph</span>
           </Link>
 
           <div className="flex items-center gap-3">
             <SoundToggle />
             <ThemeToggle />
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 dark:text-zinc-400">
               <span>ENTERPRISE ML WORKFLOW</span>
             </div>
           </div>
@@ -111,50 +111,50 @@ export default function AbsenceRiskPage() {
         {/* ========================================================================= */}
         {/* LEVEL 1: TITLE & PRINCIPLE                                                */}
         {/* ========================================================================= */}
-        <header className="space-y-8 pb-12 border-b border-white/[0.08]">
+        <header className="space-y-8 pb-12 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="space-y-3">
-            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+            <span className="text-xs font-mono text-blue-600 dark:text-blue-400 tracking-wider uppercase font-semibold">
               CASE STUDY 03 // APPLIED MACHINE LEARNING
             </span>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-light tracking-tight text-white leading-tight">
-              Absence Risk <span className="font-serif italic text-white">Prediction</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-light tracking-tight text-zinc-950 dark:text-white leading-tight">
+              Absence Risk <span className="font-serif italic text-zinc-950 dark:text-white">Prediction</span>
             </h1>
-            <p className="text-lg sm:text-2xl text-zinc-400 font-sans font-normal leading-relaxed max-w-3xl">
+            <p className="text-lg sm:text-2xl text-zinc-600 dark:text-zinc-400 font-sans font-normal leading-relaxed max-w-3xl">
               An applied machine learning workflow analyzing leave and attendance data to forecast pairwise co-absence risk and cluster patterns.
             </p>
           </div>
 
           {/* Architectural Rule Callout */}
-          <div className="py-6 px-8 border-l-2 border-blue-500 bg-white/[0.01]">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-blue-400 block mb-1">
+          <div className="py-6 px-8 border-l-2 border-blue-600 dark:border-blue-500 bg-zinc-50/80 dark:bg-white/[0.01]">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-blue-600 dark:text-blue-400 block mb-1 font-semibold">
               CORE ARCHITECTURAL DOCTRINE
             </span>
-            <p className="text-xl sm:text-2xl font-serif italic text-white leading-relaxed">
+            <p className="text-xl sm:text-2xl font-serif italic text-zinc-950 dark:text-white leading-relaxed">
               &quot;Moving beyond heuristics: engineering pairwise behavioral features into explainable ML predictions.&quot;
             </p>
           </div>
 
           {/* Executive Telemetry Ledger (Zero Box Cards) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-4">
-            <div className="space-y-1 border-l border-white/[0.1] pl-5">
-              <span className="text-[10px] font-mono text-zinc-400 uppercase">OBSERVATION STRUCTURE</span>
-              <div className="text-base font-sans font-medium text-white">120-Day Total Window</div>
-              <p className="text-xs text-zinc-400 font-sans">Zero temporal data leakage</p>
+            <div className="space-y-1 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 uppercase">OBSERVATION STRUCTURE</span>
+              <div className="text-base font-sans font-medium text-zinc-950 dark:text-white">120-Day Total Window</div>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans">Zero temporal data leakage</p>
             </div>
-            <div className="space-y-1 border-l border-white/[0.1] pl-5">
-              <span className="text-[10px] font-mono text-zinc-400 uppercase">TARGET HORIZON</span>
-              <div className="text-base font-sans font-medium text-white">30-Day Forward Risk</div>
-              <p className="text-xs text-zinc-400 font-sans">Upcoming operational period</p>
+            <div className="space-y-1 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 uppercase">TARGET HORIZON</span>
+              <div className="text-base font-sans font-medium text-zinc-950 dark:text-white">30-Day Forward Risk</div>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans">Upcoming operational period</p>
             </div>
-            <div className="space-y-1 border-l border-white/[0.1] pl-5">
-              <span className="text-[10px] font-mono text-zinc-400 uppercase">ENGINEERED SIGNALS</span>
-              <div className="text-base font-sans font-medium text-white">12 Dyadic Features</div>
-              <p className="text-xs text-zinc-400 font-sans">Pairwise behavioral signals</p>
+            <div className="space-y-1 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 uppercase">ENGINEERED SIGNALS</span>
+              <div className="text-base font-sans font-medium text-zinc-950 dark:text-white">12 Dyadic Features</div>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans">Pairwise behavioral signals</p>
             </div>
-            <div className="space-y-1 border-l border-white/[0.1] pl-5">
-              <span className="text-[10px] font-mono text-blue-400 uppercase">CLUSTERING GUARANTEE</span>
-              <div className="text-base font-sans font-medium text-blue-400">Complete Linkage (t=0.75)</div>
-              <p className="text-xs text-zinc-400 font-sans">&ge;0.25 similarity guarantee</p>
+            <div className="space-y-1 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <span className="text-[10px] font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">CLUSTERING GUARANTEE</span>
+              <div className="text-base font-sans font-medium text-blue-600 dark:text-blue-400">Complete Linkage (t=0.75)</div>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans">&ge;0.25 similarity guarantee</p>
             </div>
           </div>
         </header>
@@ -162,28 +162,28 @@ export default function AbsenceRiskPage() {
         {/* ========================================================================= */}
         {/* LEVEL 2: REQUEST LIFECYCLE & EXECUTION BOUNDARY                           */}
         {/* ========================================================================= */}
-        <section className="space-y-8 pb-16 border-b border-white/[0.08]">
+        <section className="space-y-8 pb-16 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+              <span className="text-xs font-mono text-blue-600 dark:text-blue-400 tracking-wider uppercase font-semibold">
                 MODEL PIPELINE
               </span>
-              <h2 className="text-2xl sm:text-3xl font-sans font-light text-white">
+              <h2 className="text-2xl sm:text-3xl font-sans font-light text-zinc-950 dark:text-white">
                 ML Pipeline & Clustering Architecture
               </h2>
             </div>
-            <span className="text-xs font-mono text-zinc-400">
+            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">
               STAGE 0{activeStageIndex + 1} OF 0{ML_STAGES.length}
             </span>
           </div>
 
-          <p className="text-sm text-zinc-400 font-sans leading-relaxed max-w-3xl">
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed max-w-3xl">
             Individual leave statistics miss critical workforce dependencies. Dyadic modeling captures behavioral synchronization across employee pairs while preventing forward leakage.
           </p>
 
           {/* Minimalist Horizontal Stage Stepper (Zero Box Cards) */}
           <div className="space-y-6">
-            <div className="flex flex-wrap gap-4 sm:gap-6 border-b border-white/[0.08] pb-3 text-xs font-mono">
+            <div className="flex flex-wrap gap-4 sm:gap-6 border-b border-zinc-200 dark:border-white/[0.08] pb-3 text-xs font-mono">
               {ML_STAGES.map((stage, idx) => {
                 const isActive = activeStageIndex === idx;
                 return (
@@ -192,13 +192,13 @@ export default function AbsenceRiskPage() {
                     type="button"
                     onClick={() => setActiveStageIndex(idx)}
                     className={`pb-3 transition-colors cursor-pointer flex items-baseline gap-2 relative ${
-                      isActive ? "text-white font-medium" : "text-zinc-500 hover:text-zinc-300"
+                      isActive ? "text-zinc-950 dark:text-white font-medium" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-300"
                     }`}
                   >
-                    <span className="text-blue-400">0{idx + 1}</span>
+                    <span className="text-blue-600 dark:text-blue-400">0{idx + 1}</span>
                     <span>{stage.step}</span>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500" />
+                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-500" />
                     )}
                   </button>
                 );
@@ -206,11 +206,11 @@ export default function AbsenceRiskPage() {
             </div>
 
             {/* Stage Detail Drawer */}
-            <div className="py-6 px-8 border-l border-white/[0.1] bg-white/[0.01] space-y-2">
-              <div className="text-xs font-mono text-blue-400 uppercase tracking-wider">
+            <div className="py-6 px-8 border-l border-zinc-200 dark:border-white/[0.1] bg-zinc-50/80 dark:bg-white/[0.01] space-y-2">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
                 STAGE 0{activeStageIndex + 1}: {activeStage.title} · {activeStage.shortRole}
               </div>
-              <p className="text-base text-zinc-300 font-sans leading-relaxed max-w-3xl">
+              <p className="text-base text-zinc-700 dark:text-zinc-300 font-sans leading-relaxed max-w-3xl">
                 {activeStage.desc}
               </p>
             </div>
@@ -220,61 +220,61 @@ export default function AbsenceRiskPage() {
         {/* ========================================================================= */}
         {/* LEVEL 3: FOUR CORE SUBSYSTEMS                                             */}
         {/* ========================================================================= */}
-        <section className="space-y-10 pb-16 border-b border-white/[0.08]">
+        <section className="space-y-10 pb-16 border-b border-zinc-200 dark:border-white/[0.08]">
           <div className="space-y-1">
-            <span className="text-xs font-mono text-blue-400 tracking-wider uppercase">
+            <span className="text-xs font-mono text-blue-600 dark:text-blue-400 tracking-wider uppercase font-semibold">
               SUBSYSTEM SPECIFICATIONS
             </span>
-            <h2 className="text-2xl sm:text-3xl font-sans font-light text-white">
+            <h2 className="text-2xl sm:text-3xl font-sans font-light text-zinc-950 dark:text-white">
               Pairwise Feature Engineering & Clustering Rigor
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-            <div className="space-y-2 border-l border-white/[0.1] pl-5">
-              <div className="text-xs font-mono text-blue-400 uppercase">
+            <div className="space-y-2 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">
                 01 / DUAL-WINDOW PARTITIONING
               </div>
-              <h4 className="text-base font-sans font-medium text-white">
+              <h4 className="text-base font-sans font-medium text-zinc-950 dark:text-white">
                 Temporal Data Leakage Prevention
               </h4>
-              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Aggregates 12 interaction features strictly over Days -120 to -30, evaluating ground-truth predictions over Days -30 to 0. Guarantees zero look-ahead bias in model evaluation.
               </p>
             </div>
 
-            <div className="space-y-2 border-l border-white/[0.1] pl-5">
-              <div className="text-xs font-mono text-blue-400 uppercase">
+            <div className="space-y-2 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">
                 02 / COMPLETE-LINKAGE CLUSTERING
               </div>
-              <h4 className="text-base font-sans font-medium text-white">
+              <h4 className="text-base font-sans font-medium text-zinc-950 dark:text-white">
                 Mathematical Distance Guarantee (t=0.75)
               </h4>
-              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Hierarchical agglomerative clustering on pairwise Jaccard distance with maximum-distance linkage guarantees every pair within a cluster shares at least 25% co-absence overlap.
               </p>
             </div>
 
-            <div className="space-y-2 border-l border-white/[0.1] pl-5">
-              <div className="text-xs font-mono text-blue-400 uppercase">
+            <div className="space-y-2 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">
                 03 / DYADIC INTERACTION SIGNALS
               </div>
-              <h4 className="text-base font-sans font-medium text-white">
+              <h4 className="text-base font-sans font-medium text-zinc-950 dark:text-white">
                 12 Pairwise Temporal & Behavioral Features
               </h4>
-              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Historical interaction dynamics (recency of shared leaves, baseline leave rates, Jaccard overlap, weekend bridge leaves) accounted for &gt;78% of model predictive importance.
               </p>
             </div>
 
-            <div className="space-y-2 border-l border-white/[0.1] pl-5">
-              <div className="text-xs font-mono text-blue-400 uppercase">
+            <div className="space-y-2 border-l border-zinc-200 dark:border-white/[0.1] pl-5">
+              <div className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase font-semibold">
                 04 / RULE-BASED EXPLAINABILITY
               </div>
-              <h4 className="text-base font-sans font-medium text-white">
+              <h4 className="text-base font-sans font-medium text-zinc-950 dark:text-white">
                 Operational Risk Driver Translation
               </h4>
-              <p className="text-sm text-zinc-400 font-sans leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Maps ensemble probability scores into operational drivers (frequent weekend bridge pairings, synchronized unplanned absences) for proactive departmental shift planning.
               </p>
             </div>
@@ -284,22 +284,22 @@ export default function AbsenceRiskPage() {
         {/* ========================================================================= */}
         {/* LEVEL 4: EXPANDABLE TECHNICAL DEEP DIVE (Zero Box Cards)                   */}
         {/* ========================================================================= */}
-        <section className="space-y-6 pb-16 border-b border-white/[0.08]">
+        <section className="space-y-6 pb-16 border-b border-zinc-200 dark:border-white/[0.08]">
           <button
             type="button"
             onClick={() => setDeepDiveOpen(!deepDiveOpen)}
             className="w-full flex items-baseline justify-between text-left group cursor-pointer focus-visible:outline-none"
           >
             <div className="space-y-1">
-              <span className="text-xs font-mono text-blue-400 uppercase tracking-wider">
+              <span className="text-xs font-mono text-blue-600 dark:text-blue-400 uppercase tracking-wider font-semibold">
                 DEEP DIVE PROTOCOLS
               </span>
-              <h3 className="text-xl sm:text-2xl font-sans font-light text-white group-hover:text-blue-400 transition-colors">
+              <h3 className="text-xl sm:text-2xl font-sans font-light text-zinc-950 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Feature Importance Rankings & Clustering Schematics
               </h3>
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 shrink-0">
+            <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 dark:text-zinc-400 shrink-0">
               <span>{deepDiveOpen ? "Collapse Specs" : "Expand Specs"}</span>
               {deepDiveOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </div>
@@ -307,12 +307,12 @@ export default function AbsenceRiskPage() {
 
           {deepDiveOpen && (
             <div className="pt-6 space-y-8 animate-in fade-in duration-200">
-              <div className="flex flex-wrap gap-4 border-b border-white/[0.08] pb-3 text-xs font-mono">
+              <div className="flex flex-wrap gap-4 border-b border-zinc-200 dark:border-white/[0.08] pb-3 text-xs font-mono">
                 <button
                   type="button"
                   onClick={() => setActiveDeepDiveTab("schematic")}
                   className={`pb-2 cursor-pointer transition-colors ${
-                    activeDeepDiveTab === "schematic" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                    activeDeepDiveTab === "schematic" ? "text-zinc-950 dark:text-white font-medium border-b-2 border-blue-600 dark:border-blue-500" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-300"
                   }`}
                 >
                   Dual-Window Diagram
@@ -321,7 +321,7 @@ export default function AbsenceRiskPage() {
                   type="button"
                   onClick={() => setActiveDeepDiveTab("features")}
                   className={`pb-2 cursor-pointer transition-colors ${
-                    activeDeepDiveTab === "features" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                    activeDeepDiveTab === "features" ? "text-zinc-950 dark:text-white font-medium border-b-2 border-blue-600 dark:border-blue-500" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-300"
                   }`}
                 >
                   Feature Importances
@@ -330,7 +330,7 @@ export default function AbsenceRiskPage() {
                   type="button"
                   onClick={() => setActiveDeepDiveTab("clustering")}
                   className={`pb-2 cursor-pointer transition-colors ${
-                    activeDeepDiveTab === "clustering" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                    activeDeepDiveTab === "clustering" ? "text-zinc-950 dark:text-white font-medium border-b-2 border-blue-600 dark:border-blue-500" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-300"
                   }`}
                 >
                   Clustering Math
@@ -339,7 +339,7 @@ export default function AbsenceRiskPage() {
                   type="button"
                   onClick={() => setActiveDeepDiveTab("rules")}
                   className={`pb-2 cursor-pointer transition-colors ${
-                    activeDeepDiveTab === "rules" ? "text-white font-medium border-b border-blue-500" : "text-zinc-500 hover:text-zinc-300"
+                    activeDeepDiveTab === "rules" ? "text-zinc-950 dark:text-white font-medium border-b-2 border-blue-600 dark:border-blue-500" : "text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-300"
                   }`}
                 >
                   Explainability Heuristics
@@ -348,28 +348,28 @@ export default function AbsenceRiskPage() {
 
               {activeDeepDiveTab === "schematic" && (
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
+                  <div className="flex items-center justify-between text-xs font-mono text-zinc-500 dark:text-zinc-400">
                     <span>// INTERACTIVE 120-DAY DUAL WINDOW ML PIPELINE</span>
-                    <span className="text-blue-400">CLICK ANY NODE TO INSPECT SPECS</span>
+                    <span className="text-blue-600 dark:text-blue-400 font-semibold">CLICK ANY NODE TO INSPECT SPECS</span>
                   </div>
                   <N8nFlowCanvas systemSlug="absence-risk" />
                 </div>
               )}
 
               {activeDeepDiveTab === "features" && (
-                <div className="space-y-4 font-sans text-xs sm:text-sm text-zinc-300">
-                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                <div className="space-y-4 font-sans text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
+                  <h4 className="font-mono text-xs uppercase text-blue-600 dark:text-blue-400 font-semibold">
                     12 Dyadic Interaction Features & Importance Weights
                   </h4>
-                  <div className="divide-y divide-white/[0.06]">
+                  <div className="divide-y divide-zinc-200 dark:divide-white/[0.06]">
                     {FEATURE_IMPORTANCES.map((feat) => (
                       <div key={feat.name} className="py-2.5 flex items-baseline justify-between gap-4 font-mono text-xs">
                         <div>
-                          <span className="text-zinc-500 mr-2">#{feat.rank}</span>
-                          <span className="text-white font-medium">{feat.name}</span>
-                          <span className="text-zinc-400 font-sans text-xs ml-3 hidden sm:inline">{feat.desc}</span>
+                          <span className="text-zinc-400 dark:text-zinc-500 mr-2">#{feat.rank}</span>
+                          <span className="text-zinc-950 dark:text-white font-medium">{feat.name}</span>
+                          <span className="text-zinc-600 dark:text-zinc-400 font-sans text-xs ml-3 hidden sm:inline">{feat.desc}</span>
                         </div>
-                        <span className="text-blue-400 font-semibold shrink-0">{feat.importance}</span>
+                        <span className="text-blue-600 dark:text-blue-400 font-semibold shrink-0">{feat.importance}</span>
                       </div>
                     ))}
                   </div>
@@ -377,35 +377,35 @@ export default function AbsenceRiskPage() {
               )}
 
               {activeDeepDiveTab === "clustering" && (
-                <div className="space-y-4 font-sans text-sm text-zinc-300 leading-relaxed max-w-3xl">
-                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                <div className="space-y-4 font-sans text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-3xl">
+                  <h4 className="font-mono text-xs uppercase text-blue-600 dark:text-blue-400 font-semibold">
                     Complete-Linkage Clustering Proof & Guarantees
                   </h4>
                   <p>
                     Unlike average-linkage or single-linkage which permits chaining of dissimilar members, complete-linkage calculates cluster distance as the maximum pairwise distance between any pair:
                   </p>
-                  <p className="font-mono text-xs text-blue-400 bg-white/[0.02] p-3 rounded border border-white/[0.06]">
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 bg-zinc-100 dark:bg-white/[0.02] p-3 rounded border border-zinc-200 dark:border-white/[0.06]">
                     D(A, B) = max &#123; d(x, y) : x &isin; A, y &isin; B &#125;
                   </p>
                   <p>
                     By cutting the dendrogram at distance threshold <strong>t = 0.75</strong>, the maximum pairwise distance between any two employees in a cluster is guaranteed to be &le; 0.75.
                     Since Jaccard Distance = 1 - Jaccard Similarity, this mathematically proves:
                   </p>
-                  <p className="font-mono text-xs text-blue-400 bg-white/[0.02] p-3 rounded border border-white/[0.06]">
+                  <p className="font-mono text-xs text-blue-600 dark:text-blue-400 bg-zinc-100 dark:bg-white/[0.02] p-3 rounded border border-zinc-200 dark:border-white/[0.06]">
                     Similarity(x, y) = 1 - d(x, y) &ge; 1 - 0.75 = 0.25 (25% co-absence overlap)
                   </p>
                 </div>
               )}
 
               {activeDeepDiveTab === "rules" && (
-                <div className="space-y-4 font-sans text-sm text-zinc-300 leading-relaxed max-w-3xl">
-                  <h4 className="font-mono text-xs uppercase text-blue-400">
+                <div className="space-y-4 font-sans text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed max-w-3xl">
+                  <h4 className="font-mono text-xs uppercase text-blue-600 dark:text-blue-400 font-semibold">
                     Explainability Translation Heuristics
                   </h4>
                   <p>
                     To enable operations teams to act without machine learning expertise, prediction scores are paired with transparent heuristic explanations:
                   </p>
-                  <ul className="space-y-2 pl-4 text-xs text-zinc-400 list-disc">
+                  <ul className="space-y-2 pl-4 text-xs text-zinc-600 dark:text-zinc-400 list-disc">
                     <li><strong>Recency Driver:</strong> If co-absence occurred within the last 14 days, flags active high-frequency synchronization.</li>
                     <li><strong>Bridge Pattern Driver:</strong> If weekend bridge ratio exceeds 40%, flags Friday/Monday extended weekend correlation.</li>
                     <li><strong>Cluster Impact:</strong> Identifies if both employees belong to one of the 147 workforce clusters, indicating departmental team risk.</li>
@@ -420,14 +420,14 @@ export default function AbsenceRiskPage() {
         {/* TECHNOLOGIES & CASE STUDY NAVIGATION                                      */}
         {/* ========================================================================= */}
         <section className="space-y-4">
-          <span className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+          <span className="text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block font-semibold">
             DEPLOYED TECHNOLOGIES
           </span>
           <div className="flex flex-wrap gap-2">
             {project.technologies.map((tech) => (
               <span
                 key={tech}
-                className="text-xs font-mono px-3 py-1.5 rounded border border-white/[0.08] bg-white/[0.02] text-zinc-300"
+                className="text-xs font-mono px-3 py-1.5 rounded border border-zinc-200 dark:border-white/[0.08] bg-zinc-100/70 dark:bg-white/[0.02] text-zinc-800 dark:text-zinc-300"
               >
                 {tech}
               </span>
