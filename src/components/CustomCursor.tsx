@@ -3,7 +3,8 @@
 import React, { useEffect, useState, useRef } from "react";
 
 export function CustomCursor() {
-  const [enabled, setEnabled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
 
@@ -20,25 +21,30 @@ export function CustomCursor() {
     vy: 0,
     speed: 0,
     angle: 0,
+    initialized: false,
   });
 
   useEffect(() => {
-    // Strictly disable on any touch device or mobile screen
-    if (
-      typeof window === "undefined" ||
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      !window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    ) {
-      setEnabled(false);
+    // Only disable on mobile phone screen sizes (< 768px)
+    if (typeof window === "undefined" || window.innerWidth < 768) {
       return;
     }
-    setEnabled(true);
+    setMounted(true);
 
     const handleMouseMove = (e: MouseEvent) => {
+      // First move instantly positions the ring to mouse location to prevent fly-in from offscreen
+      if (!pos.current.initialized) {
+        pos.current.ringX = e.clientX;
+        pos.current.ringY = e.clientY;
+        pos.current.initialized = true;
+      }
+
       pos.current.x = e.clientX;
       pos.current.y = e.clientY;
+
+      if (!visible) {
+        setVisible(true);
+      }
 
       // Immediate precision dot positioning (strictly 1:1 with mouse, zero lag)
       if (cursorDotRef.current) {
@@ -49,7 +55,7 @@ export function CustomCursor() {
       const target = e.target as HTMLElement | null;
       if (target) {
         const isClickable = Boolean(
-          target.closest("button, a, input, textarea, [role='button'], [tabindex='0'], select")
+          target.closest("button, a, input, textarea, [role='button'], [tabindex='0'], select, [data-clickable]")
         );
         setHovered(isClickable);
       }
@@ -57,10 +63,16 @@ export function CustomCursor() {
 
     const handleMouseDown = () => setClicked(true);
     const handleMouseUp = () => setClicked(false);
+    const handleMouseLeave = () => setVisible(false);
+    const handleMouseEnter = () => setVisible(true);
+    const handleTouchStart = () => setVisible(false);
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
 
     // Physics render loop for inertia and "effort" stretch
     let animId: number;
@@ -82,7 +94,7 @@ export function CustomCursor() {
       const speed = Math.min(Math.hypot(vx, vy), 35);
       const angle = Math.atan2(dy, dx);
 
-      // Velocity-based physical elongation ("effort on moving")
+      // Velocity-based physical elongation ("effort on moving" bubble stretch)
       const stretch = 1 + speed * 0.035;
       const squeeze = 1 / Math.sqrt(stretch);
 
@@ -104,15 +116,22 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
+      window.removeEventListener("touchstart", handleTouchStart);
       cancelAnimationFrame(animId);
     };
-  }, [hovered, clicked]);
+  }, [hovered, clicked, visible]);
 
-  if (!enabled) return null;
+  if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
-      {/* 1. Trailing Inertial Ring with Velocity Stretch ("Effort" Physics) */}
+    <div
+      className={`fixed inset-0 pointer-events-none z-[9999] overflow-hidden transition-opacity duration-200 ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      {/* 1. Trailing Inertial Ring with Velocity Stretch ("Effort" Bubble Physics) */}
       <div
         ref={cursorRingRef}
         className={`cursor-ring fixed top-0 left-0 -ml-4 -mt-4 w-8 h-8 rounded-full pointer-events-none will-change-transform transition-[border-color,background-color] duration-150 ${

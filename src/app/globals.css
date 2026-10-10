@@ -102,49 +102,49 @@ html:not(.dark) .text-zinc-950 {
 
 /* Custom Cursor High-Contrast Rules */
 .cursor-ring {
-  border: 1.5px solid rgba(15, 23, 42, 0.75) !important;
-  background-color: rgba(15, 23, 42, 0.05) !important;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+  border: 2px solid rgba(15, 23, 42, 0.8) !important;
+  background-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 0 12px rgba(15, 23, 42, 0.15);
   pointer-events: none !important;
   user-select: none !important;
 }
 html.dark .cursor-ring {
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.15);
 }
 .cursor-ring.cursor-hovered {
-  border: 1.5px solid #2563eb !important;
-  background-color: rgba(37, 99, 235, 0.18) !important;
-  box-shadow: 0 0 18px rgba(37, 99, 235, 0.35) !important;
+  border: 2px solid #2563eb !important;
+  background-color: rgba(37, 99, 235, 0.2) !important;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.4) !important;
 }
 html.dark .cursor-ring.cursor-hovered {
-  border: 1.5px solid #60a5fa !important;
-  background-color: rgba(96, 165, 250, 0.2) !important;
-  box-shadow: 0 0 18px rgba(96, 165, 250, 0.35) !important;
+  border: 2px solid #60a5fa !important;
+  background-color: rgba(96, 165, 250, 0.22) !important;
+  box-shadow: 0 0 22px rgba(96, 165, 250, 0.45) !important;
 }
 
 .cursor-dot {
-  background-color: #09090b !important;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  background-color: #0f172a !important;
+  box-shadow: 0 0 4px rgba(15, 23, 42, 0.4);
   pointer-events: none !important;
   user-select: none !important;
 }
 html.dark .cursor-dot {
   background-color: #ffffff !important;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
 }
 .cursor-dot.cursor-hovered {
   background-color: #2563eb !important;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8) !important;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.9) !important;
 }
 html.dark .cursor-dot.cursor-hovered {
   background-color: #60a5fa !important;
-  box-shadow: 0 0 6px rgba(96, 165, 250, 0.8) !important;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.9) !important;
 }
 
-/* Strictly hide and neutralize custom cursor on touch/mobile devices */
-@media (hover: none), (pointer: coarse) {
+/* Hide custom cursor strictly on mobile screens (< 768px) */
+@media (max-width: 768px) {
   .cursor-ring,
   .cursor-dot {
     display: none !important;
