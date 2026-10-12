@@ -651,9 +651,9 @@ Ask me anything about his systems (Agentic ERP, CodeBase RAG, Absence Risk), eng
                     <button
                       type="submit"
                       disabled={!inputVal.trim() || isStreaming}
-                      className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 text-white rounded-lg text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer disabled:cursor-not-allowed shrink-0"
+                      className="chat-send-btn px-4 py-2.5 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all shrink-0 cursor-pointer disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-500 text-white disabled:bg-zinc-200 disabled:text-zinc-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 shadow-sm"
                     >
-                      <span>SEND</span>
+                      <span className="font-semibold tracking-wide">SEND</span>
                       <Send className="w-3 h-3" />
                     </button>
                   </form>

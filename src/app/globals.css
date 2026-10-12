@@ -217,6 +217,53 @@ html:not(.dark) .text-blue-400 {
   color: #2563eb !important;
 }
 
+/* Ensure solid blue action buttons and send button maintain crisp white text in light mode */
+html:not(.dark) button.bg-blue-600:not(:disabled),
+html:not(.dark) button.bg-blue-600:not(:disabled) *,
+html:not(.dark) a.bg-blue-600:not(:disabled),
+html:not(.dark) a.bg-blue-600:not(:disabled) *,
+html:not(.dark) [class*="bg-blue-600"]:not([class*="/"]):not(:disabled),
+html:not(.dark) [class*="bg-blue-600"]:not([class*="/"]):not(:disabled) *,
+html:not(.dark) .chat-send-btn:not(:disabled),
+html:not(.dark) .chat-send-btn:not(:disabled) * {
+  color: #ffffff !important;
+}
+
+/* Chat Console Send Button Precision Theme Styling */
+.chat-send-btn:not(:disabled) {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.chat-send-btn:not(:disabled):hover {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+.chat-send-btn:not(:disabled) * {
+  color: #ffffff !important;
+}
+
+html:not(.dark) .chat-send-btn:disabled {
+  background-color: #e4e4e7 !important;
+  color: #71717a !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html:not(.dark) .chat-send-btn:disabled * {
+  color: #71717a !important;
+}
+
+html.dark .chat-send-btn:disabled {
+  background-color: #27272a !important;
+  color: #71717a !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+html.dark .chat-send-btn:disabled * {
+  color: #71717a !important;
+}
+
 html:not(.dark) [background-image*="radial-gradient"] {
   background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px) !important;
 }
