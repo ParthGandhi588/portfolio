@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import { Navbar } from "@/components/Navbar";
-import { GlassHero } from "@/components/GlassHero";
-import { TelemetryLedger } from "@/components/TelemetryLedger";
+import { Hero } from "@/components/Hero";
 import { FlagshipProjects } from "@/components/FlagshipProjects";
 import { WhatIBuild } from "@/components/WhatIBuild";
 import { InteractiveAgentConsole } from "@/components/InteractiveAgentConsole";
@@ -40,8 +39,7 @@ export default function Home() {
 
       {/* Main Editorial Content Monograph */}
       <main className="relative z-10 flex flex-col">
-        <GlassHero />
-        <TelemetryLedger />
+        <Hero />
         <FlagshipProjects />
         <WhatIBuild />
         <InteractiveAgentConsole />

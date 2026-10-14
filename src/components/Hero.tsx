@@ -28,11 +28,11 @@ export function Hero() {
 
         {/* Large Statement Headline in Editorial Serif & Sans */}
         <div className="py-12 sm:py-20 space-y-8 max-w-5xl">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-light tracking-tight text-white leading-[1.08]">
-            I engineer <span className="font-serif italic font-normal text-white">AI systems</span> where probabilistic models meet <span className="font-serif italic font-normal text-blue-400">deterministic</span> software.
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-light tracking-tight text-zinc-950 dark:text-white leading-[1.08]">
+            I engineer <span className="font-serif italic font-normal text-zinc-950 dark:text-white">AI systems</span> where probabilistic models meet <span className="font-serif italic font-normal text-blue-600 dark:text-blue-400">deterministic</span> software.
           </h1>
 
-          <p className="text-lg sm:text-2xl text-zinc-400 font-sans font-normal leading-relaxed max-w-3xl">
+          <p className="text-lg sm:text-2xl text-zinc-600 dark:text-zinc-400 font-sans font-normal leading-relaxed max-w-3xl">
             {PERSONAL_INFO.supportingCopy}
           </p>
 
@@ -40,7 +40,7 @@ export function Hero() {
           <div className="pt-4 flex flex-wrap items-center gap-5 sm:gap-8 text-sm font-sans">
             <a
               href="#systems"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-zinc-950 font-medium hover:bg-zinc-200 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-zinc-950 dark:bg-white text-white dark:text-zinc-950 font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-sm"
             >
               <span>Explore Flagship Systems</span>
               <ArrowDown className="w-4 h-4" />
@@ -49,7 +49,7 @@ export function Hero() {
             <a
               href={PERSONAL_INFO.resumePdf}
               download
-              className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors editorial-link py-1"
+              className="inline-flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link py-1"
             >
               <FileText className="w-4 h-4" />
               <span>Resume (PDF)</span>
@@ -58,7 +58,7 @@ export function Hero() {
 
             <a
               href={`mailto:${PERSONAL_INFO.email}`}
-              className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors editorial-link py-1"
+              className="inline-flex items-center gap-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white transition-colors editorial-link py-1"
             >
               <Mail className="w-4 h-4" />
               <span>{PERSONAL_INFO.email}</span>
@@ -67,40 +67,41 @@ export function Hero() {
         </div>
 
         {/* Minimalist Full-Width Telemetry Ledger (Zero Box Blocks) */}
-        <div className="pt-10 border-t border-white/[0.08]">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-6">
-            VERIFIED PRODUCTION BENCHMARKS & ARCHITECTURAL HIGHLIGHTS
+        <div className="pt-10 border-t border-zinc-200 dark:border-white/[0.08]">
+          <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-6 flex items-center justify-between">
+            <span>VERIFIED PRODUCTION BENCHMARKS & ARCHITECTURAL HIGHLIGHTS</span>
+            <span className="hidden sm:inline text-blue-600 dark:text-blue-400 font-mono">04 RUNTIME PROOFS</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="space-y-1.5 border-l border-white/[0.1] pl-4 sm:pl-6">
-              <span className="font-mono text-xs text-blue-400">01 / INFERENCE</span>
-              <h2 className="text-lg font-sans font-medium text-white">~15s → ~5s Latency</h2>
-              <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+            <div className="space-y-1.5 border-l border-zinc-300 dark:border-white/[0.1] pl-4 sm:pl-6">
+              <span className="font-mono text-xs text-blue-600 dark:text-blue-400">01 / INFERENCE</span>
+              <h2 className="text-lg font-sans font-medium text-zinc-950 dark:text-white">~15s → ~5s Latency</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 3x document workflow acceleration via local vLLM serving and async streaming.
               </p>
             </div>
 
-            <div className="space-y-1.5 border-l border-white/[0.1] pl-4 sm:pl-6">
-              <span className="font-mono text-xs text-blue-400">02 / CODE RAG</span>
-              <h2 className="text-lg font-sans font-medium text-white">10 Languages AST</h2>
-              <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+            <div className="space-y-1.5 border-l border-zinc-300 dark:border-white/[0.1] pl-4 sm:pl-6">
+              <span className="font-mono text-xs text-blue-600 dark:text-blue-400">02 / CODE RAG</span>
+              <h2 className="text-lg font-sans font-medium text-zinc-950 dark:text-white">10 Languages AST</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Language-aware Tree-sitter chunking preserving classes and functions intact.
               </p>
             </div>
 
-            <div className="space-y-1.5 border-l border-white/[0.1] pl-4 sm:pl-6">
-              <span className="font-mono text-xs text-blue-400">03 / APPLIED ML</span>
-              <h2 className="text-lg font-sans font-medium text-white">120-Day Dual Window</h2>
-              <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+            <div className="space-y-1.5 border-l border-zinc-300 dark:border-white/[0.1] pl-4 sm:pl-6">
+              <span className="font-mono text-xs text-blue-600 dark:text-blue-400">03 / APPLIED ML</span>
+              <h2 className="text-lg font-sans font-medium text-zinc-950 dark:text-white">120-Day Dual Window</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Zero temporal data leakage with 12 dyadic behavioral interaction signals.
               </p>
             </div>
 
-            <div className="space-y-1.5 border-l border-white/[0.1] pl-4 sm:pl-6">
-              <span className="font-mono text-xs text-blue-400">04 / ARCHITECTURE</span>
-              <h2 className="text-lg font-sans font-medium text-white">Deterministic State</h2>
-              <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+            <div className="space-y-1.5 border-l border-zinc-300 dark:border-white/[0.1] pl-4 sm:pl-6">
+              <span className="font-mono text-xs text-blue-600 dark:text-blue-400">04 / ARCHITECTURE</span>
+              <h2 className="text-lg font-sans font-medium text-zinc-950 dark:text-white">Deterministic State</h2>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                 Specialist agent boundaries with typed Pydantic tools and PostgreSQL queues.
               </p>
             </div>

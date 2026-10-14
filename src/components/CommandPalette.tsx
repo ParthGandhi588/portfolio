@@ -17,6 +17,7 @@ import {
   Compass,
   Cpu,
   User,
+  Sparkles,
 } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolioData";
@@ -106,6 +107,16 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         const el = document.getElementById("inquiry");
         if (el) el.scrollIntoView({ behavior: "smooth" });
         else router.push("/#inquiry");
+        onClose();
+      },
+    },
+    {
+      id: "interactive-hero",
+      label: "Liquid-Glass Lens Hero (Experimental Prototype with Portrait)",
+      category: "Interactive",
+      icon: Sparkles,
+      action: () => {
+        router.push("/interactive");
         onClose();
       },
     },
